@@ -39,6 +39,6 @@ You will have to set your possible themes and the currently active theme. It
 is required that the active theme is part of the themes list.
 
 # app/config.yml
-liip_theme:
-    themes: ['web', 'tablet', 'mobile']
-    activeTheme: 'web'
+    liip_theme:
+        themes: ['web', 'tablet', 'mobile']
+        activeTheme: 'web'
