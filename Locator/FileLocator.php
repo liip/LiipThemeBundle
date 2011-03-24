@@ -71,49 +71,50 @@ class FileLocator extends HttpKernelFileLocator
      */
     public function locate($name, $dir = null, $first = true)
     {
-        if ('@' !== $name[0]) {
-            throw new \InvalidArgumentException(sprintf('A resource name must start with @ ("%s" given).', $name));
-        }
+        if ('@' === $name[0]) {
 
-        if (false !== strpos($name, '..')) {
-            throw new \RuntimeException(sprintf('File name "%s" contains invalid characters (..).', $name));
-        }
-
-        $name = substr($name, 1);
-        list($bundle, $path) = explode(DIRECTORY_SEPARATOR, $name, 2);
-
-        $isResource = 0 === strpos($path, 'Resources');
-
-        $files = array();
-        if (true === $isResource && null !== $dir && file_exists($file = $dir.DIRECTORY_SEPARATOR.$bundle.DIRECTORY_SEPARATOR.substr($path, 10))) {
-            if ($first) {
-                return $file;
+            if (false !== strpos($name, '..')) {
+                throw new \RuntimeException(sprintf('File name "%s" contains invalid characters (..).', $name));
             }
 
-            $files[] = $file;
-        }
+            $name = substr($name, 1);
+            list($bundle, $path) = explode(DIRECTORY_SEPARATOR, $name, 2);
 
-        foreach ($this->kernel->getBundle($bundle, false) as $bundle) {
-            for ($i = array_search($this->activeTheme, $this->themes); $i >= 0 ;$i--) {
-                if ('' !== $this->themes[$i]) {
-                    $theme = 'Resources'.DIRECTORY_SEPARATOR.'themes'.DIRECTORY_SEPARATOR.$this->themes[$i];
-                } else {
-                    $theme = 'Resources'.DIRECTORY_SEPARATOR.'views';
+            $isResource = 0 === strpos($path, 'Resources');
+
+            $files = array();
+            if (true === $isResource && null !== $dir && file_exists($file = $dir.DIRECTORY_SEPARATOR.$bundle.DIRECTORY_SEPARATOR.substr($path, 10))) {
+                if ($first) {
+                    return $file;
                 }
-                $tmpPath = $theme . substr($path, 15);
-                if (file_exists($file = $bundle->getPath().DIRECTORY_SEPARATOR.$tmpPath)) {
-                    if ($first) {
-                        return $file;
+    
+                $files[] = $file;
+            }
+
+            foreach ($this->kernel->getBundle($bundle, false) as $bundle) {
+                for ($i = array_search($this->activeTheme, $this->themes); $i >= 0 ;$i--) {
+                    if ('' !== $this->themes[$i]) {
+                        $theme = 'Resources'.DIRECTORY_SEPARATOR.'themes'.DIRECTORY_SEPARATOR.$this->themes[$i];
+                    } else {
+                        $theme = 'Resources'.DIRECTORY_SEPARATOR.'views';
                     }
-                    $files[] = $file;
+                    $tmpPath = $theme . substr($path, 15);
+                    if (file_exists($file = $bundle->getPath().DIRECTORY_SEPARATOR.$tmpPath)) {
+                        if ($first) {
+                            return $file;
+                        }
+                        $files[] = $file;
+                    }
                 }
             }
+
+            if ($files) {
+                return $files;
+            }
+
+            throw new \InvalidArgumentException(sprintf('Unable to find file "@%s".', $name));
         }
 
-        if ($files) {
-            return $files;
-        }
-
-        throw new \InvalidArgumentException(sprintf('Unable to find file "@%s".', $name));
+        return parent::locate($file, $currentPath, $first);
     }
 }
