@@ -38,11 +38,12 @@ class FileLocator extends HttpKernelFileLocator
      *
      * @throws \InvalidArgumentException if the active theme is not in the themes list
      */
-    public function __construct(KernelInterface $kernel, array $themes = array(), $activeTheme = '')
+    public function __construct(KernelInterface $kernel)
     {
-        $this->themes = array_merge(array(''), $themes);
-        $this->activeTheme = $activeTheme;
-        if (! in_array($activeTheme, $themes)) {
+        $container = $kernel->getContainer();
+        $this->themes = array_merge(array(''), $container->getParameter('liip_theme.themes'));
+        $this->activeTheme = $container->getParameter('liip_theme.activeTheme');
+        if (! in_array($this->activeTheme, $this->themes)) {
             throw new \InvalidArgumentException(sprintf('The active theme must be in the themes list.'));
         }
         parent::__construct($kernel);

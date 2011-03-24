@@ -34,10 +34,8 @@ class LiipThemeExtension extends Extension
         $loader = $this->getFileLoader($container);
         $loader->load('templating.xml');
 
-        foreach ($config['class'] as $key => $value) {
-            $container->setParameter($this->getAlias().'.'.$key.'.class', $value);
-        }
-
+        $container->setParameter($this->getAlias().'.themes', $config['themes']);
+        $container->setParameter($this->getAlias().'.activeTheme', $config['activeTheme']);
     }
 
     /**

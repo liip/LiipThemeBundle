@@ -11,7 +11,8 @@ use Symfony\Component\Config\Definition\Builder\TreeBuilder;
  * This information is solely responsible for how the different configuration
  * sections are normalized, and merged.
  *
- * @author Lukas Kahwe Smith <smith@pooteeweet.org>
+ * @author Tobias Ebnöther <ebi@liip.ch>
+ * @author Roland Schilter <roland.schilter@liip.ch>
  */
 class Configuration
 {
@@ -23,31 +24,16 @@ class Configuration
     public function getConfigTree()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('liip_view', 'array');
-
+        $rootNode = $treeBuilder->root('liip_theme', 'array');
         $rootNode
             ->children()
-                ->arrayNode('class')
-                    ->addDefaultsIfNotSet()
-                    ->children()
-                        ->scalarNode('view')->defaultValue('Liip\ViewBundle\View\DefaultView')->end()
-                        ->scalarNode('serializer')->defaultValue('Symfony\Component\Serializer\Serializer')->end()
-                        ->scalarNode('json')->defaultValue('Symfony\Component\Serializer\Encoder\JsonEncoder')->end()
-                        ->scalarNode('xml')->defaultValue('Symfony\Component\Serializer\Encoder\XmlEncoder')->end()
-                        ->scalarNode('html')->defaultValue('Liip\ViewBundle\Serializer\Encoder\HtmlEncoder')->end()
-                    ->end()
-                ->end()
-            ->end()
-            ->fixXmlConfig('format', 'formats')
-            ->children()
-                ->arrayNode('formats')
-                    ->useAttributeAsKey('format')
+                ->arrayNode('themes')
+                    ->useAttributeAsKey('theme')
                     ->prototype('scalar')
                 ->end()
             ->end()
-            ->booleanNode('frameworkextra')->defaultFalse()->end()
+            ->scalarNode('activeTheme')->end()
         ->end();
-
         return $treeBuilder->buildTree();
     }
 
