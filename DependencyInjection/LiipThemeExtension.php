@@ -29,25 +29,16 @@ class LiipThemeExtension extends Extension
     {
         $processor = new Processor();
         $configuration = new Configuration();
+        
         $config = $processor->process($configuration->getConfigTree(), $configs);
 
         if (empty($config['themes']) || empty($config['activeTheme'])) {
             throw new \RuntimeException('Liip\ThemeBundle not completely configured please consult the README file.');
         }
 
-        $loader = $this->getFileLoader($container);
+        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('templating.xml');
         $container->setParameter($this->getAlias().'.themes', $config['themes']);
         $container->setParameter($this->getAlias().'.activeTheme', $config['activeTheme']);
-    }
-
-    /**
-     * Get File Loader
-     *
-     * @param ContainerBuilder $container
-     */
-    public function getFileLoader($container)
-    {
-        return new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
     }
 }
