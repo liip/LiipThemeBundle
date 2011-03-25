@@ -53,6 +53,9 @@ class FileLocatorTest extends \PHPUnit_Framework_TestCase
         return __DIR__ . '/../Fixtures';
     }
 
+    /**
+     * @covers Liip\ThemeBundle\Locator\FileLocator::__construct
+     */
     public function testConstructor()
     {
         $kernel =  $this->getKernelMock(array('foo', 'bar', 'foobar'), 'bar');
@@ -60,6 +63,7 @@ class FileLocatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Liip\ThemeBundle\Locator\FileLocator::__construct
      * @expectedException InvalidArgumentException
      */
     public function testConstructorWithInvalidTheme()
@@ -68,6 +72,9 @@ class FileLocatorTest extends \PHPUnit_Framework_TestCase
         $fileLocator = new FileLocator($kernel);
     }
 
+    /**
+     * @covers Liip\ThemeBundle\Locator\FileLocator::locate
+     */
     public function testLocate()
     {
         $kernel =  $this->getKernelMock(array('foo', 'bar', 'foobar'), 'foo');
@@ -75,5 +82,100 @@ class FileLocatorTest extends \PHPUnit_Framework_TestCase
 
         $file = $fileLocator->locate('@ThemeBundle/Resources/views/template', $this->getFixturePath(), true);
         $this->assertEquals($this->getFixturePath().'/Resources/themes/foo/template', $file);
+    }
+
+    /**
+     * This verifies that the parent theme gets used if the currently active
+     * one doesn't contain a matching file.
+     *
+     * @covers Liip\ThemeBundle\Locator\FileLocator::locate
+     */
+    public function testLocateStepupTheme()
+    {
+        $kernel =  $this->getKernelMock(array('foo', 'bar', 'foobar'), 'bar');
+        $fileLocator = new FileLocator($kernel);
+
+        $file = $fileLocator->locate('@ThemeBundle/Resources/views/template', $this->getFixturePath(), true);
+        $this->assertEquals($this->getFixturePath().'/Resources/themes/foo/template', $file);
+    }
+
+    /**
+     * This verifies that the default view gets used if the currently active
+     * one doesn't contain a matching file.
+     *
+     * @covers Liip\ThemeBundle\Locator\FileLocator::locate
+     */
+    public function testLocateViewFallback()
+    {
+        $kernel =  $this->getKernelMock(array('foo', 'bar', 'foobar'), 'bar');
+        $fileLocator = new FileLocator($kernel);
+
+        $file = $fileLocator->locate('@ThemeBundle/Resources/views/defaultTemplate', $this->getFixturePath(), true);
+        $this->assertEquals($this->getFixturePath().'/Resources/views/defaultTemplate', $file);
+    }
+
+    /**
+     * @covers Liip\ThemeBundle\Locator\FileLocator::locate
+     */
+    public function testLocateAllFiles() {
+        $kernel =  $this->getKernelMock(array('foo', 'bar', 'foobar'), 'foobar');
+        $fileLocator = new FileLocator($kernel);
+
+        $expectedFiles = array(
+            '/Dropbox/nzz/frontend/vendor/bundles/Liip/ThemeBundle/Tests/Locator/../Fixtures/Resources/themes/foobar/template',
+            '/Dropbox/nzz/frontend/vendor/bundles/Liip/ThemeBundle/Tests/Locator/../Fixtures/Resources/themes/foo/template',
+            '/Dropbox/nzz/frontend/vendor/bundles/Liip/ThemeBundle/Tests/Locator/../Fixtures/Resources/views/template',
+        );
+
+        $files = $fileLocator->locate('@ThemeBundle/Resources/views/template', $this->getFixturePath(), false);
+        $this->assertEquals($expectedFiles, $files);
+    }
+
+    /**
+     * @covers Liip\ThemeBundle\Locator\FileLocator::locate
+     */
+    public function testLocateParentDelegation()
+    {
+        $kernel =  $this->getKernelMock(array('foo', 'bar', 'foobar'), 'foo');
+        $fileLocator = new FileLocator($kernel);
+
+        $file = $fileLocator->locate('Resources/themes/foo/template', $this->getFixturePath(), true);
+        $this->assertEquals($this->getFixturePath().'/Resources/themes/foo/template', $file);
+    }
+
+    /**
+     * @covers Liip\ThemeBundle\Locator\FileLocator::locate
+     * @expectedException RuntimeException
+     */
+    public function testLocateInvalidCharacter()
+    {
+        $kernel =  $this->getKernelMock(array('foo', 'bar', 'foobar'), 'foo');
+        $fileLocator = new FileLocator($kernel);
+
+        $file = $fileLocator->locate('@ThemeBundle/Resources/../views/template', $this->getFixturePath(), true);
+    }
+
+    /**
+     * @covers Liip\ThemeBundle\Locator\FileLocator::locate
+     * @expectedException RuntimeException
+     */
+    public function testLocateNoResource()
+    {
+        $kernel =  $this->getKernelMock(array('foo', 'bar', 'foobar'), 'foo');
+        $fileLocator = new FileLocator($kernel);
+
+        $file = $fileLocator->locate('@ThemeBundle/bogus', $this->getFixturePath(), true);
+    }
+
+    /**
+     * @covers Liip\ThemeBundle\Locator\FileLocator::locate
+     * @expectedException InvalidArgumentException
+     */
+    public function testLocateNotFound()
+    {
+        $kernel =  $this->getKernelMock(array('foo', 'bar', 'foobar'), 'bar');
+        $fileLocator = new FileLocator($kernel);
+
+        $file = $fileLocator->locate('@ThemeBundle/Resources/nonExistant', $this->getFixturePath(), true);
     }
 }
