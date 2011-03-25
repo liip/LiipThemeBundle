@@ -17,6 +17,13 @@ class FileLocatorTest extends \PHPUnit_Framework_TestCase
 {
     protected function getKernelMock($themes, $activeTheme)
     {
+        $bundle = $this->getMockBuilder('Symfony\Component\HttpKernel\Bundle\Bundle')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $bundle->expects($this->any())
+            ->method('getPath')
+            ->will($this->returnValue($this->getFixturePath()));
+
         $container = $this->getMockBuilder('Symfony\Component\DependencyInjection\Container')
             ->disableOriginalConstructor()
             ->getMock();
@@ -28,18 +35,45 @@ class FileLocatorTest extends \PHPUnit_Framework_TestCase
             ->method('getParameter')
             ->with($this->equalTo('liip_theme.activeTheme'))
             ->will($this->returnValue($activeTheme));
+
         $kernel = $this->getMockBuilder('Symfony\Component\HttpKernel\KernelInterface')
             ->disableOriginalConstructor()
             ->getMock();
         $kernel->expects($this->once())
             ->method('getContainer')
             ->will($this->returnValue($container));
+        $kernel->expects($this->any())
+            ->method('getBundle')
+            ->will($this->returnValue(array($bundle)));
         return $kernel;
+    }
+
+    protected function getFixturePath()
+    {
+        return __DIR__ . '/../Fixtures';
     }
 
     public function testConstructor()
     {
         $kernel =  $this->getKernelMock(array('foo', 'bar', 'foobar'), 'bar');
         $fileLocator = new FileLocator($kernel);
+    }
+
+    /**
+     * @expectedException InvalidArgumentException
+     */
+    public function testConstructorWithInvalidTheme()
+    {
+        $kernel =  $this->getKernelMock(array('foo', 'bar', 'foobar'), 'non existant');
+        $fileLocator = new FileLocator($kernel);
+    }
+
+    public function testLocate()
+    {
+        $kernel =  $this->getKernelMock(array('foo', 'bar', 'foobar'), 'foo');
+        $fileLocator = new FileLocator($kernel);
+
+        $file = $fileLocator->locate('@ThemeBundle/Resources/views/template', $this->getFixturePath(), true);
+        $this->assertEquals($this->getFixturePath().'/Resources/themes/foo/template', $file);
     }
 }
