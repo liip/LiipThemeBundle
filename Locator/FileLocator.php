@@ -80,17 +80,6 @@ class FileLocator extends HttpKernelFileLocator
             $name = substr($name, 1);
             list($bundle, $path) = explode(DIRECTORY_SEPARATOR, $name, 2);
 
-            $isResource = 0 === strpos($path, 'Resources');
-
-            $files = array();
-            if (true === $isResource && null !== $dir && file_exists($file = $dir.DIRECTORY_SEPARATOR.$bundle.DIRECTORY_SEPARATOR.substr($path, 10))) {
-                if ($first) {
-                    return $file;
-                }
-    
-                $files[] = $file;
-            }
-
             foreach ($this->kernel->getBundle($bundle, false) as $bundle) {
                 for ($i = array_search($this->activeTheme, $this->themes); $i >= 0 ;$i--) {
                     if ('' !== $this->themes[$i]) {
