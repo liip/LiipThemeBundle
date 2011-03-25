@@ -77,9 +77,9 @@ class FileLocator extends HttpKernelFileLocator
                 throw new \RuntimeException(sprintf('File name "%s" contains invalid characters (..).', $name));
             }
 
+            $files = array();
             $name = substr($name, 1);
             list($bundle, $path) = explode(DIRECTORY_SEPARATOR, $name, 2);
-
             foreach ($this->kernel->getBundle($bundle, false) as $bundle) {
                 for ($i = array_search($this->activeTheme, $this->themes); $i >= 0 ;$i--) {
                     if ('' !== $this->themes[$i]) {
