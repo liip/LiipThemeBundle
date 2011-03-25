@@ -103,7 +103,6 @@ class FileLocator extends HttpKernelFileLocator
 
             throw new \InvalidArgumentException(sprintf('Unable to find file "@%s".', $name));
         }
-
-        return parent::locate($file, $currentPath, $first);
+        return parent::locate($name, $dir, $first);
     }
 }
