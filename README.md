@@ -27,7 +27,7 @@ Installation
           {
               return array(
                   // ...
-                  new Liip\ViewBundle\LiipThemeBundle(),
+                  new Liip\ThemeBundle\LiipThemeBundle(),
                   // ...
               );
           }
