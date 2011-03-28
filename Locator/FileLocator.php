@@ -39,6 +39,7 @@ class FileLocator extends HttpKernelFileLocator
      */
     public function __construct(KernelInterface $kernel)
     {
+        $this->kernel = $kernel;
         $container = $kernel->getContainer();
         $this->themes = array_merge(array(''), $container->getParameter('liip_theme.themes'));
         $this->activeTheme = $container->getParameter('liip_theme.activeTheme');
