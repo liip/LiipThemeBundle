@@ -122,9 +122,9 @@ class FileLocatorTest extends \PHPUnit_Framework_TestCase
         $fileLocator = new FileLocator($kernel);
 
         $expectedFiles = array(
-            '/Dropbox/nzz/frontend/vendor/bundles/Liip/ThemeBundle/Tests/Locator/../Fixtures/Resources/themes/foobar/template',
-            '/Dropbox/nzz/frontend/vendor/bundles/Liip/ThemeBundle/Tests/Locator/../Fixtures/Resources/themes/foo/template',
-            '/Dropbox/nzz/frontend/vendor/bundles/Liip/ThemeBundle/Tests/Locator/../Fixtures/Resources/views/template',
+            $this->getFixturePath().'/Resources/themes/foobar/template',
+            $this->getFixturePath().'/Resources/themes/foo/template',
+            $this->getFixturePath().'/Resources/views/template',
         );
 
         $files = $fileLocator->locate('@ThemeBundle/Resources/views/template', $this->getFixturePath(), false);
