@@ -9,7 +9,7 @@
         </service>
         <service id="templating.locator" class="Symfony\Bundle\FrameworkBundle\Templating\Loader\TemplateLocator" public="false">
             <argument type="service" id="liip_theme.file_locator" />
-            <argument>%kernel.root_dir%</argument>
+            <argument>%kernel.root_dir%/Resources</argument>
         </service>
         <service id="templating.locator.cached" class="Symfony\Bundle\FrameworkBundle\Templating\Loader\CachedTemplateLocator" public="false">
             <argument>%kernel.cache_dir%</argument>
