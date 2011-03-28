@@ -11,7 +11,6 @@
 
 namespace Liip\ThemeBundle\Locator;
 
-use Symfony\Component\Config\FileLocator as BaseFileLocator;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\HttpKernel\Config\FileLocator as HttpKernelFileLocator;
 
