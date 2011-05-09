@@ -79,7 +79,7 @@ class FileLocator extends HttpKernelFileLocator
 
             $files = array();
             $name = substr($name, 1);
-            list($bundle, $path) = explode(DIRECTORY_SEPARATOR, $name, 2);
+            list($bundle, $path) = explode('/', $name, 2);
 
             if (0 !== strpos($path, 'Resources')) {
                 throw new \RuntimeException('Template files have to be in Resources.');
@@ -88,12 +88,12 @@ class FileLocator extends HttpKernelFileLocator
             foreach ($this->kernel->getBundle($bundle, false) as $bundle) {
                 for ($i = array_search($this->activeTheme, $this->themes); $i >= 0 ;$i--) {
                     if ('' !== $this->themes[$i]) {
-                        $theme = 'Resources'.DIRECTORY_SEPARATOR.'themes'.DIRECTORY_SEPARATOR.$this->themes[$i];
+                        $theme = 'Resources/themes/'.$this->themes[$i];
                     } else {
-                        $theme = 'Resources'.DIRECTORY_SEPARATOR.'views';
+                        $theme = 'Resources/views';
                     }
                     $tmpPath = $theme . substr($path, 15);
-                    if (file_exists($file = $bundle->getPath().DIRECTORY_SEPARATOR.$tmpPath)) {
+                    if (file_exists($file = $bundle->getPath().'/'.$tmpPath)) {
                         if ($first) {
                             return $file;
                         }
