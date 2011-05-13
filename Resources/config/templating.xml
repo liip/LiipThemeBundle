@@ -6,6 +6,7 @@
     <services>
         <service id="liip_theme.file_locator" class="Liip\ThemeBundle\Locator\FileLocator" public="false">
             <argument type="service" id="kernel" />
+            <argument>%kernel.root_dir%</argument>
         </service>
         <service id="templating.locator" class="Symfony\Bundle\FrameworkBundle\Templating\Loader\TemplateLocator" public="false">
             <argument type="service" id="liip_theme.file_locator" />

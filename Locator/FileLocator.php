@@ -25,6 +25,7 @@ class FileLocator extends HttpKernelFileLocator
 {
 
     protected $kernel;
+    protected $rootDir;
     protected $themes;
     protected $activeTheme;
 
@@ -32,14 +33,14 @@ class FileLocator extends HttpKernelFileLocator
      * Constructor.
      *
      * @param KernelInterface $kernel A KernelInterface instance
-     * @param array $themes Theme fallback chain
-     * @param string $activeTheme The currenctly selected theme
+     * @param string $rootDir The root directory to look for templates as well
      *
      * @throws \InvalidArgumentException if the active theme is not in the themes list
      */
-    public function __construct(KernelInterface $kernel)
+    public function __construct(KernelInterface $kernel, $rootDir)
     {
         $this->kernel = $kernel;
+        $this->rootDir = $rootDir;
         $container = $kernel->getContainer();
         $this->themes = array_merge(array(''), $container->getParameter('liip_theme.themes'));
         $this->activeTheme = $container->getParameter('liip_theme.activeTheme');
@@ -85,7 +86,13 @@ class FileLocator extends HttpKernelFileLocator
                 throw new \RuntimeException('Template files have to be in Resources.');
             }
 
+            $dirs = array();
             foreach ($this->kernel->getBundle($bundle, false) as $bundle) {
+                $dirs[] = $bundle->getPath();
+            }
+            $dirs[] = $this->rootDir;
+
+            foreach ($dirs as $dir) {
                 for ($i = array_search($this->activeTheme, $this->themes); $i >= 0 ;$i--) {
                     if ('' !== $this->themes[$i]) {
                         $theme = 'Resources/themes/'.$this->themes[$i];
@@ -93,7 +100,8 @@ class FileLocator extends HttpKernelFileLocator
                         $theme = 'Resources/views';
                     }
                     $tmpPath = $theme . substr($path, 15);
-                    if (file_exists($file = $bundle->getPath().'/'.$tmpPath)) {
+
+                    if (file_exists($file = $dir.'/'.$tmpPath)) {
                         if ($first) {
                             return $file;
                         }
