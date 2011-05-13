@@ -5,18 +5,23 @@ This bundle provides you the possibility to add themes to each bundle. In your
 bundle directory it will look under Resources/themes/<themename> or fall back
 to the normal Resources/views if no matching file was found.
 
+
+
 Installation
 ============
+  With bin/vendors.sh
+  ============
 
   1. Add this bundle to your project inside bin/vendors.sh:
-         
+
           # Liip ThemeBundle
           mkdir -p $BUNDLES/Liip
           cd $BUNDLES/Liip
           install_git ThemeBundle git://github.com/liip/ThemeBundle.git
 
-     or as Git submodules:
-
+  As submodule
+  ============
+  1. Add this bundle as submodule
           $ git submodule add http://github.com/liip/ThemeBundle.git vendor/bundles/Liip/ThemeBundle
 
   2. Add the Liip namespace to your autoloader:
