@@ -9,8 +9,9 @@ to the normal Resources/views if no matching file was found.
 
 Installation
 ============
-  With bin/vendors.sh
-  ============
+
+With bin/vendors.sh
+-------------
 
   1. Add this bundle to your project inside bin/vendors.sh:
 
@@ -19,8 +20,9 @@ Installation
           cd $BUNDLES/Liip
           install_git ThemeBundle git://github.com/liip/ThemeBundle.git
 
-  As submodule
-  ============
+As submodule
+-------------
+
   1. Add this bundle as submodule
           $ git submodule add http://github.com/liip/ThemeBundle.git vendor/bundles/Liip/ThemeBundle
 
