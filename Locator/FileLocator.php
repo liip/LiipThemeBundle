@@ -106,10 +106,6 @@ class FileLocator extends BaseFileLocator
      */
     public function locateResource($name, $dir = null, $first = true)
     {
-        if ('@' !== $name[0]) {
-            throw new \InvalidArgumentException(sprintf('A resource name must start with @ ("%s" given).', $name));
-        }
-
         if (false !== strpos($name, '..')) {
             throw new \RuntimeException(sprintf('File name "%s" contains invalid characters (..).', $name));
         }
