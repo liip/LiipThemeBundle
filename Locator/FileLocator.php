@@ -12,7 +12,7 @@
 namespace Liip\ThemeBundle\Locator;
 
 use Symfony\Component\HttpKernel\KernelInterface;
-use Symfony\Component\HttpKernel\Config\FileLocator as HttpKernelFileLocator;
+use Symfony\Component\Config\FileLocator as BaseFileLocator;
 
 /**
  * FileLocator uses the HttpKernel FileLocator to locate resources in bundles
@@ -20,12 +20,13 @@ use Symfony\Component\HttpKernel\Config\FileLocator as HttpKernelFileLocator;
  *
  * @author Tobias Ebnöther <ebi@liip.ch>
  * @author Roland Schilter <roland.schilter@liip.ch>
+ * @author Benjamin Eberlei <eberlei@simplethings.de>
  */
-class FileLocator extends HttpKernelFileLocator
+class FileLocator extends BaseFileLocator
 {
-
     protected $kernel;
-    protected $rootDir;
+    protected $path;
+    protected $basePaths = array();
     protected $themes;
     protected $activeTheme;
 
@@ -33,23 +34,38 @@ class FileLocator extends HttpKernelFileLocator
      * Constructor.
      *
      * @param KernelInterface $kernel A KernelInterface instance
-     * @param string $rootDir The root directory to look for templates as well
+     * @param string $path The path the global resource directory
      *
      * @throws \InvalidArgumentException if the active theme is not in the themes list
      */
-    public function __construct(KernelInterface $kernel, $rootDir)
+    public function __construct(KernelInterface $kernel, $path = null, array $paths = array())
     {
         $this->kernel = $kernel;
-        $this->rootDir = $rootDir;
+        $this->path = $path;
         $container = $kernel->getContainer();
-        $this->themes = array_merge(array(''), $container->getParameter('liip_theme.themes'));
-        $this->activeTheme = $container->getParameter('liip_theme.activeTheme');
+        $this->themes = $container->getParameter('liip_theme.themes');
+        $this->basePaths = $paths;
+        $this->setActiveTheme($container->getParameter('liip_theme.activeTheme'));
+    }
+    
+    /**
+     * Set the active theme.
+     * 
+     * @param string $theme 
+     */
+    public function setActiveTheme($theme)
+    {
+        $paths = $this->basePaths;
+        $this->activeTheme = $theme;
         if (! in_array($this->activeTheme, $this->themes)) {
             throw new \InvalidArgumentException(sprintf('The active theme must be in the themes list.'));
         }
-        parent::__construct($kernel);
+        $paths[] = $this->path . "/themes/" . $this->activeTheme; // add active theme as Resources/themes/views folder aswell.
+        $paths[] = $this->path;
+        
+        $this->paths = $paths;
     }
-
+    
     /**
      * Returns the file path for a given resource for the first directory it
      * has a match.
@@ -73,49 +89,88 @@ class FileLocator extends HttpKernelFileLocator
     public function locate($name, $dir = null, $first = true)
     {
         if ('@' === $name[0]) {
+            return $this->locateResource($name, $this->path, $first);
+        }
+        return parent::locate($name, $dir, $first);
+    }
+    
+    /**
+     * Locate Resource Theme aware
+     * 
+     * Method inlined from Symfony\Component\Http\Kernel
+     * 
+     * @param string $name
+     * @param string $dir
+     * @param bool $first
+     * @return string 
+     */
+    public function locateResource($name, $dir = null, $first = true)
+    {
+        if ('@' !== $name[0]) {
+            throw new \InvalidArgumentException(sprintf('A resource name must start with @ ("%s" given).', $name));
+        }
 
-            if (false !== strpos($name, '..')) {
-                throw new \RuntimeException(sprintf('File name "%s" contains invalid characters (..).', $name));
-            }
+        if (false !== strpos($name, '..')) {
+            throw new \RuntimeException(sprintf('File name "%s" contains invalid characters (..).', $name));
+        }
 
-            $files = array();
-            $name = substr($name, 1);
-            list($bundle, $path) = explode('/', $name, 2);
+        $bundleName = substr($name, 1);
+        $path = '';
+        if (false !== strpos($bundleName, '/')) {
+            list($bundleName, $path) = explode('/', $bundleName, 2);
+        }
 
-            if (0 !== strpos($path, 'Resources')) {
-                throw new \RuntimeException('Template files have to be in Resources.');
-            }
+        $isResource = 0 === strpos($path, 'Resources') && null !== $dir;
+        $overridePath = substr($path, 9);
+        $resourceBundle = null;
+        $bundles = $this->kernel->getBundle($bundleName, false);
+        $files = array();
 
-            $dirs = array();
-            foreach ($this->kernel->getBundle($bundle, false) as $bundle) {
-                $dirs[] = $bundle->getPath();
-            }
-            $dirs[] = $this->rootDir;
-
-            foreach ($dirs as $dir) {
-                for ($i = array_search($this->activeTheme, $this->themes); $i >= 0 ;$i--) {
-                    if ('' !== $this->themes[$i]) {
-                        $theme = 'Resources/themes/'.$this->themes[$i];
-                    } else {
-                        $theme = 'Resources/views';
+        foreach ($bundles as $bundle) {
+            if ($isResource) {
+                if (file_exists($file = $dir.'/themes/'.$this->activeTheme.' /' .$bundle->getName().$overridePath)) {
+                    if (null !== $resourceBundle) {
+                        throw new \RuntimeException(sprintf('"%s" resource is hidden by a resource from the "%s" derived bundle. Create a "%s" file to override the bundle resource.',
+                            $file,
+                            $resourceBundle,
+                            $dir.'/'.$bundles[0]->getName().$overridePath
+                        ));
                     }
-                    $tmpPath = $theme . substr($path, 15);
 
-                    if (file_exists($file = $dir.'/'.$tmpPath)) {
-                        if ($first) {
-                            return $file;
-                        }
-                        $files[] = $file;
+                    if ($first) {
+                        return $file;
                     }
+                    $files[] = $file;
+                } else if (file_exists($file = $dir.'/'.$bundle->getName().$overridePath)) {
+                    if (null !== $resourceBundle) {
+                        throw new \RuntimeException(sprintf('"%s" resource is hidden by a resource from the "%s" derived bundle. Create a "%s" file to override the bundle resource.',
+                            $file,
+                            $resourceBundle,
+                            $dir.'/'.$bundles[0]->getName().$overridePath
+                        ));
+                    }
+
+                    if ($first) {
+                        return $file;
+                    }
+                    $files[] = $file;
                 }
             }
 
-            if (! empty($files)) {
-                return $files;
+            if (file_exists($file = $bundle->getPath().'/'.$path)) {
+                if ($first && !$isResource) {
+                    return $file;
+                }
+                $files[] = $file;
+                $resourceBundle = $bundle->getName();
             }
-
-            throw new \InvalidArgumentException(sprintf('Unable to find file "@%s".', $name));
         }
-        return parent::locate($name, $dir, $first);
+        
+
+        if (count($files) > 0) {
+            return $first && $isResource ? $files[0] : $files;
+        }
+
+        throw new \InvalidArgumentException(sprintf('Unable to find file "%s".', $name));
     }
 }
