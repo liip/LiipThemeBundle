@@ -52,7 +52,29 @@ Configuration
 You will have to set your possible themes and the currently active theme. It
 is required that the active theme is part of the themes list.
 
-# app/config/config.yml
-    liip_theme:
-        themes: ['web', 'tablet', 'mobile']
-        activeTheme: 'web'
+    # app/config/config.yml
+        liip_theme:
+            themes: ['web', 'tablet', 'mobile']
+            activeTheme: 'web'
+
+Theme Cascading Order
+---------------------
+
+The following order is applied when checking for templates, for example "@BundleName/Resources/template.html.twig"
+is located at:
+
+1. Override themes directory: app/Resources/themes/BundleName/template.html.twig
+2. Override view directory: app/Resources/BundleName/views/template.html.twig
+3. Bundle theme directory: src/BundleName/Resources/themes/template.html.twig
+4. Bundle view directory: src/BundleName/Resources/views/template.html.twig
+
+Change Active Theme
+-------------------
+
+If you are early in the request cycle and no template has been rendered you
+can still change the theme without problems. For this the theme service
+exists at:
+
+    $activeTheme = $container->get('liip_theme.active_theme');
+    echo $activeTheme->getName();
+    $activeTheme->setName("mobile");

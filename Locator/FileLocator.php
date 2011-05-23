@@ -27,7 +27,12 @@ class FileLocator extends BaseFileLocator
     protected $kernel;
     protected $path;
     protected $basePaths = array();
-    protected $themes;
+    
+    /**
+     * @var ActiveTheme
+     */
+    protected $theme;
+    
     protected $activeTheme;
 
     /**
@@ -43,9 +48,10 @@ class FileLocator extends BaseFileLocator
         $this->kernel = $kernel;
         $this->path = $path;
         $container = $kernel->getContainer();
-        $this->themes = $container->getParameter('liip_theme.themes');
+        $this->theme = $container->get('liip_theme.active_theme');
         $this->basePaths = $paths;
-        $this->setActiveTheme($container->getParameter('liip_theme.activeTheme'));
+        
+        $this->setActiveTheme($this->theme->getName());
     }
     
     /**
@@ -53,27 +59,14 @@ class FileLocator extends BaseFileLocator
      * 
      * @param string $theme 
      */
-    public function setActiveTheme($theme)
+    private function setActiveTheme($theme)
     {
         $paths = $this->basePaths;
         $this->activeTheme = $theme;
-        if (! in_array($this->activeTheme, $this->themes)) {
-            throw new \InvalidArgumentException(sprintf('The active theme must be in the themes list.'));
-        }
         $paths[] = $this->path . "/themes/" . $this->activeTheme; // add active theme as Resources/themes/views folder aswell.
         $paths[] = $this->path;
         
         $this->paths = $paths;
-    }
-    
-    /**
-     * Get the name of the currently active theme.
-     * 
-     * @return string
-     */
-    public function getActiveTheme()
-    {
-        return $this->activeTheme;
     }
     
     /**
@@ -97,10 +90,15 @@ class FileLocator extends BaseFileLocator
      * @throws \RuntimeException         if the name contains invalid/unsafe characters
      */
     public function locate($name, $dir = null, $first = true)
-    {
+    {        
         if ('@' === $name[0]) {
             return $this->locateResource($name, $this->path, $first);
         }
+        // update active theme if necessary.
+        if($this->activeTheme != $this->theme->getName()) {
+            $this->setActiveTheme($this->theme->getName());
+        }
+        
         return parent::locate($name, $dir, $first);
     }
     

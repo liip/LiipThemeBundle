@@ -12,6 +12,7 @@
 namespace Liip\Tests\Locator;
 
 use Liip\ThemeBundle\Locator\FileLocator;
+use Liip\ThemeBundle\ActiveTheme;
 
 class FileLocatorTest extends \PHPUnit_Framework_TestCase
 {
@@ -31,13 +32,9 @@ class FileLocatorTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
         $container->expects($this->at(0))
-            ->method('getParameter')
-            ->with($this->equalTo('liip_theme.themes'))
-            ->will($this->returnValue($themes));
-        $container->expects($this->at(1))
-            ->method('getParameter')
-            ->with($this->equalTo('liip_theme.activeTheme'))
-            ->will($this->returnValue($activeTheme));
+            ->method('get')
+            ->with($this->equalTo('liip_theme.active_theme'))
+            ->will($this->returnValue(new ActiveTheme($activeTheme, $themes)));
 
         $kernel = $this->getMockBuilder('Symfony\Component\HttpKernel\KernelInterface')
             ->disableOriginalConstructor()
@@ -63,42 +60,6 @@ class FileLocatorTest extends \PHPUnit_Framework_TestCase
     public function testConstructor()
     {
         $kernel =  $this->getKernelMock(array('foo', 'bar', 'foobar'), 'bar');
-        $fileLocator = new FileLocator($kernel, $this->getFixturePath() . '/rootdir/Resources');
-    }
-    
-    /**
-     * @covers Liip\ThemeBundle\Locator\FileLocator::setActiveTheme
-     * @covers Liip\ThemeBundle\Locator\FileLocator::getActiveTheme
-     */
-    public function testActiveTheme()
-    {
-        $kernel =  $this->getKernelMock(array('foo', 'bar', 'foobar'), 'bar');
-        $fileLocator = new FileLocator($kernel, $this->getFixturePath() . '/rootdir/Resources');
-        
-        $this->assertEquals('bar', $fileLocator->getActiveTheme());
-        $fileLocator->setActiveTheme('foo');
-        $this->assertEquals('foo', $fileLocator->getActiveTheme());
-    }
-    
-    /**
-     * @covers Liip\ThemeBundle\Locator\FileLocator::setActiveTheme
-     * @expectedException InvalidArgumentException
-     */
-    public function testSetInvalidTheme()
-    {
-        $kernel =  $this->getKernelMock(array('foo', 'bar', 'foobar'), 'bar');
-        $fileLocator = new FileLocator($kernel, $this->getFixturePath() . '/rootdir/Resources');
-        
-        $fileLocator->setActiveTheme('invalid');
-    }
-
-    /**
-     * @covers Liip\ThemeBundle\Locator\FileLocator::__construct
-     * @expectedException InvalidArgumentException
-     */
-    public function testConstructorWithInvalidTheme()
-    {
-        $kernel =  $this->getKernelMock(array('foo', 'bar', 'foobar'), 'non existant');
         $fileLocator = new FileLocator($kernel, $this->getFixturePath() . '/rootdir/Resources');
     }
 
