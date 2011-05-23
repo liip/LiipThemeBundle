@@ -67,6 +67,16 @@ class FileLocator extends BaseFileLocator
     }
     
     /**
+     * Get the name of the currently active theme.
+     * 
+     * @return string
+     */
+    public function getActiveTheme()
+    {
+        return $this->activeTheme;
+    }
+    
+    /**
      * Returns the file path for a given resource for the first directory it
      * has a match.
      *
@@ -95,7 +105,7 @@ class FileLocator extends BaseFileLocator
     }
     
     /**
-     * Locate Resource Theme aware
+     * Locate Resource Theme aware. Only working for resources!
      * 
      * Method inlined from Symfony\Component\Http\Kernel
      * 
@@ -119,34 +129,30 @@ class FileLocator extends BaseFileLocator
         if (false !== strpos($bundleName, '/')) {
             list($bundleName, $path) = explode('/', $bundleName, 2);
         }
+        
+        if (0 !== strpos($path, 'Resources')) {
+            throw new \RuntimeException('Template files have to be in Resources.');
+        }
 
-        $isResource = 0 === strpos($path, 'Resources') && null !== $dir;
         $overridePath = substr($path, 9);
         $resourceBundle = null;
         $bundles = $this->kernel->getBundle($bundleName, false);
         $files = array();
 
         foreach ($bundles as $bundle) {
-            if ($isResource) {
-                if (file_exists($file = $dir.'/themes/'.$this->activeTheme.' /' .$bundle->getName().$overridePath)) {
+            $checkPaths = array();
+            if ($dir) {
+                $checkPaths[] = $dir.'/themes/'.$this->activeTheme.'/'.$bundle->getName().$overridePath;
+                $checkPaths[] = $dir.'/'.$bundle->getName().$overridePath;
+            }
+            $checkPaths[] = $bundle->getPath() . '/Resources/themes/'.$this->activeTheme.substr($path, 15);
+            foreach ($checkPaths as $checkPath) {
+                if (file_exists($file = $checkPath)) {
                     if (null !== $resourceBundle) {
                         throw new \RuntimeException(sprintf('"%s" resource is hidden by a resource from the "%s" derived bundle. Create a "%s" file to override the bundle resource.',
                             $file,
                             $resourceBundle,
-                            $dir.'/'.$bundles[0]->getName().$overridePath
-                        ));
-                    }
-
-                    if ($first) {
-                        return $file;
-                    }
-                    $files[] = $file;
-                } else if (file_exists($file = $dir.'/'.$bundle->getName().$overridePath)) {
-                    if (null !== $resourceBundle) {
-                        throw new \RuntimeException(sprintf('"%s" resource is hidden by a resource from the "%s" derived bundle. Create a "%s" file to override the bundle resource.',
-                            $file,
-                            $resourceBundle,
-                            $dir.'/'.$bundles[0]->getName().$overridePath
+                            $checkPath
                         ));
                     }
 
@@ -158,7 +164,7 @@ class FileLocator extends BaseFileLocator
             }
 
             if (file_exists($file = $bundle->getPath().'/'.$path)) {
-                if ($first && !$isResource) {
+                if ($first) {
                     return $file;
                 }
                 $files[] = $file;
@@ -166,9 +172,8 @@ class FileLocator extends BaseFileLocator
             }
         }
         
-
         if (count($files) > 0) {
-            return $first && $isResource ? $files[0] : $files;
+            return $first ? $files[0] : $files;
         }
 
         throw new \InvalidArgumentException(sprintf('Unable to find file "%s".', $name));
