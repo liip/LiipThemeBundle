@@ -129,7 +129,7 @@ class FileLocatorTest extends \PHPUnit_Framework_TestCase
         $file = $fileLocator->locate('@ThemeBundle/Resources/views/rootTemplate', $this->getFixturePath(), true);
         $this->assertEquals($this->getFixturePath().'/rootdir/Resources/themes/foo/LiipMockLocateRootDirectory/views/rootTemplate', $file);
     }
-    
+
     /**
      * @covers Liip\ThemeBundle\Locator\FileLocator::locate
      */

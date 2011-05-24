@@ -13,16 +13,16 @@ namespace Liip\ThemeBundle;
 
 /**
  * Contains the currently active theme and allows to change it.
- * 
+ *
  * This is a service so we can inject it as reference to different parts of the application.
- * 
+ *
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  */
 class ActiveTheme
 {
     private $name;
     private $themes;
-    
+
     /**
      * @param string $name
      * @param array $allowedThemes
@@ -32,18 +32,18 @@ class ActiveTheme
         $this->themes = $allowedThemes;
         $this->setName($name);
     }
-    
+
     public function getName()
     {
         return $this->name;
     }
-    
+
     public function setName($name)
     {
         if (! in_array($name, $this->themes)) {
             throw new \InvalidArgumentException(sprintf('The active theme must be in the themes list.'));
         }
-        
+
         $this->name = $name;
     }
 }

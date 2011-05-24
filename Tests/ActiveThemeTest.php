@@ -23,10 +23,10 @@ class ActiveThemeTest extends \PHPUnit_Framework_TestCase
     public function testGetName()
     {
         $theme = new ActiveTheme("foo", array("foo"));
-        
+
         $this->assertEquals("foo", $theme->getName());
     }
-    
+
     /**
      * @expectedException InvalidArgumentException
      * @covers Liip\ThemeBundle\ActiveTheme::getName
@@ -35,7 +35,7 @@ class ActiveThemeTest extends \PHPUnit_Framework_TestCase
     {
         $theme = new ActiveTheme("foo", array("bar"));
     }
-    
+
     /**
      * @expectedException InvalidArgumentException
      * @covers Liip\ThemeBundle\ActiveTheme::getName

@@ -27,12 +27,12 @@ class FileLocator extends BaseFileLocator
     protected $kernel;
     protected $path;
     protected $basePaths = array();
-    
+
     /**
      * @var ActiveTheme
      */
     protected $theme;
-    
+
     protected $activeTheme;
 
     /**
@@ -50,14 +50,14 @@ class FileLocator extends BaseFileLocator
         $container = $kernel->getContainer();
         $this->theme = $container->get('liip_theme.active_theme');
         $this->basePaths = $paths;
-        
+
         $this->setActiveTheme($this->theme->getName());
     }
-    
+
     /**
      * Set the active theme.
-     * 
-     * @param string $theme 
+     *
+     * @param string $theme
      */
     private function setActiveTheme($theme)
     {
@@ -65,10 +65,10 @@ class FileLocator extends BaseFileLocator
         $this->activeTheme = $theme;
         $paths[] = $this->path . "/themes/" . $this->activeTheme; // add active theme as Resources/themes/views folder aswell.
         $paths[] = $this->path;
-        
+
         $this->paths = $paths;
     }
-    
+
     /**
      * Returns the file path for a given resource for the first directory it
      * has a match.
@@ -90,7 +90,7 @@ class FileLocator extends BaseFileLocator
      * @throws \RuntimeException         if the name contains invalid/unsafe characters
      */
     public function locate($name, $dir = null, $first = true)
-    {        
+    {
         if ('@' === $name[0]) {
             return $this->locateResource($name, $this->path, $first);
         }
@@ -98,19 +98,19 @@ class FileLocator extends BaseFileLocator
         if($this->activeTheme != $this->theme->getName()) {
             $this->setActiveTheme($this->theme->getName());
         }
-        
+
         return parent::locate($name, $dir, $first);
     }
-    
+
     /**
      * Locate Resource Theme aware. Only working for resources!
-     * 
+     *
      * Method inlined from Symfony\Component\Http\Kernel
-     * 
+     *
      * @param string $name
      * @param string $dir
      * @param bool $first
-     * @return string 
+     * @return string
      */
     public function locateResource($name, $dir = null, $first = true)
     {
@@ -123,7 +123,7 @@ class FileLocator extends BaseFileLocator
         if (false !== strpos($bundleName, '/')) {
             list($bundleName, $path) = explode('/', $bundleName, 2);
         }
-        
+
         if (0 !== strpos($path, 'Resources')) {
             throw new \RuntimeException('Template files have to be in Resources.');
         }
@@ -165,7 +165,7 @@ class FileLocator extends BaseFileLocator
                 $resourceBundle = $bundle->getName();
             }
         }
-        
+
         if (count($files) > 0) {
             return $first ? $files[0] : $files;
         }

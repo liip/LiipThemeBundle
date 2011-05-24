@@ -29,13 +29,13 @@ class LiipThemeExtension extends Extension
     {
         $processor = new Processor();
         $configuration = new Configuration();
-        
+
         $config = $processor->process($configuration->getConfigTree(), $configs);
 
         if (empty($config['themes']) || empty($config['activeTheme'])) {
             throw new \RuntimeException('Liip\ThemeBundle not completely configured please consult the README file.');
         }
-        
+
         // Set parameters first, services depend on them.
         $container->setParameter($this->getAlias().'.themes', $config['themes']);
         $container->setParameter($this->getAlias().'.activeTheme', $config['activeTheme']);

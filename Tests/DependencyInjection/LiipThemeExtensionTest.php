@@ -20,7 +20,7 @@ class LiipThemeExtensionTest extends \PHPUnit_Framework_TestCase
         unset($config['themes']);
         $loader->load(array($config), new ContainerBuilder());
     }
-    
+
     /**
      * @covers Liip\ThemeBundle\LiipThemeBundle
      * @covers Liip\ThemeBundle\DependencyInjection\LiipThemeExtension::load
@@ -35,7 +35,7 @@ class LiipThemeExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(array('web', 'tablet', 'mobile'), $container->getParameter('liip_theme.themes'));
         $this->assertEquals('tablet', $container->getParameter('liip_theme.activeTheme'));
     }
-    
+
     protected function getConfig()
     {
         $yaml = <<<EOF
