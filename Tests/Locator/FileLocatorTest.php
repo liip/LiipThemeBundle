@@ -65,6 +65,7 @@ class FileLocatorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers Liip\ThemeBundle\Locator\FileLocator::locate
+     * @covers Liip\ThemeBundle\Locator\FileLocator::locateResource
      */
     public function testLocate()
     {
@@ -80,6 +81,7 @@ class FileLocatorTest extends \PHPUnit_Framework_TestCase
      * one doesn't contain a matching file.
      *
      * @covers Liip\ThemeBundle\Locator\FileLocator::locate
+     * @covers Liip\ThemeBundle\Locator\FileLocator::locateResource
      */
     public function testLocateViewFallback()
     {
@@ -92,6 +94,7 @@ class FileLocatorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers Liip\ThemeBundle\Locator\FileLocator::locate
+     * @covers Liip\ThemeBundle\Locator\FileLocator::locateResource
      */
     public function testLocateAllFiles() {
         $kernel =  $this->getKernelMock(array('foo', 'bar', 'foobar'), 'foobar');
@@ -120,6 +123,7 @@ class FileLocatorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers Liip\ThemeBundle\Locator\FileLocator::locate
+     * @covers Liip\ThemeBundle\Locator\FileLocator::locateResource
      */
     public function testLocateRootDirectory()
     {
@@ -132,6 +136,7 @@ class FileLocatorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers Liip\ThemeBundle\Locator\FileLocator::locate
+     * @covers Liip\ThemeBundle\Locator\FileLocator::locateResource
      */
     public function testLocateOverrideDirectory()
     {
@@ -144,6 +149,7 @@ class FileLocatorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers Liip\ThemeBundle\Locator\FileLocator::locate
+     * @covers Liip\ThemeBundle\Locator\FileLocator::locateResource
      * @expectedException RuntimeException
      */
     public function testLocateInvalidCharacter()
@@ -156,6 +162,7 @@ class FileLocatorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers Liip\ThemeBundle\Locator\FileLocator::locate
+     * @covers Liip\ThemeBundle\Locator\FileLocator::locateResource
      * @expectedException RuntimeException
      */
     public function testLocateNoResource()
@@ -168,6 +175,7 @@ class FileLocatorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers Liip\ThemeBundle\Locator\FileLocator::locate
+     * @covers Liip\ThemeBundle\Locator\FileLocator::locateResource
      * @expectedException InvalidArgumentException
      */
     public function testLocateNotFound()

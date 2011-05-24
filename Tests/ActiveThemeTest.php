@@ -38,7 +38,7 @@ class ActiveThemeTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException InvalidArgumentException
-     * @covers Liip\ThemeBundle\ActiveTheme::getName
+     * @covers Liip\ThemeBundle\ActiveTheme::setName
      */
     public function testSetInvalidName()
     {
