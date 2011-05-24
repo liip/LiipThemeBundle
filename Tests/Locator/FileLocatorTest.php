@@ -14,6 +14,13 @@ namespace Liip\Tests\Locator;
 use Liip\ThemeBundle\Locator\FileLocator;
 use Liip\ThemeBundle\ActiveTheme;
 
+use Symfony\Component\HttpKernel\KernelInterface;
+
+
+class FileLocatorFake extends FileLocator {
+    public $activeTheme;
+}
+
 class FileLocatorTest extends \PHPUnit_Framework_TestCase
 {
     protected function getKernelMock($themes, $activeTheme)
@@ -31,7 +38,7 @@ class FileLocatorTest extends \PHPUnit_Framework_TestCase
         $container = $this->getMockBuilder('Symfony\Component\DependencyInjection\Container')
             ->disableOriginalConstructor()
             ->getMock();
-        $container->expects($this->at(0))
+        $container->expects($this->any())
             ->method('get')
             ->with($this->equalTo('liip_theme.active_theme'))
             ->will($this->returnValue(new ActiveTheme($activeTheme, $themes)));
@@ -39,7 +46,7 @@ class FileLocatorTest extends \PHPUnit_Framework_TestCase
         $kernel = $this->getMockBuilder('Symfony\Component\HttpKernel\KernelInterface')
             ->disableOriginalConstructor()
             ->getMock();
-        $kernel->expects($this->once())
+        $kernel->expects($this->any())
             ->method('getContainer')
             ->will($this->returnValue($container));
         $kernel->expects($this->any())
@@ -74,6 +81,20 @@ class FileLocatorTest extends \PHPUnit_Framework_TestCase
 
         $file = $fileLocator->locate('@ThemeBundle/Resources/views/template', $this->getFixturePath(), true);
         $this->assertEquals($this->getFixturePath().'/Resources/themes/foo/template', $file);
+    }
+
+    /**
+     * @contain Liip\ThemeBundle\Locator\FileLocator::locate
+     */
+    public function testLocateActiveThemeUpdate()
+    {
+        $kernel =  $this->getKernelMock(array('foo', 'bar', 'foobar'), 'foo');
+        $fileLocator = new FileLocatorFake($kernel, $this->getFixturePath() . '/rootdir/Resources');
+
+        $this->assertEquals('foo', $fileLocator->activeTheme);
+        $kernel->getContainer()->get('liip_theme.active_theme')->setName('bar');
+        $fileLocator->locate('Resources/themes/foo/template', $this->getFixturePath(), true);
+        $this->assertEquals('bar', $fileLocator->activeTheme);
     }
 
     /**

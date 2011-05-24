@@ -91,14 +91,14 @@ class FileLocator extends BaseFileLocator
      */
     public function locate($name, $dir = null, $first = true)
     {
-        if ('@' === $name[0]) {
-            return $this->locateResource($name, $this->path, $first);
-        }
         // update active theme if necessary.
-        if($this->activeTheme != $this->theme->getName()) {
+        if($this->activeTheme !== $this->theme->getName()) {
             $this->setActiveTheme($this->theme->getName());
         }
 
+        if ('@' === $name[0]) {
+            return $this->locateResource($name, $this->path, $first);
+        }
         return parent::locate($name, $dir, $first);
     }
 
