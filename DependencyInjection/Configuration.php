@@ -32,7 +32,7 @@ class Configuration
                     ->prototype('scalar')
                 ->end()
             ->end()
-            ->scalarNode('active_theme')->defaultValue(null)->end()
+            ->scalarNode('active_theme')->defaultNull()->end()
         ->end();
         return $treeBuilder->buildTree();
     }
