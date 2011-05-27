@@ -29,11 +29,11 @@ class ActiveTheme
      */
     public function __construct($name, array $themes = array())
     {
+        $this->setThemes($themes);
+
         if ($name) {
             $this->setName($name);
         }
-
-        $this->setThemes($themes);
     }
 
     public function getThemes()
@@ -53,7 +53,7 @@ class ActiveTheme
 
     public function setName($name)
     {
-        if (false === in_array($name, $this->getThemes())) {
+        if (!in_array($name, $this->getThemes())) {
             throw new \InvalidArgumentException(sprintf('The active theme must be in the themes list.'));
         }
 
