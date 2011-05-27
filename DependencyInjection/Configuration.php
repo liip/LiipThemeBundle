@@ -30,7 +30,6 @@ class Configuration
                 ->arrayNode('themes')
                     ->useAttributeAsKey('theme')
                     ->prototype('scalar')
-                    ->defaultValue(array())
                 ->end()
             ->end()
             ->scalarNode('active_theme')->defaultValue(null)->end()
