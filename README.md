@@ -55,7 +55,7 @@ is required that the active theme is part of the themes list.
     # app/config/config.yml
         liip_theme:
             themes: ['web', 'tablet', 'mobile']
-            activeTheme: 'web'
+            active_theme: 'web'
 
 Theme Cascading Order
 ---------------------

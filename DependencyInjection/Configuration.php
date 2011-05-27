@@ -30,9 +30,10 @@ class Configuration
                 ->arrayNode('themes')
                     ->useAttributeAsKey('theme')
                     ->prototype('scalar')
+                    ->defaultValue(array())
                 ->end()
             ->end()
-            ->scalarNode('activeTheme')->end()
+            ->scalarNode('active_theme')->defaultValue(null)->end()
         ->end();
         return $treeBuilder->buildTree();
     }

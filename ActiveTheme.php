@@ -25,12 +25,25 @@ class ActiveTheme
 
     /**
      * @param string $name
-     * @param array $allowedThemes
+     * @param array $themes
      */
-    public function __construct($name, array $allowedThemes)
+    public function __construct($name, array $themes = array())
     {
-        $this->themes = $allowedThemes;
-        $this->setName($name);
+        if ($name) {
+            $this->setName($name);
+        }
+
+        $this->setThemes($themes);
+    }
+
+    public function getThemes()
+    {
+        return (array) $this->themes;
+    }
+    
+    public function setThemes(array $themes)
+    {
+        $this->themes = $themes;
     }
 
     public function getName()
@@ -40,7 +53,7 @@ class ActiveTheme
 
     public function setName($name)
     {
-        if (! in_array($name, $this->themes)) {
+        if (false === in_array($name, $this->getThemes())) {
             throw new \InvalidArgumentException(sprintf('The active theme must be in the themes list.'));
         }
 
