@@ -29,11 +29,11 @@ class ActiveTheme
      */
     public function __construct($name, array $themes = array())
     {
+        $this->setThemes($themes);
+
         if ($name) {
             $this->setName($name);
         }
-
-        $this->setThemes($themes);
     }
 
     public function getThemes()
