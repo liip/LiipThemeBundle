@@ -32,13 +32,9 @@ class LiipThemeExtension extends Extension
 
         $config = $processor->process($configuration->getConfigTree(), $configs);
 
-        if (empty($config['themes']) || empty($config['activeTheme'])) {
-            throw new \RuntimeException('Liip\ThemeBundle not completely configured please consult the README file.');
-        }
-
         // Set parameters first, services depend on them.
         $container->setParameter($this->getAlias().'.themes', $config['themes']);
-        $container->setParameter($this->getAlias().'.activeTheme', $config['activeTheme']);
+        $container->setParameter($this->getAlias().'.active_theme', $config['active_theme']);
 
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('templating.xml');
