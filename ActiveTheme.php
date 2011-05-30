@@ -40,7 +40,7 @@ class ActiveTheme
     {
         return (array) $this->themes;
     }
-    
+
     public function setThemes(array $themes)
     {
         $this->themes = $themes;
