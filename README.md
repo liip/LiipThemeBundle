@@ -78,3 +78,16 @@ exists at:
     $activeTheme = $container->get('liip_theme.active_theme');
     echo $activeTheme->getName();
     $activeTheme->setName("mobile");
+
+Contribution
+==========
+Active contribution and patches are very welcome. To keep things in shape we
+have quite a bunch of unit tests. If you're submitting pull requests please
+make sure that they are still passing and if you add functionality please
+take a look at the coverage as well it should be pretty high :)
+
+This will give you proper results:
+
+    phpunit --coverage-html reports
+
+Now you can open reports/index.html to see the coverage.
