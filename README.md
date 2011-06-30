@@ -18,13 +18,13 @@ With bin/vendors.sh
           # Liip ThemeBundle
           mkdir -p $BUNDLES/Liip
           cd $BUNDLES/Liip
-          install_git ThemeBundle git://github.com/liip/ThemeBundle.git
+          install_git ThemeBundle git://github.com/liip/LiipThemeBundle.git
 
 As submodule
 -------------
 
   1. Add this bundle as submodule
-          $ git submodule add http://github.com/liip/ThemeBundle.git vendor/bundles/Liip/ThemeBundle
+          $ git submodule add http://github.com/liip/LiipThemeBundle.git vendor/bundles/Liip/ThemeBundle
 
   2. Add the Liip namespace to your autoloader:
 
