@@ -20,7 +20,14 @@ namespace Liip\ThemeBundle;
  */
 class ActiveTheme
 {
+    /**
+     * @var string
+     */
     private $name;
+
+    /**
+     * @var array
+     */
     private $themes;
 
     /**

@@ -33,6 +33,7 @@ class Configuration
                 ->end()
             ->end()
             ->scalarNode('active_theme')->defaultNull()->end()
+            ->scalarNode('theme_cookie')->defaultNull()->end()
         ->end();
         return $treeBuilder->buildTree();
     }

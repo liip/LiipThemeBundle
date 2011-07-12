@@ -47,7 +47,7 @@ As submodule
           }
 
 Configuration
--------------
+=============
 
 You will have to set your possible themes and the currently active theme. It
 is required that the active theme is part of the themes list.
@@ -56,6 +56,15 @@ is required that the active theme is part of the themes list.
         liip_theme:
             themes: ['web', 'tablet', 'mobile']
             active_theme: 'web'
+
+Optional
+--------
+
+If you want to select the active theme based on a cookie you can add
+
+    # app/config/config.yml
+        liip_theme:
+            theme_cookie: cookieName
 
 Theme Cascading Order
 ---------------------
@@ -70,6 +79,8 @@ is located at:
 
 Change Active Theme
 -------------------
+
+For that matter have a look at the ThemeRequestListener.
 
 If you are early in the request cycle and no template has been rendered you
 can still change the theme without problems. For this the theme service
