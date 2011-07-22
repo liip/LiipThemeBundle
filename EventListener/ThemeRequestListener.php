@@ -47,7 +47,7 @@ class ThemeRequestListener
      * @param GetResponseEvent $event
      * @param ContainerBuilder $container
      */
-     public function onCoreRequest(GetResponseEvent $event)
+     public function onKernelRequest(GetResponseEvent $event)
      {
          $activeCookie = $event->getRequest()->cookies->get($this->cookieName);
          if ($activeCookie && $activeCookie !== $this->activeTheme->getName() && in_array($activeCookie, $this->activeTheme->getThemes())) {

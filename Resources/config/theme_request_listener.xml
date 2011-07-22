@@ -12,7 +12,7 @@
         <service id="liip_theme.theme_request_listener" class="%liip_theme.theme_request_listener.class%">
             <argument type="service" id="liip_theme.active_theme" />
             <argument>%liip_theme.theme_cookie%</argument>
-            <tag name="kernel.listener" event="core.request" method="onCoreRequest" />
+            <tag name="kernel.event_listener" event="kernel.request" method="onKernelRequest" />
         </service>
     </services>
 </container>
