@@ -6,6 +6,7 @@
     <parameters>
         <parameter key="liip_theme.file_locator.class">Liip\ThemeBundle\Locator\FileLocator</parameter>
         <parameter key="liip_theme.active_theme.class">Liip\ThemeBundle\ActiveTheme</parameter>
+        <parameter key="liip_theme.cache_warmer.class">Liip\ThemeBundle\CacheWarmer\TemplatePathsCacheWarmer</parameter>
     </parameters>
 
     <services>
@@ -18,5 +19,10 @@
             <argument>%liip_theme.active_theme%</argument>
             <argument>%liip_theme.themes%</argument>
         </service>
+
+        <service id="liip_theme.cache_warmer" class="%liip_theme.cache_warmer.class%" public="false">
+            <tag name="kernel.cache_warmer" priority="-50" />
+        </service>
+
     </services>
 </container>
