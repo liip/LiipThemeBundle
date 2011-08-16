@@ -17,7 +17,6 @@ class TemplatePathsCacheWarmer extends CacheWarmer
      */
     public function warmUp($cacheDir)
     {
-var_dump(__LINE__);
         if (null !== $cacheDir && file_exists($cache = $cacheDir.'/templates.php')) {
             unlink($cache);
         }
