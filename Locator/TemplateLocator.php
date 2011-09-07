@@ -16,9 +16,11 @@ use Symfony\Component\Config\FileLocatorInterface;
 use Symfony\Component\Templating\TemplateReferenceInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+use Liip\ThemeBundle\ActiveTheme;
+
 class TemplateLocator extends BaseTemplateLocator
 {
-    protected $theme;
+    protected $container;
 
     /**
      * Constructor.
@@ -29,7 +31,7 @@ class TemplateLocator extends BaseTemplateLocator
      */
     public function __construct(FileLocatorInterface $locator, $cacheDir = null, ContainerInterface $container = null)
     {
-        $this->theme = $container->get('liip_theme.active_theme')->getName();
+        $this->container = $container;
 
         parent::__construct($locator, $cacheDir);
     }
@@ -43,7 +45,16 @@ class TemplateLocator extends BaseTemplateLocator
      */
     protected function getCacheKey($template)
     {
-        return $template->getLogicalName().'|'.$this->theme;
+        $name = $template->getLogicalName();
+
+        if ($this->container) {
+            $theme = $this->container->get('liip_theme.active_theme');
+            if ($theme instanceof ActiveTheme) {
+                $name.= '|'.$theme->getName();
+            }
+        }
+
+        return $name;
     }
 
     /**
