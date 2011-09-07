@@ -17,15 +17,9 @@ class ThemeCompilerPassTest extends \PHPUnit_Framework_TestCase
         $definitionMock = $this->getMock('Symfony\Component\DependencyInjection\Definition');
 
         $containerMock = $this->getMock('Symfony\Component\DependencyInjection\ContainerBuilder');
-        $containerMock->expects($this->at(0))
-            ->method('getDefinition')
-            ->with($this->equalTo('templating.locator'))
-            ->will($this->returnValue($definitionMock))
-        ;
 
-        $definitionMock->expects($this->at(0))
-            ->method('replaceArgument')
-            ->with($this->equalTo(0), $this->equalTo(new Reference('liip_theme.file_locator')))
+        $containerMock->expects($this->exactly(2))
+            ->method('setAlias')
         ;
 
         $themeCompiler = new ThemeCompilerPass();
