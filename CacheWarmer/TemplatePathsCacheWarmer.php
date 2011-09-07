@@ -51,10 +51,6 @@ class TemplatePathsCacheWarmer extends BaseTemplatePathsCacheWarmer
         foreach ($this->theme->getThemes() as $theme) {
             $this->theme->setName($theme);
             foreach ($allTemplates as $template) {
-if ($template->getPath() === '@LiipHelloBundle/Resources/views/Hello/index.html.twig' && 'phone' === $this->theme->getName()) {
-//    var_dump($template->getPath(), $this->theme->getName(), $locator->locate($template->getPath())); die;
-}
-
                 $templates[$template->getLogicalName().'|'.$theme] = $locator->locate($template->getPath());
             }
         }
