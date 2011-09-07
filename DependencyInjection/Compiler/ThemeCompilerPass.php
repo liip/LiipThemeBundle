@@ -10,9 +10,6 @@ class ThemeCompilerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
-        // Replace templating.
-        $container->getDefinition('templating.locator')
-            ->replaceArgument(0, new Reference('liip_theme.file_locator'))
-        ;
+        $container->setAlias('templating.locator', 'liip_theme.templating_locator');
     }
 }

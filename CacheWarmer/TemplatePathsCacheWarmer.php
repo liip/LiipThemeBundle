@@ -10,6 +10,18 @@ use Symfony\Component\HttpKernel\CacheWarmer\CacheWarmer;
  */
 class TemplatePathsCacheWarmer extends CacheWarmer
 {
+    protected $themes;
+
+    /**
+     * Constructor.
+     *
+     * @param array $themes  List of themes
+     */
+    public function __construct($themes)
+    {
+        $this->themes = $themes;
+    }
+
     /**
      * Warms up the cache.
      *
@@ -18,7 +30,19 @@ class TemplatePathsCacheWarmer extends CacheWarmer
     public function warmUp($cacheDir)
     {
         if (null !== $cacheDir && file_exists($cache = $cacheDir.'/templates.php')) {
-            unlink($cache);
+            $cache = require $cache;
+
+            $themes = $this->themes;
+            $themes[] = '';
+
+            $templates = array();
+            foreach ($themes as $theme) {
+                foreach ($cache as $key => $template) {
+                    $templates[$key.'|'.$theme] = $template;
+                }
+            }
+
+            $this->writeCacheFile($cacheDir.'/templates.php', sprintf('<?php return %s;', var_export($templates, true)));
         }
     }
 
