@@ -1,13 +1,19 @@
 <?php
 
+/*
+ * This file is part of the Liip/ThemeBundle
+ *
+ * (c) Liip AG
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
+
 namespace Liip\ThemeBundle\CacheWarmer;
 
 use Symfony\Component\HttpKernel\CacheWarmer\CacheWarmer;
 
-/**
- * For now this just deletes the templates.php cache file
- * Eventually it should maybe try and generate a proper cache file
- */
 class TemplatePathsCacheWarmer extends CacheWarmer
 {
     protected $themes;
@@ -17,7 +23,7 @@ class TemplatePathsCacheWarmer extends CacheWarmer
      *
      * @param array $themes  List of themes
      */
-    public function __construct($themes)
+    public function __construct(array $themes)
     {
         $this->themes = $themes;
     }
