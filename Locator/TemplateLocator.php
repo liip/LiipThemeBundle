@@ -14,12 +14,14 @@ namespace Liip\ThemeBundle\Locator;
 use Symfony\Bundle\FrameworkBundle\Templating\Loader\TemplateLocator as BaseTemplateLocator;
 use Symfony\Component\Config\FileLocatorInterface;
 use Symfony\Component\Templating\TemplateReferenceInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 use Liip\ThemeBundle\ActiveTheme;
 
 class TemplateLocator extends BaseTemplateLocator
 {
+    /**
+     * @var ActiveTheme|null
+     */
     protected $theme;
 
     /**
@@ -27,7 +29,7 @@ class TemplateLocator extends BaseTemplateLocator
      *
      * @param FileLocatorInterface $locator  A FileLocatorInterface instance
      * @param string               $cacheDir The cache path
-     * @param ContainerInterface   $container The container
+     * @param ActiveTheme          $theme    The theme instance
      */
     public function __construct(FileLocatorInterface $locator, $cacheDir = null, ActiveTheme $theme = null)
     {
