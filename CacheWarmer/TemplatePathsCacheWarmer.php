@@ -12,20 +12,28 @@
 
 namespace Liip\ThemeBundle\CacheWarmer;
 
-use Symfony\Component\HttpKernel\CacheWarmer\CacheWarmer;
+use Symfony\Bundle\FrameworkBundle\CacheWarmer\TemplatePathsCacheWarmer as BaseTemplatePathsCacheWarmer,
+    Symfony\Component\HttpKernel\CacheWarmer\CacheWarmer,
+    Symfony\Bundle\FrameworkBundle\Templating\Loader\TemplateLocator,
+    Symfony\Bundle\FrameworkBundle\CacheWarmer\TemplateFinderInterface;
 
-class TemplatePathsCacheWarmer extends CacheWarmer
+use Liip\ThemeBundle\ActiveTheme;
+
+class TemplatePathsCacheWarmer extends BaseTemplatePathsCacheWarmer
 {
-    protected $themes;
+    protected $theme;
 
     /**
      * Constructor.
      *
-     * @param array $themes  List of themes
+     * @param TemplateFinderInterface   $finder  A template finder
+     * @param TemplateLocator           $locator The template locator
      */
-    public function __construct(array $themes)
+    public function __construct(TemplateFinderInterface $finder, TemplateLocator $locator, ActiveTheme $theme)
     {
-        $this->themes = $themes;
+        $this->theme = $theme;
+
+        parent::__construct($finder, $locator);
     }
 
     /**
@@ -35,21 +43,23 @@ class TemplatePathsCacheWarmer extends CacheWarmer
      */
     public function warmUp($cacheDir)
     {
-        if (null !== $cacheDir && file_exists($cache = $cacheDir.'/templates.php')) {
-            $cache = require $cache;
+        $locator = $this->locator->getLocator();
 
-            $themes = $this->themes;
-            $themes[] = '';
+        $allTemplates = $this->finder->findAllTemplates();
 
-            $templates = array();
-            foreach ($themes as $theme) {
-                foreach ($cache as $key => $template) {
-                    $templates[$key.'|'.$theme] = $template;
-                }
+        $templates = array();
+        foreach ($this->theme->getThemes() as $theme) {
+            $this->theme->setName($theme);
+            foreach ($allTemplates as $template) {
+if ($template->getPath() === '@LiipHelloBundle/Resources/views/Hello/index.html.twig' && 'phone' === $this->theme->getName()) {
+//    var_dump($template->getPath(), $this->theme->getName(), $locator->locate($template->getPath())); die;
+}
+
+                $templates[$template->getLogicalName().'|'.$theme] = $locator->locate($template->getPath());
             }
-
-            $this->writeCacheFile($cacheDir.'/templates.php', sprintf('<?php return %s;', var_export($templates, true)));
         }
+
+        $this->writeCacheFile($cacheDir.'/templates.php', sprintf('<?php return %s;', var_export($templates, true)));
     }
 
     /**

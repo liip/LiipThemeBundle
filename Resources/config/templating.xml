@@ -11,10 +11,17 @@
     </parameters>
 
     <services>
+
+        <service id="liip_theme.templating.cache_warmer.template_paths" class="%liip_theme.cache_warmer.class%" public="false">
+            <argument type="service" id="templating.finder" />
+            <argument type="service" id="liip_theme.templating_locator" />
+            <argument type="service" id="liip_theme.active_theme" />
+        </service>
+
         <service id="liip_theme.templating_locator" class="%liip_theme.templating_locator.class%" public="false">
             <argument type="service" id="liip_theme.file_locator" />
             <argument>%kernel.cache_dir%</argument>
-            <argument type="service" id="service_container" />
+            <argument type="service" id="liip_theme.active_theme" />
         </service>
 
         <service id="liip_theme.file_locator" class="%liip_theme.file_locator.class%" public="false">
@@ -25,11 +32,6 @@
         <service id="liip_theme.active_theme" class="%liip_theme.active_theme.class%">
             <argument>%liip_theme.active_theme%</argument>
             <argument>%liip_theme.themes%</argument>
-        </service>
-
-        <service id="liip_theme.cache_warmer" class="%liip_theme.cache_warmer.class%" public="false">
-            <argument>%liip_theme.themes%</argument>
-            <tag name="kernel.cache_warmer" priority="-50" />
         </service>
 
     </services>

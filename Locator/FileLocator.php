@@ -59,11 +59,11 @@ class FileLocator extends BaseFileLocator
      *
      * @param string $theme
      */
-    private function setActiveTheme($theme)
+    public function setActiveTheme($theme)
     {
         $paths = $this->basePaths;
         $this->activeTheme = $theme;
-        $paths[] = $this->path . "/themes/" . $this->activeTheme; // add active theme as Resources/themes/views folder aswell.
+        $paths[] = $this->path . '/themes/' . $this->activeTheme; // add active theme as Resources/themes/views folder aswell.
         $paths[] = $this->path;
 
         $this->paths = $paths;
@@ -92,7 +92,7 @@ class FileLocator extends BaseFileLocator
     public function locate($name, $dir = null, $first = true)
     {
         // update active theme if necessary.
-        if($this->activeTheme !== $this->theme->getName()) {
+        if ($this->activeTheme !== $this->theme->getName()) {
             $this->setActiveTheme($this->theme->getName());
         }
 

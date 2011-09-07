@@ -20,5 +20,7 @@ class ThemeCompilerPass implements CompilerPassInterface
     public function process(ContainerBuilder $container)
     {
         $container->setAlias('templating.locator', 'liip_theme.templating_locator');
+
+        $container->setAlias('templating.cache_warmer.template_paths', 'liip_theme.templating.cache_warmer.template_paths');
     }
 }

@@ -20,7 +20,7 @@ use Liip\ThemeBundle\ActiveTheme;
 
 class TemplateLocator extends BaseTemplateLocator
 {
-    protected $container;
+    protected $theme;
 
     /**
      * Constructor.
@@ -29,11 +29,16 @@ class TemplateLocator extends BaseTemplateLocator
      * @param string               $cacheDir The cache path
      * @param ContainerInterface   $container The container
      */
-    public function __construct(FileLocatorInterface $locator, $cacheDir = null, ContainerInterface $container = null)
+    public function __construct(FileLocatorInterface $locator, $cacheDir = null, ActiveTheme $theme = null)
     {
-        $this->container = $container;
+        $this->theme = $theme;
 
         parent::__construct($locator, $cacheDir);
+    }
+
+    public function getLocator()
+    {
+       return $this->locator;
     }
 
     /**
@@ -47,11 +52,8 @@ class TemplateLocator extends BaseTemplateLocator
     {
         $name = $template->getLogicalName();
 
-        if ($this->container) {
-            $theme = $this->container->get('liip_theme.active_theme');
-            if ($theme instanceof ActiveTheme) {
-                $name.= '|'.$theme->getName();
-            }
+        if ($this->theme) {
+            $name.= '|'.$this->theme->getName();
         }
 
         return $name;
