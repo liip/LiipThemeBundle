@@ -13,7 +13,7 @@ namespace Liip\ThemeBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Compiler\PassConfig;
+
 use Liip\ThemeBundle\DependencyInjection\Compiler\ThemeCompilerPass;
 
 class LiipThemeBundle extends Bundle
