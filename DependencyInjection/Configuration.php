@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Liip/ThemeBundle
+ *
+ * (c) Liip AG
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace Liip\ThemeBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\NodeBuilder;
@@ -34,6 +43,7 @@ class Configuration
             ->end()
             ->scalarNode('active_theme')->defaultNull()->end()
             ->scalarNode('theme_cookie')->defaultNull()->end()
+            ->booleanNode('cache_warming')->defaultTrue()->end()
         ->end();
         return $treeBuilder->buildTree();
     }

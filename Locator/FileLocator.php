@@ -14,6 +14,8 @@ namespace Liip\ThemeBundle\Locator;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Config\FileLocator as BaseFileLocator;
 
+use Liip\ThemeBundle\ActiveTheme;
+
 /**
  * FileLocator uses the HttpKernel FileLocator to locate resources in bundles
  * and follow a configurable file path.
@@ -31,9 +33,12 @@ class FileLocator extends BaseFileLocator
     /**
      * @var ActiveTheme
      */
-    protected $theme;
-
     protected $activeTheme;
+
+    /**
+     * @var string
+     */
+    protected $lastTheme;
 
     /**
      * Constructor.
@@ -43,15 +48,14 @@ class FileLocator extends BaseFileLocator
      *
      * @throws \InvalidArgumentException if the active theme is not in the themes list
      */
-    public function __construct(KernelInterface $kernel, $path = null, array $paths = array())
+    public function __construct(KernelInterface $kernel, ActiveTheme $activeTheme, $path = null, array $paths = array())
     {
         $this->kernel = $kernel;
+        $this->activeTheme = $activeTheme;
         $this->path = $path;
-        $container = $kernel->getContainer();
-        $this->theme = $container->get('liip_theme.active_theme');
         $this->basePaths = $paths;
 
-        $this->setActiveTheme($this->theme->getName());
+        $this->setCurrentTheme($this->activeTheme->getName());
     }
 
     /**
@@ -59,11 +63,14 @@ class FileLocator extends BaseFileLocator
      *
      * @param string $theme
      */
-    private function setActiveTheme($theme)
+    public function setCurrentTheme($theme)
     {
+        $this->lastTheme = $theme;
+
         $paths = $this->basePaths;
-        $this->activeTheme = $theme;
-        $paths[] = $this->path . "/themes/" . $this->activeTheme; // add active theme as Resources/themes/views folder aswell.
+
+        // add active theme as Resources/themes/views folder as well.
+        $paths[] = $this->path . '/themes/' . $theme;
         $paths[] = $this->path;
 
         $this->paths = $paths;
@@ -91,14 +98,16 @@ class FileLocator extends BaseFileLocator
      */
     public function locate($name, $dir = null, $first = true)
     {
-        // update active theme if necessary.
-        if($this->activeTheme !== $this->theme->getName()) {
-            $this->setActiveTheme($this->theme->getName());
+        // update the paths if the theme changed since the last lookup
+        $theme = $this->activeTheme->getName();
+        if ($this->lastTheme !== $theme) {
+            $this->setCurrentTheme($theme);
         }
 
         if ('@' === $name[0]) {
             return $this->locateResource($name, $this->path, $first);
         }
+
         return parent::locate($name, $dir, $first);
     }
 
@@ -136,10 +145,10 @@ class FileLocator extends BaseFileLocator
         foreach ($bundles as $bundle) {
             $checkPaths = array();
             if ($dir) {
-                $checkPaths[] = $dir.'/themes/'.$this->activeTheme.'/'.$bundle->getName().$overridePath;
+                $checkPaths[] = $dir.'/themes/'.$this->lastTheme.'/'.$bundle->getName().$overridePath;
                 $checkPaths[] = $dir.'/'.$bundle->getName().$overridePath;
             }
-            $checkPaths[] = $bundle->getPath() . '/Resources/themes/'.$this->activeTheme.substr($path, 15);
+            $checkPaths[] = $bundle->getPath() . '/Resources/themes/'.$this->lastTheme.substr($path, 15);
             foreach ($checkPaths as $checkPath) {
                 if (file_exists($file = $checkPath)) {
                     if (null !== $resourceBundle) {

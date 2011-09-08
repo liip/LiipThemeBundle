@@ -4,13 +4,29 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
+        <parameter key="liip_theme.templating_locator.class">Liip\ThemeBundle\Locator\TemplateLocator</parameter>
         <parameter key="liip_theme.file_locator.class">Liip\ThemeBundle\Locator\FileLocator</parameter>
         <parameter key="liip_theme.active_theme.class">Liip\ThemeBundle\ActiveTheme</parameter>
+        <parameter key="liip_theme.cache_warmer.class">Liip\ThemeBundle\CacheWarmer\TemplatePathsCacheWarmer</parameter>
     </parameters>
 
     <services>
+
+        <service id="liip_theme.templating.cache_warmer.template_paths" class="%liip_theme.cache_warmer.class%" public="false">
+            <argument type="service" id="templating.finder" />
+            <argument type="service" id="liip_theme.templating_locator" />
+            <argument type="service" id="liip_theme.active_theme" />
+        </service>
+
+        <service id="liip_theme.templating_locator" class="%liip_theme.templating_locator.class%" public="false">
+            <argument type="service" id="liip_theme.file_locator" />
+            <argument>%kernel.cache_dir%</argument>
+            <argument type="service" id="liip_theme.active_theme" />
+        </service>
+
         <service id="liip_theme.file_locator" class="%liip_theme.file_locator.class%" public="false">
             <argument type="service" id="kernel" />
+            <argument type="service" id="liip_theme.active_theme" />
             <argument>%kernel.root_dir%/Resources</argument>
         </service>
 
@@ -18,5 +34,6 @@
             <argument>%liip_theme.active_theme%</argument>
             <argument>%liip_theme.themes%</argument>
         </service>
+
     </services>
 </container>
