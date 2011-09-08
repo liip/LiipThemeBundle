@@ -28,7 +28,7 @@ class TemplatePathsCacheWarmer extends BaseTemplatePathsCacheWarmer
      * @param TemplateFinderInterface   $finder  A template finder
      * @param TemplateLocator           $locator The template locator
      */
-    public function __construct(TemplateFinderInterface $finder, TemplateLocator $locator, ActiveTheme $activeTheme)
+    public function __construct(TemplateFinderInterface $finder, TemplateLocator $locator, ActiveTheme $activeTheme = null)
     {
         $this->activeTheme = $activeTheme;
 
@@ -42,6 +42,10 @@ class TemplatePathsCacheWarmer extends BaseTemplatePathsCacheWarmer
      */
     public function warmUp($cacheDir)
     {
+        if (empty($this->activeTheme)) {
+            return;
+        }
+
         $locator = $this->locator->getLocator();
 
         $allTemplates = $this->finder->findAllTemplates();

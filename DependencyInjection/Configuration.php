@@ -43,6 +43,7 @@ class Configuration
             ->end()
             ->scalarNode('active_theme')->defaultNull()->end()
             ->scalarNode('theme_cookie')->defaultNull()->end()
+            ->booleanNode('cache_warming')->defaultTrue()->end()
         ->end();
         return $treeBuilder->buildTree();
     }

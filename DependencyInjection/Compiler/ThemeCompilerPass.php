@@ -22,5 +22,10 @@ class ThemeCompilerPass implements CompilerPassInterface
         $container->setAlias('templating.locator', 'liip_theme.templating_locator');
 
         $container->setAlias('templating.cache_warmer.template_paths', 'liip_theme.templating.cache_warmer.template_paths');
+
+        if (!$container->getParameter('liip_theme.cache_warming')) {
+            $container->getDefinition('liip_theme.templating.cache_warmer.template_paths')
+                ->replaceArgument(2, null);
+        }
     }
 }

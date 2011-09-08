@@ -14,12 +14,16 @@ class ThemeCompilerPassTest extends \PHPUnit_Framework_TestCase
      */
     public function testProcess()
     {
-        $definitionMock = $this->getMock('Symfony\Component\DependencyInjection\Definition');
-
         $containerMock = $this->getMock('Symfony\Component\DependencyInjection\ContainerBuilder');
 
         $containerMock->expects($this->exactly(2))
             ->method('setAlias')
+        ;
+
+        $containerMock->expects($this->once())
+            ->method('getParameter')
+            ->with('liip_theme.cache_warming')
+            ->will($this->returnValue(true))
         ;
 
         $themeCompiler = new ThemeCompilerPass();
