@@ -26,6 +26,7 @@
 
         <service id="liip_theme.file_locator" class="%liip_theme.file_locator.class%" public="false">
             <argument type="service" id="kernel" />
+            <argument type="service" id="liip_theme.active_theme" />
             <argument>%kernel.root_dir%/Resources</argument>
         </service>
 
