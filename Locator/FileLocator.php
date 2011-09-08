@@ -47,10 +47,9 @@ class FileLocator extends BaseFileLocator
     {
         $this->kernel = $kernel;
         $this->path = $path;
-        $container = $kernel->getContainer();
-        $this->theme = $container->get('liip_theme.active_theme');
         $this->basePaths = $paths;
 
+        $this->theme = $kernel->getContainer()->get('liip_theme.active_theme');
         $this->setActiveTheme($this->theme->getName());
     }
 
@@ -63,7 +62,8 @@ class FileLocator extends BaseFileLocator
     {
         $paths = $this->basePaths;
         $this->activeTheme = $theme;
-        $paths[] = $this->path . '/themes/' . $this->activeTheme; // add active theme as Resources/themes/views folder aswell.
+        // add active theme as Resources/themes/views folder as well.
+        $paths[] = $this->path . '/themes/' . $this->activeTheme;
         $paths[] = $this->path;
 
         $this->paths = $paths;
@@ -99,6 +99,7 @@ class FileLocator extends BaseFileLocator
         if ('@' === $name[0]) {
             return $this->locateResource($name, $this->path, $first);
         }
+
         return parent::locate($name, $dir, $first);
     }
 

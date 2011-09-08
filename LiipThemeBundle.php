@@ -15,7 +15,6 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Liip\ThemeBundle\DependencyInjection\Compiler\ThemeCompilerPass;
-use Liip\ThemeBundle\DependencyInjection\Compiler\RemoveTemplatesCacheCompilerPass;
 
 class LiipThemeBundle extends Bundle
 {

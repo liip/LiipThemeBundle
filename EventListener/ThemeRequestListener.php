@@ -12,6 +12,7 @@
 namespace Liip\ThemeBundle\EventListener;
 
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+
 use Liip\ThemeBundle\ActiveTheme;
 
 /**
@@ -22,9 +23,8 @@ use Liip\ThemeBundle\ActiveTheme;
  */
 class ThemeRequestListener
 {
-
     /**
-     * @var Liip\ThemeBundle\ActiveTheme
+     * @var ActiveTheme
      */
     protected $activeTheme;
 

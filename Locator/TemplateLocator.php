@@ -22,7 +22,7 @@ class TemplateLocator extends BaseTemplateLocator
     /**
      * @var ActiveTheme|null
      */
-    protected $theme;
+    protected $activeTheme;
 
     /**
      * Constructor.
@@ -31,9 +31,9 @@ class TemplateLocator extends BaseTemplateLocator
      * @param string               $cacheDir The cache path
      * @param ActiveTheme          $theme    The theme instance
      */
-    public function __construct(FileLocatorInterface $locator, $cacheDir = null, ActiveTheme $theme = null)
+    public function __construct(FileLocatorInterface $locator, $cacheDir = null, ActiveTheme $activeTheme = null)
     {
-        $this->theme = $theme;
+        $this->activeTheme = $activeTheme;
 
         parent::__construct($locator, $cacheDir);
     }
@@ -54,8 +54,8 @@ class TemplateLocator extends BaseTemplateLocator
     {
         $name = $template->getLogicalName();
 
-        if ($this->theme) {
-            $name.= '|'.$this->theme->getName();
+        if ($this->activeTheme) {
+            $name.= '|'.$this->activeTheme->getName();
         }
 
         return $name;

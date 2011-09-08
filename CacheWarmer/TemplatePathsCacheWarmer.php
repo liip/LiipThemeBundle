@@ -9,7 +9,6 @@
  * with this source code in the file LICENSE.
  */
 
-
 namespace Liip\ThemeBundle\CacheWarmer;
 
 use Symfony\Bundle\FrameworkBundle\CacheWarmer\TemplatePathsCacheWarmer as BaseTemplatePathsCacheWarmer,
@@ -21,7 +20,7 @@ use Liip\ThemeBundle\ActiveTheme;
 
 class TemplatePathsCacheWarmer extends BaseTemplatePathsCacheWarmer
 {
-    protected $theme;
+    protected $activeTheme;
 
     /**
      * Constructor.
@@ -29,9 +28,9 @@ class TemplatePathsCacheWarmer extends BaseTemplatePathsCacheWarmer
      * @param TemplateFinderInterface   $finder  A template finder
      * @param TemplateLocator           $locator The template locator
      */
-    public function __construct(TemplateFinderInterface $finder, TemplateLocator $locator, ActiveTheme $theme)
+    public function __construct(TemplateFinderInterface $finder, TemplateLocator $locator, ActiveTheme $activeTheme)
     {
-        $this->theme = $theme;
+        $this->activeTheme = $activeTheme;
 
         parent::__construct($finder, $locator);
     }
@@ -48,8 +47,8 @@ class TemplatePathsCacheWarmer extends BaseTemplatePathsCacheWarmer
         $allTemplates = $this->finder->findAllTemplates();
 
         $templates = array();
-        foreach ($this->theme->getThemes() as $theme) {
-            $this->theme->setName($theme);
+        foreach ($this->activeTheme->getThemes() as $theme) {
+            $this->activeTheme->setName($theme);
             foreach ($allTemplates as $template) {
                 $templates[$template->getLogicalName().'|'.$theme] = $locator->locate($template->getPath());
             }
