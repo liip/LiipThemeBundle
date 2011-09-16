@@ -10,7 +10,7 @@ class LiipThemeExtensionTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers Liip\ThemeBundle\LiipThemeBundle
      * @covers Liip\ThemeBundle\DependencyInjection\LiipThemeExtension::load
-     * @covers Liip\ThemeBundle\DependencyInjection\Configuration::getConfigTree
+     * @covers Liip\ThemeBundle\DependencyInjection\Configuration::getConfigTreeBuilder
      */
     public function testLoad()
     {
@@ -26,7 +26,7 @@ class LiipThemeExtensionTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers Liip\ThemeBundle\LiipThemeBundle
      * @covers Liip\ThemeBundle\DependencyInjection\LiipThemeExtension::load
-     * @covers Liip\ThemeBundle\DependencyInjection\Configuration::getConfigTree
+     * @covers Liip\ThemeBundle\DependencyInjection\Configuration::getConfigTreeBuilder
      */
     public function testLoadWithCookie()
     {
