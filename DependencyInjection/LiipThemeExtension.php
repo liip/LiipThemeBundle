@@ -30,7 +30,7 @@ class LiipThemeExtension extends Extension
         $processor = new Processor();
         $configuration = new Configuration();
 
-        $config = $processor->process($configuration->getConfigTree(), $configs);
+        $config = $processor->processConfiguration($configuration, $configs);
 
         $container->setParameter($this->getAlias().'.themes', $config['themes']);
         $container->setParameter($this->getAlias().'.active_theme', $config['active_theme']);
