@@ -11,6 +11,7 @@
 
 namespace Liip\ThemeBundle\DependencyInjection;
 
+use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Builder\NodeBuilder;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 
@@ -22,15 +23,16 @@ use Symfony\Component\Config\Definition\Builder\TreeBuilder;
  *
  * @author Tobias Ebnöther <ebi@liip.ch>
  * @author Roland Schilter <roland.schilter@liip.ch>
+ * @author Paweł Jędrzejewski <pjedrzejewski@diweb.pl>
  */
-class Configuration
+class Configuration implements ConfigurationInterface
 {
     /**
-     * Generates the configuration tree.
+     * Returns the config tree builder.
      *
      * @return \Symfony\Component\DependencyInjection\Configuration\NodeInterface
      */
-    public function getConfigTree()
+    public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('liip_theme', 'array');
@@ -45,7 +47,8 @@ class Configuration
             ->scalarNode('theme_cookie')->defaultNull()->end()
             ->booleanNode('cache_warming')->defaultTrue()->end()
         ->end();
-        return $treeBuilder->buildTree();
+        
+        return $treeBuilder;
     }
 
 }
