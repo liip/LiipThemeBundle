@@ -1,24 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<phpunit backupGlobals="false"
-         backupStaticAttributes="false"
-         colors="true"
-         convertErrorsToExceptions="true"
-         convertNoticesToExceptions="true"
-         convertWarningsToExceptions="true"
-         processIsolation="false"
-         stopOnFailure="false"
-         syntaxCheck="false"
-         bootstrap="Tests/bootstrap.php"
->
-
-    <php>
-        <server name="SYMFONY" value="../../../../vendor/symfony/src" />
-    </php>
+<phpunit bootstrap="./Tests/bootstrap.php" color="true">
 
     <testsuites>
-        <testsuite name="Liip Theme Bundle Tests">
-            <directory>./Tests/</directory>
+        <testsuite name="LiipThemeBundle test suite">
+            <directory suffix="Test.php">./Tests</directory>
         </testsuite>
     </testsuites>
 
@@ -26,6 +12,7 @@
         <whitelist>
             <directory>./</directory>
             <exclude>
+                <directory>./Resources</directory>
                 <directory>./Tests</directory>
             </exclude>
         </whitelist>
