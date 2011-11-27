@@ -34,6 +34,9 @@ class DeviceDetection
             "generic" => "(mobile|mmp|midp|o2|pda|pocket|psp|symbian|smartphone|treo|up.browser|up.link|vodafone|wap|opera mini)",
         ),
         "desktop" => array(
+            "osx" => "Mac OS X",
+            "linux" => "Linux",
+            "windows" => "Windows",
             "generic" => "",
         )
     );

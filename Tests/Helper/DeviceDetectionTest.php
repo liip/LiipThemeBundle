@@ -168,7 +168,7 @@ class DeviceDetectionTest extends \PHPUnit_Framework_TestCase
     public function testCheckDeviceDesktop()
     {
         $device = new DeviceDetection('Mozilla/5.0 (Macintosh; Intel Mac OS X 10.7; rv:8.0.1) Gecko/20100101 Firefox/8.0.1 FirePHP/0.6');
-        $this->assertEquals('generic', $device->getDevice(), 'Firefox type is set to desktop');
+        $this->assertEquals('osx', $device->getDevice(), 'Firefox type is set to desktop');
         $this->assertEquals('desktop', $device->getType(), 'Firefox type is set to desktop');
         $this->assertTrue($device->isDesktop(), 'Firefox should get recognized as desktop');
     }
