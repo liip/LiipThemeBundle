@@ -12,6 +12,7 @@
 namespace Liip\ThemeBundle\EventListener;
 
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpFoundation\Cookie;
 
@@ -42,6 +43,11 @@ class ThemeRequestListener
     protected $autoDetect;
 
     /**
+     * @var string
+     */
+    protected $newTheme;
+
+    /**
      * @param ActiveTheme $activeTheme
      * @param string $cookieName The name of the cookie we look for the theme to set
      * @param DeviceDetectionInterface $autoDetect If to auto detect the theme based on the user agent
@@ -61,17 +67,28 @@ class ThemeRequestListener
      {
          if (HttpKernelInterface::MASTER_REQUEST === $event->getRequestType()) {
              $activeCookie = $event->getRequest()->cookies->get($this->cookieName);
+
              if (!$activeCookie && $this->autoDetect instanceof DeviceDetectionInterface) {
                  $userAgent = $event->getRequest()->server->get('HTTP_USER_AGENT');
                  $this->autoDetect->setUserAgent($userAgent);
-                 $activeCookie = $this->autoDetect->getType();
-
-                 $cookie = new Cookie($this->cookieName, $activeCookie, time()+60*60*24*365, '/', null, false, false);
-                 $event->getResponse()->headers->setCookie($cookie);
+                 $this->newTheme = $activeCookie = $this->autoDetect->getType();
              }
 
              if ($activeCookie && $activeCookie !== $this->activeTheme->getName() && in_array($activeCookie, $this->activeTheme->getThemes())) {
                  $this->activeTheme->setName($activeCookie);
+             }
+         }
+     }
+
+    /**
+      * @param FilterResponseEvent $event
+      */
+     public function onKernelResponse(FilterResponseEvent $event)
+     {
+         if (HttpKernelInterface::MASTER_REQUEST === $event->getRequestType()) {
+             if ($this->newTheme) {
+                 $cookie = new Cookie($this->cookieName, $this->newTheme, time()+60*60*24*365, '/', null, false, false);
+                 $event->getResponse()->headers->setCookie($cookie);
              }
          }
      }
