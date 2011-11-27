@@ -11,7 +11,7 @@
 
 namespace Liip\ThemeBundle\Helper;
 
-class MobileDetection
+class DeviceDetection
 {
     protected $userAgent;
     protected $devices = array(
@@ -33,6 +33,9 @@ class MobileDetection
             "windowsphone" => "windows phone os",
             "generic" => "(mobile|mmp|midp|o2|pda|pocket|psp|symbian|smartphone|treo|up.browser|up.link|vodafone|wap|opera mini)",
         ),
+        "desktop" => array(
+            "generic" => "",
+        )
     );
 
     protected $type = null;
@@ -40,7 +43,7 @@ class MobileDetection
 
     public function __construct($userAgent = null)
     {
-        $this->userAgent = $userAgent;
+        $this->setUserAgent($userAgent);
     }
 
     public function setUserAgent($userAgent)
@@ -125,6 +128,25 @@ class MobileDetection
         }
 
         return $type === 'tablet';
+    }
+
+    /**
+     * Returns true if any type of desktop device detected, including special ones
+     *
+     * @param $userAgent optional to override the default user agent
+     *
+     * @return bool
+     */
+    public function isDesktop($userAgent = null)
+    {
+        if (null === $userAgent) {
+            $this->init();
+            $type = $this->type;
+        } else {
+            list($device, $type) = $this->determineDevice($userAgent);
+        }
+
+        return $type === 'desktop';
     }
 
     public function determineDevice($userAgent)

@@ -15,7 +15,7 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpFoundation\Cookie;
 
-use Liip\ThemeBundle\Helper\MobileDetection;
+use Liip\ThemeBundle\Helper\DeviceDetection;
 use Liip\ThemeBundle\ActiveTheme;
 
 /**
@@ -65,7 +65,7 @@ class ThemeRequestListener
              if (!$activeCookie && $this->autoDetect) {
                  $userAgent = $event->getRequest()->server->get('HTTP_USER_AGENT');
 
-                 $detection = new MobileDetection($userAgent);
+                 $detection = new DeviceDetection($userAgent);
                  $cookie = new Cookie($this->cookieName, $detection->getType(), time()+60*60*24*365, '/', null, false, false);
                  $event->getResponse()->headers->setCookie($cookie);
                  $activeCookie = $detection->getType();
