@@ -11,7 +11,7 @@
 
 namespace Liip\ThemeBundle\Helper;
 
-class DeviceDetection
+class DeviceDetection implements DeviceDetectionInterface
 {
     protected $userAgent;
     protected $devices = array(

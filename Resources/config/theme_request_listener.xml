@@ -6,14 +6,16 @@
 
     <parameters>
         <parameter key="liip_theme.theme_request_listener.class">Liip\ThemeBundle\EventListener\ThemeRequestListener</parameter>
+        <parameter key="liip_theme.theme_auto_detect.class">Liip\ThemeBundle\Helper\DeviceDetection</parameter>
     </parameters>
 
     <services>
         <service id="liip_theme.theme_request_listener" class="%liip_theme.theme_request_listener.class%">
             <argument type="service" id="liip_theme.active_theme" />
             <argument>%liip_theme.theme_cookie%</argument>
-            <argument>%liip_theme.autodetect_theme%</argument>
             <tag name="kernel.event_listener" event="kernel.request" method="onKernelRequest" />
         </service>
+
+        <service id="liip_theme.theme_auto_detect" class="%liip_theme.theme_auto_detect.class%" />
     </services>
 </container>

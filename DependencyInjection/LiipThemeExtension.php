@@ -34,7 +34,6 @@ class LiipThemeExtension extends Extension
 
         $container->setParameter($this->getAlias().'.themes', $config['themes']);
         $container->setParameter($this->getAlias().'.active_theme', $config['active_theme']);
-        $container->setParameter($this->getAlias().'.autodetect_theme', $config['autodetect_theme']);
         $container->setParameter($this->getAlias().'.cache_warming', $config['cache_warming']);
 
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
@@ -42,6 +41,10 @@ class LiipThemeExtension extends Extension
         if (!empty($config['theme_cookie'])) {
             $container->setParameter($this->getAlias().'.theme_cookie', $config['theme_cookie']);
             $loader->load('theme_request_listener.xml');
+
+            if (!empty($config['autodetect_theme'])) {
+                $container->getDefinition($this->getAlias().'.theme_request_listener')->addArgument($container->getDefinition($config['autodetect_theme']));
+            }
         }
 
         $loader->load('templating.xml');

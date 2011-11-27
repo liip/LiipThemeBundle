@@ -15,7 +15,7 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpFoundation\Cookie;
 
-use Liip\ThemeBundle\Helper\DeviceDetection;
+use Liip\ThemeBundle\Helper\DeviceDetectionInterface;
 use Liip\ThemeBundle\ActiveTheme;
 
 /**
@@ -37,16 +37,16 @@ class ThemeRequestListener
     protected $cookieName;
 
     /**
-     * @var Boolean
+     * @var DeviceDetectionInterface
      */
     protected $autoDetect;
 
     /**
      * @param ActiveTheme $activeTheme
      * @param string $cookieName The name of the cookie we look for the theme to set
-     * @param Boolean $autoDetect If to auto detect the theme based on the device
+     * @param DeviceDetectionInterface $autoDetect If to auto detect the theme based on the user agent
      */
-    public function __construct($activeTheme, $cookieName, $autoDetect)
+    public function __construct($activeTheme, $cookieName, $autoDetect = null)
     {
         $this->activeTheme = $activeTheme;
         $this->cookieName = $cookieName;
@@ -60,15 +60,14 @@ class ThemeRequestListener
      public function onKernelRequest(GetResponseEvent $event)
      {
          if (HttpKernelInterface::MASTER_REQUEST === $event->getRequestType()) {
-
              $activeCookie = $event->getRequest()->cookies->get($this->cookieName);
-             if (!$activeCookie && $this->autoDetect) {
+             if (!$activeCookie && $this->autoDetect instanceof DeviceDetectionInterface) {
                  $userAgent = $event->getRequest()->server->get('HTTP_USER_AGENT');
+                 $this->autoDetect->setUserAgent($userAgent);
+                 $activeCookie = $this->autoDetect->getType();
 
-                 $detection = new DeviceDetection($userAgent);
-                 $cookie = new Cookie($this->cookieName, $detection->getType(), time()+60*60*24*365, '/', null, false, false);
+                 $cookie = new Cookie($this->cookieName, $activeCookie, time()+60*60*24*365, '/', null, false, false);
                  $event->getResponse()->headers->setCookie($cookie);
-                 $activeCookie = $detection->getType();
              }
 
              if ($activeCookie && $activeCookie !== $this->activeTheme->getName() && in_array($activeCookie, $this->activeTheme->getThemes())) {
