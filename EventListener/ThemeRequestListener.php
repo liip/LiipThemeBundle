@@ -12,7 +12,10 @@
 namespace Liip\ThemeBundle\EventListener;
 
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Symfony\Component\HttpFoundation\Cookie;
 
+use Liip\ThemeBundle\Helper\MobileDetection;
 use Liip\ThemeBundle\ActiveTheme;
 
 /**
@@ -34,13 +37,20 @@ class ThemeRequestListener
     protected $cookieName;
 
     /**
+     * @var Boolean
+     */
+    protected $autoDetect;
+
+    /**
      * @param ActiveTheme $activeTheme
      * @param string $cookieName The name of the cookie we look for the theme to set
+     * @param Boolean $autoDetect If to auto detect the theme based on the device
      */
-    public function __construct($activeTheme, $cookieName)
+    public function __construct($activeTheme, $cookieName, $autoDetect)
     {
         $this->activeTheme = $activeTheme;
         $this->cookieName = $cookieName;
+        $this->autoDetect = $autoDetect;
     }
 
     /**
@@ -49,9 +59,21 @@ class ThemeRequestListener
      */
      public function onKernelRequest(GetResponseEvent $event)
      {
-         $activeCookie = $event->getRequest()->cookies->get($this->cookieName);
-         if ($activeCookie && $activeCookie !== $this->activeTheme->getName() && in_array($activeCookie, $this->activeTheme->getThemes())) {
-             $this->activeTheme->setName($activeCookie);
+         if (HttpKernelInterface::MASTER_REQUEST === $event->getRequestType()) {
+
+             $activeCookie = $event->getRequest()->cookies->get($this->cookieName);
+             if (!$activeCookie) {
+                 $userAgent = $event->getRequest()->server->get('HTTP_USER_AGENT');
+
+                 $detection = new MobileDetection($userAgent);
+                 $cookie = new Cookie($this->cookieName, $detection->getType(), time()+60*60*24*365, '/', null, false, false);
+                 $event->getResponse()->headers->setCookie($cookie);
+                 $activeCookie = $detection->getType();
+             }
+
+             if ($activeCookie && $activeCookie !== $this->activeTheme->getName() && in_array($activeCookie, $this->activeTheme->getThemes())) {
+                 $this->activeTheme->setName($activeCookie);
+             }
          }
      }
 }

@@ -34,6 +34,7 @@ class LiipThemeExtension extends Extension
 
         $container->setParameter($this->getAlias().'.themes', $config['themes']);
         $container->setParameter($this->getAlias().'.active_theme', $config['active_theme']);
+        $container->setParameter($this->getAlias().'.autodetect_theme', $config['autodetect_theme']);
         $container->setParameter($this->getAlias().'.cache_warming', $config['cache_warming']);
 
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));

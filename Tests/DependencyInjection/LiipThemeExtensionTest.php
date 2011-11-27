@@ -34,6 +34,7 @@ class LiipThemeExtensionTest extends \PHPUnit_Framework_TestCase
         $loader = new LiipThemeExtension();
         $config = $this->getConfig();
         $config['theme_cookie'] = 'themeBundleCookie';
+        $config['autodetect_theme'] = false;
         $loader->load(array($config), $container);
 
         $this->assertEquals(array('web', 'tablet', 'mobile'), $container->getParameter('liip_theme.themes'));

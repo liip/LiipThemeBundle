@@ -11,6 +11,8 @@
  */
 namespace Liip\Tests\EventListener;
 
+use Symfony\Component\HttpKernel\HttpKernelInterface;
+
 use Liip\ThemeBundle\EventListener\ThemeRequestListener;
 
 /**
@@ -35,7 +37,7 @@ class ThemeRequestListenerTest extends \PHPUnit_Framework_TestCase
         return $activeTheme;
     }
 
-    protected function getResponseEventMock($cookieReturnValue = null)
+    protected function getResponseEventMock($cookieReturnValue = null, $userAgent = null)
     {
         $request = $this->getMockBuilder('Symfony\Component\HttpFoundation\Request')
             ->disableOriginalConstructor()
@@ -46,12 +48,33 @@ class ThemeRequestListenerTest extends \PHPUnit_Framework_TestCase
         $request->cookies->expects($this->any())
             ->method('get')
             ->will($this->returnValue($cookieReturnValue));
+        $request->server = $this->getMockBuilder('Symfony\Component\HttpFoundation\ParameterBag')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $request->server->expects($this->any())
+            ->method('get')
+            ->will($this->returnValue($cookieReturnValue, $userAgent));
+
+        $response = $this->getMockBuilder('Symfony\Component\HttpFoundation\Response')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $response->headers = $this->getMockBuilder('Symfony\Component\HttpFoundation\ResponseHeaderBag')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $event = $this->getMockBuilder('Symfony\Component\HttpKernel\Event\GetResponseEvent')
             ->disableOriginalConstructor()
             ->getMock();
         $event->expects($this->any())
             ->method('getRequest')
             ->will($this->returnValue($request));
+        $event->expects($this->any())
+            ->method('getRequestType')
+            ->will($this->returnValue(HttpKernelInterface::MASTER_REQUEST));
+        $event->expects($this->any())
+            ->method('getResponse')
+            ->will($this->returnValue($response));
+
         return $event;
     }
 
@@ -60,7 +83,7 @@ class ThemeRequestListenerTest extends \PHPUnit_Framework_TestCase
         $activeTheme = $this->getActiveThemeStub();
         $activeTheme->expects($this->never())
             ->method('setName');
-        $listener = new ThemeRequestListener($activeTheme, $this->testCookieName);
+        $listener = new ThemeRequestListener($activeTheme, $this->testCookieName, false);
         $listener->onKernelRequest($this->getResponseEventMock());
     }
 
@@ -70,7 +93,7 @@ class ThemeRequestListenerTest extends \PHPUnit_Framework_TestCase
         $activeTheme->expects($this->once())
             ->method('setName')
             ->with($this->equalTo('tablet'));
-        $listener = new ThemeRequestListener($activeTheme, $this->testCookieName);
+        $listener = new ThemeRequestListener($activeTheme, $this->testCookieName, false);
         $listener->onKernelRequest($this->getResponseEventMock('tablet'));
     }
 
@@ -79,7 +102,7 @@ class ThemeRequestListenerTest extends \PHPUnit_Framework_TestCase
         $activeTheme = $this->getActiveThemeStub();
         $activeTheme->expects($this->never())
             ->method('setName');
-        $listener = new ThemeRequestListener($activeTheme, $this->testCookieName);
+        $listener = new ThemeRequestListener($activeTheme, $this->testCookieName, false);
         $listener->onKernelRequest($this->getResponseEventMock('noActualTheme'));
     }
 }

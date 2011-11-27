@@ -45,6 +45,7 @@ class Configuration implements ConfigurationInterface
             ->end()
             ->scalarNode('active_theme')->defaultNull()->end()
             ->scalarNode('theme_cookie')->defaultNull()->end()
+            ->scalarNode('autodetect_theme')->defaultFalse()->end()
             ->booleanNode('cache_warming')->defaultTrue()->end()
         ->end();
         
