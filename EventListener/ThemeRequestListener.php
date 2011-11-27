@@ -62,7 +62,7 @@ class ThemeRequestListener
          if (HttpKernelInterface::MASTER_REQUEST === $event->getRequestType()) {
 
              $activeCookie = $event->getRequest()->cookies->get($this->cookieName);
-             if (!$activeCookie) {
+             if (!$activeCookie && $this->autoDetect) {
                  $userAgent = $event->getRequest()->server->get('HTTP_USER_AGENT');
 
                  $detection = new MobileDetection($userAgent);
