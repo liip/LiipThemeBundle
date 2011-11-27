@@ -43,7 +43,9 @@ class LiipThemeExtension extends Extension
             $loader->load('theme_request_listener.xml');
 
             if (!empty($config['autodetect_theme'])) {
-                $container->getDefinition($this->getAlias().'.theme_request_listener')->addArgument($container->getDefinition($config['autodetect_theme']));
+                $autodetect_theme = $container->hasDefinition($config['autodetect_theme'])
+                    ? $config['autodetect_theme'] : 'liip_theme.theme_auto_detect';
+                $container->getDefinition($this->getAlias().'.theme_request_listener')->addArgument($container->getDefinition($autodetect_theme));
             }
         }
 

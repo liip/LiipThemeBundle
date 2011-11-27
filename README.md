@@ -66,6 +66,16 @@ If you want to select the active theme based on a cookie you can add
         liip_theme:
             theme_cookie: cookieName
 
+It is also possible to automate setting the theme cookie based on the user agent:
+
+    # app/config/config.yml
+        liip_theme:
+            theme_cookie: cookieName
+            autodetect_theme: true
+
+Optionally ``autodetect_theme`` can also be set to a DIC service id that implements
+the ``Liip\ThemeBundle\Helper\DeviceDetectionInterface`` interface.
+
 Theme Cascading Order
 ---------------------
 
