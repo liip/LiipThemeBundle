@@ -52,7 +52,7 @@ class FileLocatorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers Liip\ThemeBundle\Locator\FileLocator::__construct
-     * @covers Liip\ThemeBundle\Locator\FileLocator::setActiveTheme
+     * @covers Liip\ThemeBundle\Locator\FileLocator::setCurrentTheme
      */
     public function testConstructor()
     {
