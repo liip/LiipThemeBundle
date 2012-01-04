@@ -1,5 +1,5 @@
 Theme Bundle
-==========
+============
 
 This bundle provides you the possibility to add themes to each bundle. In your
 bundle directory it will look under Resources/themes/<themename> or fall back
@@ -7,47 +7,79 @@ to the normal Resources/views if no matching file was found.
 
 [![Build Status](https://secure.travis-ci.org/liip/LiipThemeBundle.png)](http://travis-ci.org/liip/LiipThemeBundle)
 
-Installation
-============
+## Installation
 
-With bin/vendors.sh
--------------
+Installation is a quick (I promise!) 3 step process:
 
-  1. Add this bundle to your project inside bin/vendors.sh:
+1. Download LiipThemeBundle
+2. Configure the Autoloader
+3. Enable the Bundle
 
-          # Liip ThemeBundle
-          mkdir -p $BUNDLES/Liip
-          cd $BUNDLES/Liip
-          install_git ThemeBundle git://github.com/liip/LiipThemeBundle.git
+### Step 1: Download LiipThemeBundle
 
-As submodule
--------------
+Ultimately, the LiipThemeBundle files should be downloaded to the
+`vendor/bundles/Liip/ThemeBundle` directory.
 
-  1. Add this bundle as submodule
-          $ git submodule add http://github.com/liip/LiipThemeBundle.git vendor/bundles/Liip/ThemeBundle
+This can be done in several ways, depending on your preference. The first
+method is the standard Symfony2 method.
 
-  2. Add the Liip namespace to your autoloader:
+**Using the vendors script**
 
-          // app/autoload.php
-          $loader->registerNamespaces(array(
-                'Liip' => __DIR__.'/../vendor/bundles',
-                // your other namespaces
-          ));
+Add the following lines in your `deps` file:
 
-  3. Add this bundle to your application's kernel:
+```
+[LiipThemeBundle]
+    git=git://github.com/liip/LiipThemeBundle.git
+    target=bundles/Liip/ThemeBundle
+```
 
-          // app/AppKernel.php
-          public function registerBundles()
-          {
-              return array(
-                  // ...
-                  new Liip\ThemeBundle\LiipThemeBundle(),
-                  // ...
-              );
-          }
+Now, run the vendors script to download the bundle:
 
-Configuration
-=============
+``` bash
+$ php bin/vendors install
+```
+
+**Using submodules**
+
+If you prefer instead to use git submodules, the run the following:
+
+``` bash
+$ git submodule add git://github.com/liip/LiipThemeBundle.git vendor/bundles/Liip/ThemeBundle
+$ git submodule update --init
+```
+
+### Step 2: Configure the Autoloader
+
+Add the `Liip` namespace to your autoloader:
+
+``` php
+<?php
+// app/autoload.php
+
+$loader->registerNamespaces(array(
+    // ...
+    'Liip' => __DIR__.'/../vendor/bundles',
+));
+```
+
+### Step 3: Enable the bundle
+
+Finally, enable the bundle in the kernel:
+
+``` php
+<?php
+// app/AppKernel.php
+
+public function registerBundles()
+{
+    $bundles = array(
+        // ...
+        new Liip\ThemeBundle\LiipThemeBundle(),
+    );
+}
+```
+
+## Configuration
 
 You will have to set your possible themes and the currently active theme. It
 is required that the active theme is part of the themes list.
@@ -57,8 +89,7 @@ is required that the active theme is part of the themes list.
             themes: ['web', 'tablet', 'mobile']
             active_theme: 'web'
 
-Optional
---------
+### Optional
 
 If you want to select the active theme based on a cookie you can add
 
@@ -76,8 +107,7 @@ It is also possible to automate setting the theme cookie based on the user agent
 Optionally ``autodetect_theme`` can also be set to a DIC service id that implements
 the ``Liip\ThemeBundle\Helper\DeviceDetectionInterface`` interface.
 
-Theme Cascading Order
----------------------
+### Theme Cascading Order
 
 The following order is applied when checking for templates, for example "@BundleName/Resources/template.html.twig"
 is located at:
@@ -87,8 +117,7 @@ is located at:
 3. Bundle theme directory: src/BundleName/Resources/themes/template.html.twig
 4. Bundle view directory: src/BundleName/Resources/views/template.html.twig
 
-Change Active Theme
--------------------
+### Change Active Theme
 
 For that matter have a look at the ThemeRequestListener.
 
@@ -100,8 +129,8 @@ exists at:
     echo $activeTheme->getName();
     $activeTheme->setName("mobile");
 
-Contribution
-==========
+## Contribution
+
 Active contribution and patches are very welcome. To keep things in shape we
 have quite a bunch of unit tests. If you're submitting pull requests please
 make sure that they are still passing and if you add functionality please
@@ -112,4 +141,3 @@ This will give you proper results:
     phpunit --coverage-html reports
 
 Now you can open reports/index.html to see the coverage.
-=======
