@@ -136,8 +136,10 @@ have quite a bunch of unit tests. If you're submitting pull requests please
 make sure that they are still passing and if you add functionality please
 take a look at the coverage as well it should be pretty high :)
 
+First initial vendors:
+
+    php vendor/vendors.php
+
 This will give you proper results:
 
-    phpunit --coverage-html reports
-
-Now you can open reports/index.html to see the coverage.
+    phpunit --coverage-text
