@@ -14,7 +14,7 @@ Installation is a quick (I promise!) 4 step process:
 1. Download LiipThemeBundle
 2. Configure the Autoloader
 3. Enable the Bundle
-4. Import FOSUserBundle routing
+4. Import LiipThemeBundle routing
 
 ### Step 1: Download LiipThemeBundle
 
