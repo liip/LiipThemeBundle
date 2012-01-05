@@ -48,7 +48,7 @@ class Configuration implements ConfigurationInterface
             ->scalarNode('autodetect_theme')->defaultFalse()->end()
             ->booleanNode('cache_warming')->defaultTrue()->end()
         ->end();
-        
+
         return $treeBuilder;
     }
 
