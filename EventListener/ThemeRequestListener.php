@@ -48,8 +48,8 @@ class ThemeRequestListener
     protected $newTheme;
 
     /**
-     * @param ActiveTheme $activeTheme
-     * @param string $cookieName The name of the cookie we look for the theme to set
+     * @param ActiveTheme              $activeTheme
+     * @param string                   $cookieName The name of the cookie we look for the theme to set
      * @param DeviceDetectionInterface $autoDetect If to auto detect the theme based on the user agent
      */
     public function __construct($activeTheme, $cookieName, $autoDetect = null)
@@ -61,7 +61,6 @@ class ThemeRequestListener
 
     /**
      * @param GetResponseEvent $event
-     * @param ContainerBuilder $container
      */
      public function onKernelRequest(GetResponseEvent $event)
      {

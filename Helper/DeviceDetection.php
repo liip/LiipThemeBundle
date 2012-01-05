@@ -98,7 +98,7 @@ class DeviceDetection implements DeviceDetectionInterface
     /**
      * Returns true if any type of mobile device detected, including special ones
      * 
-     * @param $userAgent optional to override the default user agent
+     * @param string $userAgent optional to override the default user agent
      * 
      * @return bool
      */
@@ -117,7 +117,7 @@ class DeviceDetection implements DeviceDetectionInterface
     /**
      * Returns true if any type of tablet device detected, including special ones
      *
-     * @param $userAgent optional to override the default user agent
+     * @param string $userAgent optional to override the default user agent
      *
      * @return bool
      */
@@ -136,7 +136,7 @@ class DeviceDetection implements DeviceDetectionInterface
     /**
      * Returns true if any type of desktop device detected, including special ones
      *
-     * @param $userAgent optional to override the default user agent
+     * @param string $userAgent optional to override the default user agent
      *
      * @return bool
      */
