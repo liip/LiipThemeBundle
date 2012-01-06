@@ -24,12 +24,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class ThemeController
 {
-    /**
-     * Request
-     * @var Request
-     */
-    protected $request;
-
     protected $activeTheme;
 
     /**
@@ -49,14 +43,12 @@ class ThemeController
     /**
      * Theme controller construct
      * 
-     * @param Request     $request     actual request
      * @param ActiveTheme $activeTheme active theme instance
      * @param array       $themes      Available themes
      * @param string      $cookieName  cookie name to store active theme
      */
-    public function __construct(Request $request, ActiveTheme $activeTheme, array $themes, $cookieName)
+    public function __construct(ActiveTheme $activeTheme, array $themes, $cookieName)
     {
-        $this->request     = $request;
         $this->activeTheme = $activeTheme;
         $this->themes      = $themes;
         $this->cookieName  = $cookieName;
@@ -65,21 +57,23 @@ class ThemeController
     /**
      * Switch theme
      *
-     * @param string $theme theme name to switch to
+     * @param Request $request actual request
      *
      * @return RedirectResponse
      *
      * @throws NotFoundHttpException when theme name not exists
      */
-    public function switchAction($theme)
+    public function switchAction(Request $request)
     {
+        $theme = $request->get('theme');
+
         if (!in_array($theme, $this->themes)) {
             throw new NotFoundHttpException(sprintf('The theme "%s" does not exist', $theme));
         }
 
         $this->activeTheme->setName($theme);
 
-        $url = $this->request->headers->get('Referer');
+        $url = $request->headers->get('Referer');
         $cookie = new Cookie($this->cookieName, $theme, time()+60*60*24*365, '/', null, false, false);
 
         $response = new RedirectResponse($url);

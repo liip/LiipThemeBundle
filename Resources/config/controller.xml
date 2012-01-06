@@ -9,8 +9,7 @@
     </parameters>
 
     <services>
-        <service id="liip_theme.theme_controller" class="%liip_theme.theme_controller.class%" scope="request">
-            <argument type="service" id="request" />
+        <service id="liip_theme.theme_controller" class="%liip_theme.theme_controller.class%">
             <argument type="service" id="liip_theme.active_theme" />
             <argument>%liip_theme.themes%</argument>
             <argument>%liip_theme.theme_cookie%</argument>
