@@ -11,8 +11,9 @@
 
 namespace Liip\ThemeBundle\Controller;
 
-use Symfony\Component\DependencyInjection\ContainerAware;
+use Liip\ThemeBundle\ActiveTheme;
 use Symfony\Component\HttpFoundation\Cookie;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -21,8 +22,46 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  *
  * @author Gordon Franke <info@nevalon.de>
  */
-class ThemeController extends ContainerAware
+class ThemeController
 {
+    /**
+     * Request
+     * @var Request
+     */
+    protected $request;
+
+    protected $activeTheme;
+
+    /**
+     * Available themes
+     * 
+     * @var array
+     */
+    protected $themes;
+
+    /**
+     * Name of the cookie to store active theme
+     * 
+     * @var string
+     */
+    protected $cookieName;
+
+    /**
+     * Theme controller construct
+     * 
+     * @param Request     $request     actual request
+     * @param ActiveTheme $activeTheme active theme instance
+     * @param array       $themes      Available themes
+     * @param string      $cookieName  cookie name to store active theme
+     */
+    public function __construct(Request $request, ActiveTheme $activeTheme, array $themes, $cookieName)
+    {
+        $this->request     = $request;
+        $this->activeTheme = $activeTheme;
+        $this->themes      = $themes;
+        $this->cookieName  = $cookieName;
+    }
+
     /**
      * Switch theme
      *
@@ -34,18 +73,14 @@ class ThemeController extends ContainerAware
      */
     public function switchAction($theme)
     {
-        $activeTheme = $this->container->get('liip_theme.active_theme');
-        $themes      = $this->container->getParameter('liip_theme.themes');
-        $cookieName  = $this->container->getParameter('liip_theme.theme_cookie');
-
-        if (!in_array($theme, $themes)) {
+        if (!in_array($theme, $this->themes)) {
             throw new NotFoundHttpException(sprintf('The theme "%s" does not exist', $theme));
         }
 
-        $activeTheme->setName($theme);
+        $this->activeTheme->setName($theme);
 
-        $url = $this->container->get('request')->headers->get('Referer');
-        $cookie = new Cookie($cookieName, $theme, time()+60*60*24*365, '/', null, false, false);
+        $url = $this->request->headers->get('Referer');
+        $cookie = new Cookie($this->cookieName, $theme, time()+60*60*24*365, '/', null, false, false);
 
         $response = new RedirectResponse($url);
         $response->headers->setCookie($cookie);
