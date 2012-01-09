@@ -40,14 +40,24 @@ class Configuration implements ConfigurationInterface
             ->children()
                 ->arrayNode('themes')
                     ->useAttributeAsKey('theme')
-                    ->prototype('scalar')
+                    ->prototype('scalar')->end()
                 ->end()
+                ->scalarNode('active_theme')->defaultNull()->end()
+                ->arrayNode('cookie')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->scalarNode('name')->end()
+                        ->scalarNode('lifetime')->defaultValue(31536000)->end()
+                        ->scalarNode('path')->defaultValue('/')->end()
+                        ->scalarNode('domain')->defaultNull()->end()
+                        ->booleanNode('secure')->defaultFalse()->end()
+                        ->booleanNode('httponly')->defaultFalse()->end()
+                    ->end()
+                ->end()
+                ->scalarNode('autodetect_theme')->defaultFalse()->end()
+                ->booleanNode('cache_warming')->defaultTrue()->end()
             ->end()
-            ->scalarNode('active_theme')->defaultNull()->end()
-            ->scalarNode('theme_cookie')->defaultNull()->end()
-            ->scalarNode('autodetect_theme')->defaultFalse()->end()
-            ->booleanNode('cache_warming')->defaultTrue()->end()
-        ->end();
+        ;
 
         return $treeBuilder;
     }

@@ -12,7 +12,7 @@
         <service id="liip_theme.theme_controller" class="%liip_theme.theme_controller.class%">
             <argument type="service" id="liip_theme.active_theme" />
             <argument>%liip_theme.themes%</argument>
-            <argument>%liip_theme.theme_cookie%</argument>
+            <argument>%liip_theme.cookie%</argument>
         </service>
     </services>
 </container>

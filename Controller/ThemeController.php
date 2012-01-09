@@ -34,24 +34,24 @@ class ThemeController
     protected $themes;
 
     /**
-     * Name of the cookie to store active theme
+     * Options of the cookie to store active theme
      * 
-     * @var string
+     * @var array
      */
-    protected $cookieName;
+    protected $cookieOptions;
 
     /**
      * Theme controller construct
      * 
-     * @param ActiveTheme $activeTheme active theme instance
-     * @param array       $themes      Available themes
-     * @param string      $cookieName  cookie name to store active theme
+     * @param ActiveTheme $activeTheme   active theme instance
+     * @param array       $themes        Available themes
+     * @param array       $cookieOptions The options of the cookie we look for the theme to set
      */
-    public function __construct(ActiveTheme $activeTheme, array $themes, $cookieName)
+    public function __construct(ActiveTheme $activeTheme, array $themes, array $cookieOptions)
     {
-        $this->activeTheme = $activeTheme;
-        $this->themes      = $themes;
-        $this->cookieName  = $cookieName;
+        $this->activeTheme    = $activeTheme;
+        $this->themes         = $themes;
+        $this->cookieOptions  = $cookieOptions;
     }
 
     /**
@@ -74,7 +74,7 @@ class ThemeController
         $this->activeTheme->setName($theme);
 
         $url = $request->headers->get('Referer');
-        $cookie = new Cookie($this->cookieName, $theme, time()+60*60*24*365, '/', null, false, false);
+        $cookie = new Cookie($this->cookieOptions['name'], $theme, time() + $this->cookieOptions['lifetime'], $this->cookieOptions['path'], $this->cookieOptions['domain'], (bool) $this->cookieOptions['secure'], (bool) $this->cookieOptions['httponly']);
 
         $response = new RedirectResponse($url);
         $response->headers->setCookie($cookie);

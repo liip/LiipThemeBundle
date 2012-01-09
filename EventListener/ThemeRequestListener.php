@@ -33,9 +33,9 @@ class ThemeRequestListener
     protected $activeTheme;
 
     /**
-     * @var string
+     * @var array
      */
-    protected $cookieName;
+    protected $cookieOptions;
 
     /**
      * @var DeviceDetectionInterface
@@ -49,13 +49,13 @@ class ThemeRequestListener
 
     /**
      * @param ActiveTheme              $activeTheme
-     * @param string                   $cookieName The name of the cookie we look for the theme to set
-     * @param DeviceDetectionInterface $autoDetect If to auto detect the theme based on the user agent
+     * @param array                    $cookieOptions The options of the cookie we look for the theme to set
+     * @param DeviceDetectionInterface $autoDetect    If to auto detect the theme based on the user agent
      */
-    public function __construct($activeTheme, $cookieName, $autoDetect = null)
+    public function __construct($activeTheme, $cookieOptions, $autoDetect = null)
     {
         $this->activeTheme = $activeTheme;
-        $this->cookieName = $cookieName;
+        $this->cookieOptions = $cookieOptions;
         $this->autoDetect = $autoDetect;
     }
 
@@ -65,7 +65,7 @@ class ThemeRequestListener
      public function onKernelRequest(GetResponseEvent $event)
      {
          if (HttpKernelInterface::MASTER_REQUEST === $event->getRequestType()) {
-             $activeCookie = $event->getRequest()->cookies->get($this->cookieName);
+             $activeCookie = $event->getRequest()->cookies->get($this->cookieOptions['name']);
 
              if (!$activeCookie && $this->autoDetect instanceof DeviceDetectionInterface) {
                  $userAgent = $event->getRequest()->server->get('HTTP_USER_AGENT');
@@ -86,7 +86,7 @@ class ThemeRequestListener
      {
          if (HttpKernelInterface::MASTER_REQUEST === $event->getRequestType()) {
              if ($this->newTheme) {
-                 $cookie = new Cookie($this->cookieName, $this->newTheme, time()+60*60*24*365, '/', null, false, false);
+                 $cookie = new Cookie($this->cookieOptions['name'], $this->newTheme, time() + $this->cookieOptions['lifetime'], $this->cookieOptions['path'], $this->cookieOptions['domain'], (bool) $this->cookieOptions['secure'], (bool) $this->cookieOptions['httponly']);
                  $event->getResponse()->headers->setCookie($cookie);
              }
          }
