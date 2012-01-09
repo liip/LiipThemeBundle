@@ -49,6 +49,7 @@ class LiipThemeExtension extends Extension
             }
         }
 
+        $loader->load('controller.xml');
         $loader->load('templating.xml');
     }
 }

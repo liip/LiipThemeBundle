@@ -9,11 +9,12 @@ to the normal Resources/views if no matching file was found.
 
 ## Installation
 
-Installation is a quick (I promise!) 3 step process:
+Installation is a quick (I promise!) 4 step process:
 
 1. Download LiipThemeBundle
 2. Configure the Autoloader
 3. Enable the Bundle
+4. Import LiipThemeBundle routing
 
 ### Step 1: Download LiipThemeBundle
 
@@ -79,6 +80,27 @@ public function registerBundles()
 }
 ```
 
+### Step 4: Import LiipThemeBundle routing files
+
+Now that you have activated and configured the bundle, all that is left to do is
+import the LiipThemeBundle routing files.
+
+In YAML:
+
+``` yaml
+# app/config/routing.yml
+liip_theme:
+    resource: "@LiipThemeBundle/Resources/config/routing.xml"
+    prefix: /theme
+```
+
+Or if you prefer XML:
+
+``` xml
+<!-- app/config/routing.xml -->
+<import resource="@LiipThemeBundle/Resources/config/routing.xml" prefix="/theme" />
+```
+
 ## Configuration
 
 You will have to set your possible themes and the currently active theme. It
@@ -110,11 +132,11 @@ the ``Liip\ThemeBundle\Helper\DeviceDetectionInterface`` interface.
 ### Theme Cascading Order
 
 The following order is applied when checking for templates, for example "@BundleName/Resources/template.html.twig"
-is located at:
+with theme name ``mobile`` is located at:
 
-1. Override themes directory: app/Resources/themes/BundleName/template.html.twig
+1. Override themes directory: app/Resources/themes/mobile/BundleName/template.html.twig
 2. Override view directory: app/Resources/BundleName/views/template.html.twig
-3. Bundle theme directory: src/BundleName/Resources/themes/template.html.twig
+3. Bundle theme directory: src/BundleName/Resources/themes/mobile/template.html.twig
 4. Bundle view directory: src/BundleName/Resources/views/template.html.twig
 
 ### Change Active Theme
