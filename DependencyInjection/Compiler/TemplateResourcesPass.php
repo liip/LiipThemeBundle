@@ -13,7 +13,7 @@ namespace Liip\ThemeBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Bundle\AsseticBundle\DependencyInjection\DirectoryResourceDefinition;
-use Symfony\Bundle\AsseticBundle\DependencyInjection\Compiler\TemplateResourcesPass as BaseTemplateResourcesPass;
+use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Exception\LogicException;
 
 /**
@@ -21,8 +21,31 @@ use Symfony\Component\DependencyInjection\Exception\LogicException;
  *
  * @author Lukas Kahwe Smith <smith@pooteeweet.org>
  */
-class TemplateResourcesPass extends BaseTemplateResourcesPass
+class TemplateResourcesPass implements CompilerPassInterface
 {
+    public function process(ContainerBuilder $container)
+    {
+        if (!$container->hasDefinition('assetic.asset_manager')) {
+            return;
+        }
+
+        $engines = $container->getParameter('templating.engines');
+
+        // bundle and kernel resources
+        $bundles = $container->getParameter('kernel.bundles');
+        $asseticBundles = $container->getParameterBag()->resolveValue($container->getParameter('assetic.bundles'));
+        foreach ($asseticBundles as $bundleName) {
+            $rc = new \ReflectionClass($bundles[$bundleName]);
+            foreach ($engines as $engine) {
+                $this->setBundleDirectoryResources($container, $engine, dirname($rc->getFileName()), $bundleName);
+            }
+        }
+
+        foreach ($engines as $engine) {
+            $this->setAppDirectoryResources($container, $engine);
+        }
+    }
+
     protected function setBundleDirectoryResources(ContainerBuilder $container, $engine, $bundleDirName, $bundleName)
     {
         if (!$container->hasDefinition('assetic.'.$engine.'_directory_resource.'.$bundleName)) {
