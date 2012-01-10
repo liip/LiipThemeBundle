@@ -106,25 +106,36 @@ Or if you prefer XML:
 You will have to set your possible themes and the currently active theme. It
 is required that the active theme is part of the themes list.
 
-    # app/config/config.yml
-        liip_theme:
-            themes: ['web', 'tablet', 'mobile']
-            active_theme: 'web'
+``` yaml
+# app/config/config.yml
+liip_theme:
+    themes: ['web', 'tablet', 'mobile']
+    active_theme: 'web'
+```
 
 ### Optional
 
 If you want to select the active theme based on a cookie you can add
 
-    # app/config/config.yml
-        liip_theme:
-            theme_cookie: cookieName
+``` yaml
+# app/config/config.yml
+liip_theme:
+    cookie:
+        name: NameOfTheCookie
+        lifetime: 31536000 # 1 year in seconds
+        path: /
+        domain: ~
+        secure: false
+        httponly: false
+```
 
 It is also possible to automate setting the theme cookie based on the user agent:
 
-    # app/config/config.yml
-        liip_theme:
-            theme_cookie: cookieName
-            autodetect_theme: true
+``` yaml
+# app/config/config.yml
+liip_theme:
+    autodetect_theme: true
+```
 
 Optionally ``autodetect_theme`` can also be set to a DIC service id that implements
 the ``Liip\ThemeBundle\Helper\DeviceDetectionInterface`` interface.
@@ -147,9 +158,11 @@ If you are early in the request cycle and no template has been rendered you
 can still change the theme without problems. For this the theme service
 exists at:
 
-    $activeTheme = $container->get('liip_theme.active_theme');
-    echo $activeTheme->getName();
-    $activeTheme->setName("mobile");
+``` php
+$activeTheme = $container->get('liip_theme.active_theme');
+echo $activeTheme->getName();
+$activeTheme->setName("mobile");
+```
 
 ## Contribution
 
@@ -164,4 +177,6 @@ First initial vendors:
 
 This will give you proper results:
 
-    phpunit --coverage-text
+``` bash
+phpunit --coverage-html reports
+```
