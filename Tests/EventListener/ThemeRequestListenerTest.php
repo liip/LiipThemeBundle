@@ -82,7 +82,7 @@ class ThemeRequestListenerTest extends \PHPUnit_Framework_TestCase
         $activeTheme = $this->getActiveThemeStub();
         $activeTheme->expects($this->never())
             ->method('setName');
-        $listener = new ThemeRequestListener($activeTheme, array(), false);
+        $listener = new ThemeRequestListener($activeTheme, array());
         $listener->onKernelRequest($this->getResponseEventMock());
     }
 
@@ -92,7 +92,7 @@ class ThemeRequestListenerTest extends \PHPUnit_Framework_TestCase
         $activeTheme->expects($this->once())
             ->method('setName')
             ->with($this->equalTo('tablet'));
-        $listener = new ThemeRequestListener($activeTheme, array('name' => $this->testCookieName), false);
+        $listener = new ThemeRequestListener($activeTheme, array('name' => $this->testCookieName));
         $listener->onKernelRequest($this->getResponseEventMock('tablet'));
     }
 
@@ -101,7 +101,7 @@ class ThemeRequestListenerTest extends \PHPUnit_Framework_TestCase
         $activeTheme = $this->getActiveThemeStub();
         $activeTheme->expects($this->never())
             ->method('setName');
-        $listener = new ThemeRequestListener($activeTheme, array('name' => $this->testCookieName), false);
+        $listener = new ThemeRequestListener($activeTheme, array('name' => $this->testCookieName));
         $listener->onKernelRequest($this->getResponseEventMock('noActualTheme'));
     }
 }
