@@ -88,7 +88,7 @@ class TemplateLocator extends BaseTemplateLocator
         try {
             return $this->cache[$key] = $this->locator->locate($template->getPath(), $currentPath);
         } catch (\InvalidArgumentException $e) {
-            throw new \InvalidArgumentException(sprintf('Unable to find template "%s" in "%s".', $template, $this->path), 0, $e);
+            throw new \InvalidArgumentException(sprintf('Unable to find template "%s" in "%s".', $template, $e->getMessage()), 0, $e);
         }
     }
 }
