@@ -55,8 +55,17 @@ class ThemeRequestListener
     public function __construct($activeTheme, $cookieOptions, $autoDetect = null)
     {
         $this->activeTheme = $activeTheme;
-        $this->cookieOptions = $cookieOptions;
         $this->autoDetect = $autoDetect;
+
+        $cookieDefaults = array(
+            'name'     => 'liip_theme_bundle',
+            'lifetime' => 31536000,
+            'path'     => '/',
+            'domain'   => null,
+            'secure'   => false,
+            'httponly' => false
+        );
+        $this->cookieOptions = array_merge($cookieDefaults, $cookieOptions);
     }
 
     /**
@@ -86,7 +95,15 @@ class ThemeRequestListener
      {
          if (HttpKernelInterface::MASTER_REQUEST === $event->getRequestType()) {
              if ($this->newTheme) {
-                 $cookie = new Cookie($this->cookieOptions['name'], $this->newTheme, time() + $this->cookieOptions['lifetime'], $this->cookieOptions['path'], $this->cookieOptions['domain'], (bool) $this->cookieOptions['secure'], (bool) $this->cookieOptions['httponly']);
+                 $cookie = new Cookie(
+                     $this->cookieOptions['name'],
+                     $this->newTheme,
+                     time() + $this->cookieOptions['lifetime'],
+                     $this->cookieOptions['path'],
+                     $this->cookieOptions['domain'],
+                     (bool) $this->cookieOptions['secure'],
+                     (bool) $this->cookieOptions['httponly']
+                 );
                  $event->getResponse()->headers->setCookie($cookie);
              }
          }
