@@ -39,12 +39,10 @@ class LiipThemeExtension extends Extension
 
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
 
-        if (!empty($config['cookie'])) {
+        if (!empty($config['cookie']['name'])) {
             $options = array();
             foreach (array('name', 'lifetime', 'path', 'domain', 'secure', 'http_only') as $key) {
-                if (isset($config['cookie'][$key])) {
-                    $options[$key] = $config['cookie'][$key];
-                }
+                $options[$key] = $config['cookie'][$key];
             }
             $container->setParameter($this->getAlias().'.cookie', $options);
 
