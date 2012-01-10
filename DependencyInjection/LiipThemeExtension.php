@@ -42,6 +42,7 @@ class LiipThemeExtension extends Extension
         if (!empty($config['theme_cookie'])) {
             $container->setParameter($this->getAlias().'.theme_cookie', $config['theme_cookie']);
             $loader->load('theme_request_listener.xml');
+            $loader->load('controller.xml');
 
             if (!empty($config['autodetect_theme'])) {
                 $id = is_string($config['autodetect_theme']) ? $config['autodetect_theme'] : 'liip_theme.theme_auto_detect';
@@ -49,7 +50,6 @@ class LiipThemeExtension extends Extension
             }
         }
 
-        $loader->load('controller.xml');
         $loader->load('templating.xml');
     }
 }
