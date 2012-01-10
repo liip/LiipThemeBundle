@@ -21,9 +21,8 @@ class LiipThemeBundleTest extends \PHPUnit_Framework_TestCase
     public function testBuild()
     {
         $containerMock = $this->getMock('Symfony\Component\DependencyInjection\ContainerBuilder');
-        $containerMock->expects($this->once())
+        $containerMock->expects($this->exactly(2))
             ->method('addCompilerPass')
-            ->with($this->isInstanceOf('Liip\ThemeBundle\DependencyInjection\Compiler\ThemeCompilerPass'))
         ;
 
         $bundle = new LiipThemeBundle();
