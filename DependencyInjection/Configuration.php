@@ -51,7 +51,7 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('path')->defaultValue('/')->end()
                         ->scalarNode('domain')->defaultValue('')->end()
                         ->booleanNode('secure')->defaultFalse()->end()
-                        ->booleanNode('httponly')->defaultFalse()->end()
+                        ->booleanNode('http_only')->defaultFalse()->end()
                     ->end()
                 ->end()
                 ->scalarNode('autodetect_theme')->defaultFalse()->end()

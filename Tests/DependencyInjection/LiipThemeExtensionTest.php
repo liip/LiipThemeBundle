@@ -39,7 +39,7 @@ class LiipThemeExtensionTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(array('web', 'tablet', 'mobile'), $container->getParameter('liip_theme.themes'));
         $this->assertEquals('tablet', $container->getParameter('liip_theme.active_theme'));
-        $this->assertEquals(array('name' => 'themeBundleCookie', 'lifetime' => 31536000, 'path' => '/', 'domain' => '', 'secure' => false, 'httponly' => false), $container->getParameter('liip_theme.cookie'));
+        $this->assertEquals(array('name' => 'themeBundleCookie', 'lifetime' => 31536000, 'path' => '/', 'domain' => '', 'secure' => false, 'http_only' => false), $container->getParameter('liip_theme.cookie'));
 
         $listener = $container->get('liip_theme.theme_request_listener');
         $this->assertInstanceOf('Liip\ThemeBundle\EventListener\ThemeRequestListener', $listener);

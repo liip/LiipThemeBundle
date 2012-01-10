@@ -63,7 +63,7 @@ class ThemeRequestListener
             'path'     => '/',
             'domain'   => '',
             'secure'   => false,
-            'httponly' => false,
+            'http_only' => false,
         );
         $this->cookieOptions = array_merge($cookieDefaults, $cookieOptions);
     }
@@ -102,7 +102,7 @@ class ThemeRequestListener
                      $this->cookieOptions['path'],
                      $this->cookieOptions['domain'],
                      (Boolean) $this->cookieOptions['secure'],
-                     (Boolean) $this->cookieOptions['httponly']
+                     (Boolean) $this->cookieOptions['http_only']
                  );
                  $event->getResponse()->headers->setCookie($cookie);
              }

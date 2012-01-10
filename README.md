@@ -126,7 +126,7 @@ liip_theme:
         path: /
         domain: ~
         secure: false
-        httponly: false
+        http_only: false
 ```
 
 It is also possible to automate setting the theme cookie based on the user agent:

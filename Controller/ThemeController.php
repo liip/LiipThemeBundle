@@ -81,7 +81,7 @@ class ThemeController
             $this->cookieOptions['path'],
             $this->cookieOptions['domain'],
             (Boolean) $this->cookieOptions['secure'],
-            (Boolean) $this->cookieOptions['httponly']
+            (Boolean) $this->cookieOptions['http_only']
         );
 
         $response = new RedirectResponse($url);

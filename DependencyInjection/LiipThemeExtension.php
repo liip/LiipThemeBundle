@@ -41,7 +41,7 @@ class LiipThemeExtension extends Extension
 
         if (!empty($config['cookie'])) {
             $options = array();
-            foreach (array('name', 'lifetime', 'path', 'domain', 'secure', 'httponly') as $key) {
+            foreach (array('name', 'lifetime', 'path', 'domain', 'secure', 'http_only') as $key) {
                 if (isset($config['cookie'][$key])) {
                     $options[$key] = $config['cookie'][$key];
                 }
