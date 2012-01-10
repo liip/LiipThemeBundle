@@ -52,7 +52,7 @@ class ThemeRequestListener
      * @param array                    $cookieOptions The options of the cookie we look for the theme to set
      * @param DeviceDetectionInterface $autoDetect    If to auto detect the theme based on the user agent
      */
-    public function __construct($activeTheme, $cookieOptions, $autoDetect = null)
+    public function __construct($activeTheme, $cookieOptions, DeviceDetectionInterface $autoDetect = null)
     {
         $this->activeTheme = $activeTheme;
         $this->autoDetect = $autoDetect;
@@ -63,7 +63,7 @@ class ThemeRequestListener
             'path'     => '/',
             'domain'   => '',
             'secure'   => false,
-            'httponly' => false
+            'httponly' => false,
         );
         $this->cookieOptions = array_merge($cookieDefaults, $cookieOptions);
     }
@@ -101,8 +101,8 @@ class ThemeRequestListener
                      time() + $this->cookieOptions['lifetime'],
                      $this->cookieOptions['path'],
                      $this->cookieOptions['domain'],
-                     (bool) $this->cookieOptions['secure'],
-                     (bool) $this->cookieOptions['httponly']
+                     (Boolean) $this->cookieOptions['secure'],
+                     (Boolean) $this->cookieOptions['httponly']
                  );
                  $event->getResponse()->headers->setCookie($cookie);
              }

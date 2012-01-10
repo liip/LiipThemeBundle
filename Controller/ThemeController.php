@@ -74,7 +74,15 @@ class ThemeController
         $this->activeTheme->setName($theme);
 
         $url = $request->headers->get('Referer');
-        $cookie = new Cookie($this->cookieOptions['name'], $theme, time() + $this->cookieOptions['lifetime'], $this->cookieOptions['path'], $this->cookieOptions['domain'], (bool) $this->cookieOptions['secure'], (bool) $this->cookieOptions['httponly']);
+        $cookie = new Cookie(
+            $this->cookieOptions['name'],
+            $theme,
+            time() + $this->cookieOptions['lifetime'],
+            $this->cookieOptions['path'],
+            $this->cookieOptions['domain'],
+            (Boolean) $this->cookieOptions['secure'],
+            (Boolean) $this->cookieOptions['httponly']
+        );
 
         $response = new RedirectResponse($url);
         $response->headers->setCookie($cookie);
