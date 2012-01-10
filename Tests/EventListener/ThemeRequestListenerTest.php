@@ -77,15 +77,6 @@ class ThemeRequestListenerTest extends \PHPUnit_Framework_TestCase
         return $event;
     }
 
-    public function testNoCookie()
-    {
-        $activeTheme = $this->getActiveThemeStub();
-        $activeTheme->expects($this->never())
-            ->method('setName');
-        $listener = new ThemeRequestListener($activeTheme, array());
-        $listener->onKernelRequest($this->getResponseEventMock());
-    }
-
     public function testWithCookie()
     {
         $activeTheme = $this->getActiveThemeStub();
