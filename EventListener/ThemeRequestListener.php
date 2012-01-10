@@ -61,7 +61,7 @@ class ThemeRequestListener
             'name'     => 'liip_theme_bundle',
             'lifetime' => 31536000,
             'path'     => '/',
-            'domain'   => null,
+            'domain'   => '',
             'secure'   => false,
             'httponly' => false
         );
