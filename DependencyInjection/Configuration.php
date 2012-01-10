@@ -44,7 +44,6 @@ class Configuration implements ConfigurationInterface
                 ->end()
                 ->scalarNode('active_theme')->defaultNull()->end()
                 ->arrayNode('cookie')
-                    ->addDefaultsIfNotSet()
                     ->children()
                         ->scalarNode('name')->isRequired()->cannotBeEmpty()->end()
                         ->scalarNode('lifetime')->defaultValue(31536000)->end()
