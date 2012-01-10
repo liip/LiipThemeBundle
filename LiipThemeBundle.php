@@ -15,6 +15,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 use Liip\ThemeBundle\DependencyInjection\Compiler\ThemeCompilerPass;
+use Liip\ThemeBundle\DependencyInjection\Compiler\TemplateResourcesPass;
 
 class LiipThemeBundle extends Bundle
 {
@@ -22,5 +23,6 @@ class LiipThemeBundle extends Bundle
     {
         parent::build($container);
         $container->addCompilerPass(new ThemeCompilerPass());
+        $container->addCompilerPass(new TemplateResourcesPass());
     }
 }
