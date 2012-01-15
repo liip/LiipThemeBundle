@@ -2,7 +2,7 @@ Theme Bundle
 ============
 
 This bundle provides you the possibility to add themes to each bundle. In your
-bundle directory it will look under Resources/themes/<themename> or fall back
+bundle directory it will look under `Resources/themes/<themename>` or fall back
 to the normal Resources/views if no matching file was found.
 
 [![Build Status](https://secure.travis-ci.org/liip/LiipThemeBundle.png)](http://travis-ci.org/liip/LiipThemeBundle)
@@ -142,13 +142,13 @@ the ``Liip\ThemeBundle\Helper\DeviceDetectionInterface`` interface.
 
 ### Theme Cascading Order
 
-The following order is applied when checking for templates, for example "@BundleName/Resources/template.html.twig"
+The following order is applied when checking for templates, for example `@BundleName/Resources/template.html.twig`
 with theme name ``mobile`` is located at:
 
-1. Override themes directory: app/Resources/themes/mobile/BundleName/template.html.twig
-2. Override view directory: app/Resources/BundleName/views/template.html.twig
-3. Bundle theme directory: src/BundleName/Resources/themes/mobile/template.html.twig
-4. Bundle view directory: src/BundleName/Resources/views/template.html.twig
+1. Override themes directory: `app/Resources/themes/mobile/BundleName/template.html.twig`
+2. Override view directory: `app/Resources/BundleName/views/template.html.twig`
+3. Bundle theme directory: `src/BundleName/Resources/themes/mobile/template.html.twig`
+4. Bundle view directory: `src/BundleName/Resources/views/template.html.twig`
 
 ### Change Active Theme
 
