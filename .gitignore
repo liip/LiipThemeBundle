@@ -1,1 +1,4 @@
 vendor/symfony
+vendor/
+composer.phar
+composer.lock
