@@ -138,6 +138,7 @@ class FileLocator extends BaseFileLocator
         }
 
         $overridePath = substr($path, 9);
+        $subPath = substr($path, 15);
         $resourceBundle = null;
         $bundles = $this->kernel->getBundle($bundleName, false);
         $files = array();
@@ -148,25 +149,28 @@ class FileLocator extends BaseFileLocator
                 $checkPaths[] = $dir.'/themes/'.$this->lastTheme.'/'.$bundle->getName().$overridePath;
                 $checkPaths[] = $dir.'/'.$bundle->getName().$overridePath;
             }
-            $checkPaths[] = $bundle->getPath() . '/Resources/themes/'.$this->lastTheme.substr($path, 15);
+
+            $checkPaths[] = $bundle->getPath().'/Resources/themes/'.$this->lastTheme.$subPath;
+
             foreach ($checkPaths as $checkPath) {
-                if (file_exists($file = $checkPath)) {
+                if (file_exists($checkPath)) {
                     if (null !== $resourceBundle) {
                         throw new \RuntimeException(sprintf('"%s" resource is hidden by a resource from the "%s" derived bundle. Create a "%s" file to override the bundle resource.',
-                            $file,
+                            $path,
                             $resourceBundle,
                             $checkPath
                         ));
                     }
 
                     if ($first) {
-                        return $file;
+                        return $checkPath;
                     }
-                    $files[] = $file;
+                    $files[] = $checkPath;
                 }
             }
 
-            if (file_exists($file = $bundle->getPath().'/'.$path)) {
+            $file = $bundle->getPath().'/'.$path;
+            if (file_exists($file)) {
                 if ($first) {
                     return $file;
                 }
@@ -175,8 +179,8 @@ class FileLocator extends BaseFileLocator
             }
         }
 
-        if (count($files) > 0) {
-            return $first ? $files[0] : $files;
+        if (!$first && count($files)) {
+            return $files;
         }
 
         throw new \InvalidArgumentException(sprintf('Unable to find file "%s".', $name));
