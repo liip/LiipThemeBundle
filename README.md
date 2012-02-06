@@ -109,7 +109,7 @@ is required that the active theme is part of the themes list.
 ``` yaml
 # app/config/config.yml
 liip_theme:
-    themes: ['web', 'tablet', 'mobile']
+    themes: ['web', 'tablet', 'phone']
     active_theme: 'web'
 ```
 
@@ -143,11 +143,11 @@ the ``Liip\ThemeBundle\Helper\DeviceDetectionInterface`` interface.
 ### Theme Cascading Order
 
 The following order is applied when checking for templates, for example `@BundleName/Resources/template.html.twig`
-with theme name ``mobile`` is located at:
+with theme name ``phone`` is located at:
 
 1. Override themes directory: `app/Resources/themes/mobile/BundleName/template.html.twig`
 2. Override view directory: `app/Resources/BundleName/views/template.html.twig`
-3. Bundle theme directory: `src/BundleName/Resources/themes/mobile/template.html.twig`
+3. Bundle theme directory: `src/BundleName/Resources/themes/phone/template.html.twig`
 4. Bundle view directory: `src/BundleName/Resources/views/template.html.twig`
 
 ### Change Active Theme
@@ -161,7 +161,7 @@ exists at:
 ``` php
 $activeTheme = $container->get('liip_theme.active_theme');
 echo $activeTheme->getName();
-$activeTheme->setName("mobile");
+$activeTheme->setName("phone");
 ```
 
 ## Contribution
