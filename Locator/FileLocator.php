@@ -105,14 +105,20 @@ class FileLocator extends BaseFileLocator
         }
 
         if ('@' === $name[0]) {
-            return $this->locateResource($name, $this->path, $first);
+            return $this->locateBundleResource($name, $this->path, $first);
+        }
+
+        if (0 === strpos($name, 'views/')) {
+            if ($res = $this->locateAppResource($name, $this->path, $first)) {
+                return $res;
+            }
         }
 
         return parent::locate($name, $dir, $first);
     }
 
     /**
-     * Locate Resource Theme aware. Only working for resources!
+     * Locate Resource Theme aware. Only working for bundle resources!
      *
      * Method inlined from Symfony\Component\Http\Kernel
      *
@@ -121,7 +127,7 @@ class FileLocator extends BaseFileLocator
      * @param bool $first
      * @return string
      */
-    public function locateResource($name, $dir = null, $first = true)
+    public function locateBundleResource($name, $dir = null, $first = true)
     {
         if (false !== strpos($name, '..')) {
             throw new \RuntimeException(sprintf('File name "%s" contains invalid characters (..).', $name));
@@ -179,10 +185,45 @@ class FileLocator extends BaseFileLocator
             }
         }
 
-        if (!$first && count($files)) {
-            return $files;
+        if (count($files) > 0) {
+            return $first ? $files[0] : $files;
         }
 
         throw new \InvalidArgumentException(sprintf('Unable to find file "%s".', $name));
+    }
+
+    /**
+     * Locate Resource Theme aware. Only working for app/Resources
+     *
+     * @param string $name
+     * @param string $dir
+     * @param bool $first
+     * @return string|array
+     */
+    public function locateAppResource($name, $dir = null, $first = true)
+    {
+        if (false !== strpos($name, '..')) {
+            throw new \RuntimeException(sprintf('File name "%s" contains invalid characters (..).', $name));
+        }
+
+        $files = array();
+
+        $file = $dir.'/themes/'.$this->lastTheme.'/'.substr($name, 6);
+        if (file_exists($file)) {
+            if ($first) {
+                return $file;
+            }
+            $files[] = $file;
+        }
+
+        $file = $dir.'/'.$name;
+        if (file_exists($file)) {
+            if ($first) {
+                return $file;
+            }
+            $files[] = $file;
+        }
+
+        return $files;
     }
 }
