@@ -142,13 +142,19 @@ the ``Liip\ThemeBundle\Helper\DeviceDetectionInterface`` interface.
 
 ### Theme Cascading Order
 
-The following order is applied when checking for templates, for example `@BundleName/Resources/template.html.twig`
+The following order is applied when checking for templates that live in a bundle, for example `@BundleName/Resources/template.html.twig`
 with theme name ``phone`` is located at:
 
-1. Override themes directory: `app/Resources/themes/mobile/BundleName/template.html.twig`
+1. Override themes directory: `app/Resources/themes/phone/BundleName/template.html.twig`
 2. Override view directory: `app/Resources/BundleName/views/template.html.twig`
 3. Bundle theme directory: `src/BundleName/Resources/themes/phone/template.html.twig`
 4. Bundle view directory: `src/BundleName/Resources/views/template.html.twig`
+
+The following order is applied when checking for application-wide base templates, for example `::template.html.twig`
+with theme name ``phone`` is located at:
+
+1. Override themes directory: `app/Resources/themes/phone/template.html.twig`
+2. Override view directory: `app/Resources/views/template.html.twig`
 
 ### Change Active Theme
 
