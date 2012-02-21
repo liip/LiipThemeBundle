@@ -77,6 +77,20 @@ class FileLocatorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers Liip\ThemeBundle\Locator\FileLocator::locate
+     * @covers Liip\ThemeBundle\Locator\FileLocator::locateBundleResource
+     */
+    public function testLocateAppThemeOverridesAll()
+    {
+        $kernel =  $this->getKernelMock();
+        $activeTheme = new ActiveTheme('foo', array('foo', 'bar', 'foobar'));
+        $fileLocator = new FileLocator($kernel, $activeTheme, $this->getFixturePath() . '/rootdir/Resources');
+
+        $file = $fileLocator->locate('@ThemeBundle/Resources/views/foo', $this->getFixturePath(), true);
+        $this->assertEquals($this->getFixturePath().'/rootdir/Resources/themes/foo/LiipMockLocateAppThemeOverridesAll/foo', $file);
+    }
+
+    /**
+     * @covers Liip\ThemeBundle\Locator\FileLocator::locate
      * @covers Liip\ThemeBundle\Locator\FileLocator::locateAppResource
      */
     public function testLocateApp()
@@ -183,7 +197,7 @@ class FileLocatorTest extends \PHPUnit_Framework_TestCase
         $fileLocator = new FileLocator($kernel, $activeTheme, $this->getFixturePath() . '/rootdir/Resources');
 
         $file = $fileLocator->locate('@ThemeBundle/Resources/views/rootTemplate', $this->getFixturePath(), true);
-        $this->assertEquals($this->getFixturePath().'/rootdir/Resources/themes/foo/LiipMockLocateRootDirectory/views/rootTemplate', $file);
+        $this->assertEquals($this->getFixturePath().'/rootdir/Resources/themes/foo/LiipMockLocateRootDirectory/rootTemplate', $file);
     }
 
     /**
