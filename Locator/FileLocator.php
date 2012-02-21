@@ -152,7 +152,7 @@ class FileLocator extends BaseFileLocator
         foreach ($bundles as $bundle) {
             $checkPaths = array();
             if ($dir) {
-                $checkPaths[] = $dir.'/themes/'.$this->lastTheme.'/'.$bundle->getName().$overridePath;
+                $checkPaths[] = $dir.'/themes/'.$this->lastTheme.'/'.$bundle->getName().$subPath;
                 $checkPaths[] = $dir.'/'.$bundle->getName().$overridePath;
             }
 
