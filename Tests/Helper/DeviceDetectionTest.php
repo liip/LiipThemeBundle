@@ -71,7 +71,7 @@ class DeviceDetectionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('iphone', $device->getDevice(), 'iphone should get recognized as iphone');
         $this->assertTrue($device->isPhone(), 'Iphone should get set as phone');
         $this->assertTrue($device->isIphone(), 'Iphone should get recognized as iphone');
-        $this->assertFalse($device->isAndroid(), 'Iphone should get recognized as iphone');
+        $this->assertFalse($device->isAndroid(), 'Iphone should not get recognized as Android');
     }
 
     /**
