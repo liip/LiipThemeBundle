@@ -150,7 +150,7 @@ with theme name ``phone`` is located at:
 3. Bundle theme directory: `src/BundleName/Resources/themes/phone/template.html.twig`
 4. Bundle view directory: `src/BundleName/Resources/views/template.html.twig`
 
-For exemple, if you want to integrate some TwigBundle custom error pages regarding your theme 
+For example, if you want to integrate some TwigBundle custom error pages regarding your theme 
 architecture, you will have to use this directory structure : 
 `app/Resources/themes/phone/TwigBundle/Exception/error404.html.twig`
 
