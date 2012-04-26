@@ -56,6 +56,7 @@ class Configuration implements ConfigurationInterface
                 ->end()
                 ->scalarNode('autodetect_theme')->defaultFalse()->end()
                 ->booleanNode('cache_warming')->defaultTrue()->end()
+                ->booleanNode('load_controllers')->defaultTrue()->end()
             ->end()
         ;
 

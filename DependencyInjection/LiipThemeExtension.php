@@ -47,7 +47,10 @@ class LiipThemeExtension extends Extension
             $container->setParameter($this->getAlias().'.cookie', $options);
 
             $loader->load('theme_request_listener.xml');
-            $loader->load('controller.xml');
+
+            if  (true == $config['load_controllers']) {
+                $loader->load('controller.xml');
+            }
 
             if (!empty($config['autodetect_theme'])) {
                 $id = is_string($config['autodetect_theme']) ? $config['autodetect_theme'] : 'liip_theme.theme_auto_detect';
