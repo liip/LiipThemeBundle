@@ -140,6 +140,15 @@ liip_theme:
 Optionally ``autodetect_theme`` can also be set to a DIC service id that implements
 the ``Liip\ThemeBundle\Helper\DeviceDetectionInterface`` interface.
 
+If your application doesnt't allow the user to switch theme, you can desactivate
+the controller shipped with the bundle:
+
+``` yaml
+# app/config/config.yml
+liip_theme:
+    load_controllers: false
+```
+
 ### Theme Cascading Order
 
 The following order is applied when checking for templates that live in a bundle, for example `@BundleName/Resources/template.html.twig`
