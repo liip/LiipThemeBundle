@@ -16,8 +16,8 @@ use Liip\ThemeBundle\ActiveTheme;
 
 use Symfony\Component\HttpKernel\KernelInterface;
 
-
-class FileLocatorFake extends FileLocator {
+class FileLocatorFake extends FileLocator
+{
     public $lastTheme;
 }
 
