@@ -73,7 +73,8 @@ class ThemeController
 
         $this->activeTheme->setName($theme);
 
-        $url = $request->headers->get('Referer');
+        $url = $request->headers->get('Referer', '/');
+
         $cookie = new Cookie(
             $this->cookieOptions['name'],
             $theme,
