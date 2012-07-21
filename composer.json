@@ -4,6 +4,7 @@
     "description": "Provides theming support for #Symfony2 Bundles",
     "keywords": ["themes", "theming"],
     "license": "MIT",
+    "minimum-stability": "dev",
     "authors": [
         {
             "name": "Liip AG",
@@ -19,7 +20,7 @@
         "symfony/framework-bundle": ">=2.0,<2.2-dev"
     },
     "require-dev":{
-        "symfony/console":">=2.0,<2.2-dev"
+        "symfony/console": ">=2.0,<2.2-dev"
     },
     "autoload": {
         "psr-0": { "Liip\\ThemeBundle": "" }
