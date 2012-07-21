@@ -143,20 +143,25 @@ class FileLocator extends BaseFileLocator
             throw new \RuntimeException('Template files have to be in Resources.');
         }
 
-        $overridePath = substr($path, 9);
-        $subPath = substr($path, 15);
         $resourceBundle = null;
         $bundles = $this->kernel->getBundle($bundleName, false);
         $files = array();
 
-        foreach ($bundles as $bundle) {
-            $checkPaths = array();
-            if ($dir) {
-                $checkPaths[] = $dir.'/themes/'.$this->lastTheme.'/'.$bundle->getName().$subPath;
-                $checkPaths[] = $dir.'/'.$bundle->getName().$overridePath;
-            }
+        $parameters = array(
+            '%app_path%'      => $this->path,
+            '%dir%'           => $dir,
+            '%override_path%' => substr($path, strlen('Resources/')),
+            '%current_theme%' => $this->lastTheme,
+            '%template%'      => substr($path, strlen('Resources/views/')),
+        );
 
-            $checkPaths[] = $bundle->getPath().'/Resources/themes/'.$this->lastTheme.$subPath;
+        foreach ($bundles as $bundle) {
+            $parameters += array(
+                '%bundle_path%' => $bundle->getPath(),
+                '%bundle_name%' => $bundle->getName(),
+            );
+
+            $checkPaths = $this->getPathsForBundleResource($parameters);
 
             foreach ($checkPaths as $checkPath) {
                 if (file_exists($checkPath)) {
@@ -207,23 +212,55 @@ class FileLocator extends BaseFileLocator
         }
 
         $files = array();
+        $parameters = array(
+            '%app_path%'      => $this->path,
+            '%current_theme%' => $this->lastTheme,
+            '%template%'      => substr($name, strlen('views/')),
+        );
 
-        $file = $dir.'/themes/'.$this->lastTheme.'/'.substr($name, 6);
-        if (file_exists($file)) {
-            if ($first) {
-                return $file;
+        foreach ($this->getPathsForAppResource($parameters) as $checkPaths) {
+            if (file_exists($checkPaths)) {
+                if ($first) {
+                    return $checkPaths;
+                }
+                $files[] = $checkPaths;
             }
-            $files[] = $file;
-        }
-
-        $file = $dir.'/'.$name;
-        if (file_exists($file)) {
-            if ($first) {
-                return $file;
-            }
-            $files[] = $file;
         }
 
         return $files;
+    }
+
+    protected function getPathsForBundleResource($parameters)
+    {
+        $pathPatterns = array();
+        $paths = array();
+
+        if (!empty($parameters['%dir%'])) {
+            $pathPatterns[] = '%dir%/themes/%current_theme%/%bundle_name%/%template%';
+            $pathPatterns[] = '%dir%/%bundle_name%/%override_path%';
+        }
+
+        $pathPatterns[] = '%bundle_path%/Resources/themes/%current_theme%/%template%';
+
+        foreach ($pathPatterns as $pattern) {
+            $paths[] = strtr($pattern, $parameters);
+        }
+
+        return $paths;
+    }
+
+    protected function getPathsForAppResource($parameters)
+    {
+        $pathPatterns = array(
+            '%app_path%/themes/%current_theme%/%template%',
+            '%app_path%/views/%template%',
+        );
+        $paths = array();
+
+        foreach ($pathPatterns as $pattern) {
+            $paths[] = strtr($pattern, $parameters);
+        }
+
+        return $paths;
     }
 }
