@@ -28,6 +28,8 @@
             <argument type="service" id="kernel" />
             <argument type="service" id="liip_theme.active_theme" />
             <argument>%kernel.root_dir%/Resources</argument>
+            <argument type="collection" />
+            <argument>%liip_theme.path_patterns%</argument>
         </service>
 
         <service id="liip_theme.active_theme" class="%liip_theme.active_theme.class%">

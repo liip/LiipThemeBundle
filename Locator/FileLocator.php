@@ -23,12 +23,14 @@ use Liip\ThemeBundle\ActiveTheme;
  * @author Tobias Ebnöther <ebi@liip.ch>
  * @author Roland Schilter <roland.schilter@liip.ch>
  * @author Benjamin Eberlei <eberlei@simplethings.de>
+ * @author Konstantin Myakshin <koc-dp@yandex.ru>
  */
 class FileLocator extends BaseFileLocator
 {
     protected $kernel;
     protected $path;
     protected $basePaths = array();
+    protected $pathPatterns;
 
     /**
      * @var ActiveTheme
@@ -48,12 +50,29 @@ class FileLocator extends BaseFileLocator
      *
      * @throws \InvalidArgumentException if the active theme is not in the themes list
      */
-    public function __construct(KernelInterface $kernel, ActiveTheme $activeTheme, $path = null, array $paths = array())
+    public function __construct(KernelInterface $kernel, ActiveTheme $activeTheme, $path = null, array $paths = array(),
+        array $pathPatterns = array())
     {
         $this->kernel = $kernel;
         $this->activeTheme = $activeTheme;
         $this->path = $path;
         $this->basePaths = $paths;
+
+        $defaultPathPatterns = array(
+            'app_resource' => array(
+                '%app_path%/themes/%current_theme%/%template%',
+                '%app_path%/views/%template%',
+            ),
+            'bundle_resource' => array(
+                '%bundle_path%/Resources/themes/%current_theme%/%template%',
+            ),
+            'bundle_resource_dir' => array(
+                '%dir%/themes/%current_theme%/%bundle_name%/%template%',
+                '%dir%/%bundle_name%/%override_path%',
+            ),
+        );
+
+        $this->pathPatterns = array_replace($defaultPathPatterns, $pathPatterns);
 
         $this->setCurrentTheme($this->activeTheme->getName());
     }
@@ -236,11 +255,10 @@ class FileLocator extends BaseFileLocator
         $paths = array();
 
         if (!empty($parameters['%dir%'])) {
-            $pathPatterns[] = '%dir%/themes/%current_theme%/%bundle_name%/%template%';
-            $pathPatterns[] = '%dir%/%bundle_name%/%override_path%';
+            $pathPatterns = array_merge($pathPatterns, $this->pathPatterns['bundle_resource_dir']);
         }
 
-        $pathPatterns[] = '%bundle_path%/Resources/themes/%current_theme%/%template%';
+        $pathPatterns = array_merge($pathPatterns, $this->pathPatterns['bundle_resource']);
 
         foreach ($pathPatterns as $pattern) {
             $paths[] = strtr($pattern, $parameters);
@@ -251,13 +269,9 @@ class FileLocator extends BaseFileLocator
 
     protected function getPathsForAppResource($parameters)
     {
-        $pathPatterns = array(
-            '%app_path%/themes/%current_theme%/%template%',
-            '%app_path%/views/%template%',
-        );
         $paths = array();
 
-        foreach ($pathPatterns as $pattern) {
+        foreach ($this->pathPatterns['app_resource'] as $pattern) {
             $paths[] = strtr($pattern, $parameters);
         }
 
