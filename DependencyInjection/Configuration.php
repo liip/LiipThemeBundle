@@ -42,6 +42,7 @@ class Configuration implements ConfigurationInterface
                 ->end()
                 ->scalarNode('active_theme')->defaultNull()->end()
                 ->arrayNode('path_patterns')
+                    ->addDefaultsIfNotSet()
                     ->children()
                         ->arrayNode('app_resource')
                             ->useAttributeAsKey('path')

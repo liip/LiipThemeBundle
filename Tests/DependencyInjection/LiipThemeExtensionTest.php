@@ -22,7 +22,8 @@ class LiipThemeExtensionTest extends \PHPUnit_Framework_TestCase
                 'app_resource_path'
             ),
             'bundle_resource' => array(
-                'bundle_resource_path'
+                'bundle_resource_path1',
+                'bundle_resource_path2'
             ),
             'bundle_resource_dir' => array(
                 'bundle_resource_dir_path'

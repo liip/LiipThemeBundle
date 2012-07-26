@@ -29,11 +29,6 @@ class LiipThemeExtension extends Extension
     {
         $config = $this->processConfiguration(new Configuration(), $configs);
 
-        //TODO: move this to Configuration
-        if (empty($config['path_patterns'])) {
-            $config['path_patterns'] = array();
-        }
-
         foreach (array('themes', 'active_theme', 'path_patterns', 'cache_warming') as $key) {
             $container->setParameter($this->getAlias().'.'.$key, $config[$key]);
         }
