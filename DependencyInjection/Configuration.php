@@ -12,7 +12,6 @@
 namespace Liip\ThemeBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\ConfigurationInterface;
-use Symfony\Component\Config\Definition\Builder\NodeBuilder;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 
 /**
@@ -24,13 +23,12 @@ use Symfony\Component\Config\Definition\Builder\TreeBuilder;
  * @author Tobias Ebnöther <ebi@liip.ch>
  * @author Roland Schilter <roland.schilter@liip.ch>
  * @author Paweł Jędrzejewski <pjedrzejewski@diweb.pl>
+ * @author Konstantin Myakshin <koc-dp@yandex.ru>
  */
 class Configuration implements ConfigurationInterface
 {
     /**
-     * Returns the config tree builder.
-     *
-     * @return \Symfony\Component\DependencyInjection\Configuration\NodeInterface
+     * {@inheritdoc}
      */
     public function getConfigTreeBuilder()
     {
@@ -43,6 +41,23 @@ class Configuration implements ConfigurationInterface
                     ->prototype('scalar')->end()
                 ->end()
                 ->scalarNode('active_theme')->defaultNull()->end()
+                ->arrayNode('path_patterns')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->arrayNode('app_resource')
+                            ->useAttributeAsKey('path')
+                            ->prototype('scalar')->end()
+                        ->end()
+                        ->arrayNode('bundle_resource')
+                            ->useAttributeAsKey('path')
+                            ->prototype('scalar')->end()
+                        ->end()
+                        ->arrayNode('bundle_resource_dir')
+                            ->useAttributeAsKey('path')
+                            ->prototype('scalar')->end()
+                        ->end()
+                    ->end()
+                ->end()
                 ->arrayNode('cookie')
                     ->addDefaultsIfNotSet()
                     ->children()

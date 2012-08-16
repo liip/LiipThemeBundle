@@ -159,8 +159,8 @@ with theme name ``phone`` is located at:
 3. Bundle theme directory: `src/BundleName/Resources/themes/phone/template.html.twig`
 4. Bundle view directory: `src/BundleName/Resources/views/template.html.twig`
 
-For example, if you want to integrate some TwigBundle custom error pages regarding your theme 
-architecture, you will have to use this directory structure : 
+For example, if you want to integrate some TwigBundle custom error pages regarding your theme
+architecture, you will have to use this directory structure :
 `app/Resources/themes/phone/TwigBundle/Exception/error404.html.twig`
 
 The following order is applied when checking for application-wide base templates, for example `::template.html.twig`
@@ -168,6 +168,73 @@ with theme name ``phone`` is located at:
 
 1. Override themes directory: `app/Resources/themes/phone/template.html.twig`
 2. Override view directory: `app/Resources/views/template.html.twig`
+
+#### Change Theme Cascading Order
+
+You able change cascading order via configurations directives: `path_patterns.app_resource`, `path_patterns.bundle_resource`, `path_patterns.bundle_resource_dir`. For example:
+
+``` yaml
+# app/config/config.yml
+liip_theme:
+    path_patterns:
+        app_resource:
+            - %%app_path%%/themes/%%current_theme%%/%%template%%
+            - %%app_path%%/themes/fallback_theme/%%template%%
+            - %%app_path%%/views/%%template%%
+        bundle_resource:
+            - %%bundle_path%%/Resources/themes/%%current_theme%%/%%template%%
+            - %%bundle_path%%/Resources/themes/fallback_theme/%%template%%
+        bundle_resource_dir:
+            - %%dir%%/themes/%%current_theme%%/%%bundle_name%%/%%template%%
+            - %%dir%%/themes/fallback_theme/%%bundle_name%%/%%template%%
+            - %%dir%%/%%bundle_name%%/%%override_path%%
+```
+
+##### Cascading Order Patterns Placeholders
+
+<table>
+  <tr>
+    <th>Placeholder</th>
+  <th>Representation</th>
+  <th>Example</th>
+  </tr>
+  <tr>
+    <td><code>%app_path%</code></td>
+  <td>Path where application located</td>
+  <td><code>app</code></td>
+  </tr>
+  <tr>
+    <td><code>%bundle_path%</code></td>
+  <td>Path where bundle located, for example</td>
+  <td><code>src/Vendor/CoolBundle/VendorCoolBundle</code></td>
+  </tr>
+  <tr>
+    <td><code>%bundle_name%</code></td>
+  <td>Name of the bundle</td>
+  <td><code>VendorCoolBundle</code></td>
+  </tr>
+  <tr>
+    <td><code>%dir%</code></td>
+  <td>Directory, where resource should looking first</td>
+  <td></td>
+  </tr>
+  <tr>
+    <td><code>%current_theme%</code></td>
+  <td>Name of the current active theme</td>
+  <td></td>
+  </tr>
+  <tr>
+    <td><code>%template%</code></td>
+  <td>Template name</td>
+  <td><code>view.html.twig</code></td>
+  </tr>
+  <tr>
+    <td><code>%override_path%</code></td>
+  <td>Like template, but with views directory</td>
+  <td><code>views/list.html.twig</code></td>
+  </tr>
+</table>
+
 
 ### Change Active Theme
 

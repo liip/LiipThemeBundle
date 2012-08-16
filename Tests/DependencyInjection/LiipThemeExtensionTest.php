@@ -17,10 +17,25 @@ class LiipThemeExtensionTest extends \PHPUnit_Framework_TestCase
         $container = new ContainerBuilder();
         $loader = new LiipThemeExtension();
         $config = $this->getConfig();
+        $pathPatterns = array(
+            'app_resource' => array(
+                'app_resource_path'
+            ),
+            'bundle_resource' => array(
+                'bundle_resource_path1',
+                'bundle_resource_path2'
+            ),
+            'bundle_resource_dir' => array(
+                'bundle_resource_dir_path'
+            ),
+        );
+        $config['path_patterns'] = $pathPatterns;
+
         $loader->load(array($config), $container);
 
         $this->assertEquals(array('web', 'tablet', 'mobile'), $container->getParameter('liip_theme.themes'));
         $this->assertEquals('tablet', $container->getParameter('liip_theme.active_theme'));
+        $this->assertEquals($pathPatterns, $container->getParameter('liip_theme.path_patterns'));
     }
 
     /**

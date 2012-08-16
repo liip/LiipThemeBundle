@@ -14,8 +14,6 @@ namespace Liip\Tests\Locator;
 use Liip\ThemeBundle\Locator\FileLocator;
 use Liip\ThemeBundle\ActiveTheme;
 
-use Symfony\Component\HttpKernel\KernelInterface;
-
 class FileLocatorFake extends FileLocator
 {
     public $lastTheme;
@@ -73,6 +71,27 @@ class FileLocatorTest extends \PHPUnit_Framework_TestCase
 
         $file = $fileLocator->locate('@ThemeBundle/Resources/views/template', $this->getFixturePath(), true);
         $this->assertEquals($this->getFixturePath().'/Resources/themes/foo/template', $file);
+    }
+
+    /**
+     * @covers Liip\ThemeBundle\Locator\FileLocator::locate
+     * @covers Liip\ThemeBundle\Locator\FileLocator::locateBundleResource
+     */
+    public function testLocateWithOverridenPathPattern()
+    {
+        $kernel =  $this->getKernelMock();
+        $activeTheme = new ActiveTheme('foo', array('foo', 'bar', 'foobar'));
+
+        $pathPatterns = array(
+            'bundle_resource' => array(
+                '%bundle_path%/Resources/themes2/%current_theme%/%template%',
+            )
+        );
+
+        $fileLocator = new FileLocator($kernel, $activeTheme, $this->getFixturePath() . '/rootdir/Resources', array(), $pathPatterns);
+
+        $file = $fileLocator->locate('@ThemeBundle/Resources/views/template', $this->getFixturePath(), true);
+        $this->assertEquals($this->getFixturePath().'/Resources/themes2/foo/template', $file);
     }
 
     /**

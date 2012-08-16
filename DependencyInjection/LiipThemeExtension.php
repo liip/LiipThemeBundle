@@ -11,7 +11,6 @@
 
 namespace Liip\ThemeBundle\DependencyInjection;
 
-use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -28,14 +27,11 @@ class LiipThemeExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-        $processor = new Processor();
-        $configuration = new Configuration();
+        $config = $this->processConfiguration(new Configuration(), $configs);
 
-        $config = $processor->processConfiguration($configuration, $configs);
-
-        $container->setParameter($this->getAlias().'.themes', $config['themes']);
-        $container->setParameter($this->getAlias().'.active_theme', $config['active_theme']);
-        $container->setParameter($this->getAlias().'.cache_warming', $config['cache_warming']);
+        foreach (array('themes', 'active_theme', 'path_patterns', 'cache_warming') as $key) {
+            $container->setParameter($this->getAlias().'.'.$key, $config[$key]);
+        }
 
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
 
