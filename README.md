@@ -24,7 +24,7 @@ Ultimately, the LiipThemeBundle files should be downloaded to the
 This can be done in several ways, depending on your preference. The first
 method is the standard Symfony2 method.
 
-**Using the vendors script**
+**Using the vendors script (symfony 2.0 method)**
 
 Add the following lines in your `deps` file:
 
@@ -49,7 +49,25 @@ $ git submodule add git://github.com/liip/LiipThemeBundle.git vendor/bundles/Lii
 $ git submodule update --init
 ```
 
-### Step 2: Configure the Autoloader
+**Using the composer (symfony 2.1 method)**
+
+Add the following lines in your `composer.json` file:
+
+```json
+{
+    "require": {
+        "liip/theme-bundle": "dev-master",
+    }
+}
+```
+
+Now, run the composer update:
+
+``` bash
+$ php /usr/local/bin/composer.phar update
+```
+
+### Step 2: Configure the Autoloader (only for symfony 2.0 version)
 
 Add the `Liip` namespace to your autoloader:
 
@@ -249,6 +267,13 @@ $activeTheme = $container->get('liip_theme.active_theme');
 echo $activeTheme->getName();
 $activeTheme->setName("phone");
 ```
+## Common Pitfalls 
+
+### Assetic dump do not check Resources/{theme}/views :
+When dumping assets, with assetic:dump command, assetic check just in the Resources/views directory for asset to be generated. It does not check Resources/{theme}/views directory
+
+The simplest current workaround :
+The Problem is that assetic doesn't scan the theme folders. This can be solved by putting the assetic block into a template that is in Bundle/Ressources/views and include this from the theme template.
 
 ## Contribution
 
