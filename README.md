@@ -51,20 +51,11 @@ $ git submodule update --init
 
 **Using the composer (symfony 2.1 method)**
 
-Add the following lines in your `composer.json` file:
-
-```json
-{
-    "require": {
-        "liip/theme-bundle": "dev-master",
-    }
-}
-```
-
-Now, run the composer update:
+Now, run the following composer require command:
 
 ``` bash
-$ php /usr/local/bin/composer.phar update
+$ php composer.phar require liip/theme-bundle:dev-master
+
 ```
 
 ### Step 2: Configure the Autoloader (only for symfony 2.0 version)
