@@ -175,10 +175,10 @@ class FileLocator extends BaseFileLocator
         );
 
         foreach ($bundles as $bundle) {
-            $parameters += array(
+            $parameters = array_merge($parameters, array(
                 '%bundle_path%' => $bundle->getPath(),
                 '%bundle_name%' => $bundle->getName(),
-            );
+            ));
 
             $checkPaths = $this->getPathsForBundleResource($parameters);
 
