@@ -21,24 +21,33 @@ class FileLocatorFake extends FileLocator
 
 class FileLocatorTest extends \PHPUnit_Framework_TestCase
 {
-    protected function getKernelMock()
+    protected function getKernelMock($includeDerivedBundle = false)
     {
         $data = debug_backtrace();
         $bundleName = substr($data[1]['function'], 4);
-        $bundle = $this->getMockBuilder('Symfony\Component\HttpKernel\Bundle\Bundle')
-            ->setMockClassName('LiipMock'.$bundleName)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $bundle->expects($this->any())
-            ->method('getPath')
-            ->will($this->returnValue($this->getFixturePath()));
+
+        $bundles = array();
+        $prefixes = array('');
+        if ($includeDerivedBundle) {
+            array_unshift($prefixes, 'Derived');
+        }
+        foreach ($prefixes as $prefix) {
+            $bundle = $this->getMockBuilder('Symfony\Component\HttpKernel\Bundle\Bundle')
+            	->setMockClassName($prefix . 'LiipMock' . $bundleName)
+            	->disableOriginalConstructor()
+            	->getMock();
+            $bundle->expects($this->any())
+	            ->method('getPath')
+    	        ->will($this->returnValue($this->getFixturePath()));
+            $bundles[] = $bundle;
+        }
 
         $kernel = $this->getMockBuilder('Symfony\Component\HttpKernel\KernelInterface')
             ->disableOriginalConstructor()
             ->getMock();
         $kernel->expects($this->any())
             ->method('getBundle')
-            ->will($this->returnValue(array($bundle)));
+            ->will($this->returnValue($bundles));
 
         return $kernel;
     }
@@ -271,6 +280,39 @@ class FileLocatorTest extends \PHPUnit_Framework_TestCase
         $kernel =  $this->getKernelMock();
         $activeTheme = new ActiveTheme('bar', array('foo', 'bar', 'foobar'));
         $fileLocator = new FileLocator($kernel, $activeTheme, $this->getFixturePath() . '/rootdir/Resources');
+
+        $file = $fileLocator->locate('@ThemeBundle/Resources/nonExistant', $this->getFixturePath(), true);
+    }
+
+    /**
+     * @covers Liip\ThemeBundle\Locator\FileLocator::locate
+     * @covers Liip\ThemeBundle\Locator\FileLocator::locateBundleResource
+     * @expectedException InvalidArgumentException
+     */
+    public function testLocateBundleInheritance()
+    {
+        $kernel =  $this->getKernelMock(true);
+        $activeTheme = new ActiveTheme('bar', array('foo', 'bar', 'foobar'));
+
+        $fileLocator = $this->getMock(
+            'Liip\ThemeBundle\Locator\FileLocator',
+            array('getPathsForBundleResource'),
+            array($kernel, $activeTheme, $this->getFixturePath() . '/rootdir/Resources')
+        );
+
+        $fileLocator->expects($this->at(0))
+        ->method('getPathsForBundleResource')
+        ->with($this->callback(function($parameters) {
+            return 'DerivedLiipMockLocateBundleInheritance' == $parameters['%bundle_name%'];
+        }))
+        ->will($this->returnValue(array()));
+
+        $fileLocator->expects($this->at(1))
+        ->method('getPathsForBundleResource')
+        ->with($this->callback(function($parameters) {
+            return 'LiipMockLocateBundleInheritance' == $parameters['%bundle_name%'];
+        }))
+        ->will($this->returnValue(array()));
 
         $file = $fileLocator->locate('@ThemeBundle/Resources/nonExistant', $this->getFixturePath(), true);
     }
