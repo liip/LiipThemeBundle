@@ -15,6 +15,7 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpFoundation\Cookie;
+use Symfony\Component\HttpFoundation\Request;
 
 use Liip\ThemeBundle\Helper\DeviceDetectionInterface;
 use Liip\ThemeBundle\ActiveTheme;
@@ -52,7 +53,7 @@ class ThemeRequestListener
      * @param array                    $cookieOptions The options of the cookie we look for the theme to set
      * @param DeviceDetectionInterface $autoDetect    If to auto detect the theme based on the user agent
      */
-    public function __construct(ActiveTheme $activeTheme, array $cookieOptions, DeviceDetectionInterface $autoDetect = null)
+    public function __construct(ActiveTheme $activeTheme, array $cookieOptions = null, DeviceDetectionInterface $autoDetect = null)
     {
         $this->activeTheme = $activeTheme;
         $this->autoDetect = $autoDetect;
@@ -65,25 +66,41 @@ class ThemeRequestListener
     public function onKernelRequest(GetResponseEvent $event)
     {
         if (HttpKernelInterface::MASTER_REQUEST === $event->getRequestType()) {
-            $activeCookie = $event->getRequest()->cookies->get($this->cookieOptions['name']);
-
-            if (!$activeCookie && $this->autoDetect instanceof DeviceDetectionInterface) {
-                $userAgent = $event->getRequest()->server->get('HTTP_USER_AGENT');
-                $this->autoDetect->setUserAgent($userAgent);
-                $this->newTheme = $activeCookie = $this->autoDetect->getType();
+            if (null !== $this->cookieOptions) {
+                $this->newTheme = $event->getRequest()->cookies->get($this->cookieOptions['name']);
             }
 
-            if ($activeCookie && $activeCookie !== $this->activeTheme->getName()
-                && in_array($activeCookie, $this->activeTheme->getThemes())
+            if (!$this->newTheme && $this->autoDetect instanceof DeviceDetectionInterface) {
+                $this->newTheme = $this->getThemeType($event->getRequest());
+            }
+
+            if ($this->newTheme && $this->newTheme !== $this->activeTheme->getName()
+                && in_array($this->newTheme, $this->activeTheme->getThemes())
             ) {
-                $this->activeTheme->setName($activeCookie);
+                $this->activeTheme->setName($this->newTheme);
             }
-         }
-     }
+        }
+    }
 
     /**
-      * @param FilterResponseEvent $event
-      */
+     * Given the Request return the device type.
+     *
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     *
+     * @return string the user agent type
+     */
+    private function getThemeType(Request $request)
+    {
+        $userAgent = $request->server->get('HTTP_USER_AGENT');
+        $this->autoDetect->setUserAgent($userAgent);
+
+        return $this->autoDetect->getType();
+    }
+
+
+    /**
+     * @param FilterResponseEvent $event
+     */
     public function onKernelResponse(FilterResponseEvent $event)
     {
         if (HttpKernelInterface::MASTER_REQUEST === $event->getRequestType()) {
@@ -94,8 +111,8 @@ class ThemeRequestListener
                     time() + $this->cookieOptions['lifetime'],
                     $this->cookieOptions['path'],
                     $this->cookieOptions['domain'],
-                    (Boolean) $this->cookieOptions['secure'],
-                    (Boolean) $this->cookieOptions['http_only']
+                    (Boolean)$this->cookieOptions['secure'],
+                    (Boolean)$this->cookieOptions['http_only']
                 );
                 $event->getResponse()->headers->setCookie($cookie);
             }

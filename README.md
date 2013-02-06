@@ -124,7 +124,7 @@ liip_theme:
 
 ### Optional
 
-If you want to select the active theme based on a cookie you can add
+If you want to select the active theme based on a cookie you can add:
 
 ``` yaml
 # app/config/config.yml
@@ -138,7 +138,7 @@ liip_theme:
         http_only: false
 ```
 
-It is also possible to automate setting the theme cookie based on the user agent:
+It is also possible to automate setting the theme based on the user agent:
 
 ``` yaml
 # app/config/config.yml

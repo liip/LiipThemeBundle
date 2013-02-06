@@ -14,7 +14,6 @@
             <argument type="service" id="liip_theme.active_theme" />
             <argument>%liip_theme.cookie%</argument>
             <tag name="kernel.event_listener" event="kernel.request" method="onKernelRequest" />
-            <tag name="kernel.event_listener" event="kernel.response" method="onKernelResponse" />
         </service>
 
         <service id="liip_theme.theme_auto_detect" class="%liip_theme.theme_auto_detect.class%" />
