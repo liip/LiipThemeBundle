@@ -58,7 +58,39 @@ class LiipThemeExtensionTest extends \PHPUnit_Framework_TestCase
 
         $listener = $container->get('liip_theme.theme_request_listener');
         $this->assertInstanceOf('Liip\ThemeBundle\EventListener\ThemeRequestListener', $listener);
+
+        $tagged = $container->findTaggedServiceIds('kernel.event_listener');
+        $this->assertArrayHasKey("liip_theme.theme_request_listener", $tagged);
+
+        $foundKernelResponse = false;
+        foreach ($tagged["liip_theme.theme_request_listener"] as $tag) {
+            if ($tag['event'] == 'kernel.response') {
+                $foundKernelResponse = $tag['method'];
+                break;
+            }
+        }
+        $this->assertEquals($foundKernelResponse, 'onKernelResponse');
     }
+
+    /**
+     * @covers Liip\ThemeBundle\LiipThemeBundle
+     * @covers Liip\ThemeBundle\DependencyInjection\LiipThemeExtension::load
+     * @covers Liip\ThemeBundle\DependencyInjection\Configuration::getConfigTreeBuilder
+     */
+    public function testLoadWithAutodetectNoCookie()
+    {
+        $container = new ContainerBuilder();
+        $loader = new LiipThemeExtension();
+        $config = $this->getConfig();
+        $config['autodetect_theme'] = true;
+        $loader->load(array($config), $container);
+
+        $listener = $container->get('liip_theme.theme_request_listener');
+        $this->assertInstanceOf('Liip\ThemeBundle\EventListener\ThemeRequestListener', $listener);
+        $tagged = $container->findTaggedServiceIds('kernel.event_listener');
+        $this->assertArrayHasKey("liip_theme.theme_request_listener", $tagged);
+    }
+
 
     protected function getConfig()
     {
