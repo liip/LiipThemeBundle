@@ -66,18 +66,23 @@ class ThemeRequestListener
     public function onKernelRequest(GetResponseEvent $event)
     {
         if (HttpKernelInterface::MASTER_REQUEST === $event->getRequestType()) {
+            $cookieValue = null;
             if (null !== $this->cookieOptions) {
-                $this->newTheme = $event->getRequest()->cookies->get($this->cookieOptions['name']);
+                $cookieValue = $event->getRequest()->cookies->get($this->cookieOptions['name']);
             }
 
-            if (!$this->newTheme && $this->autoDetect instanceof DeviceDetectionInterface) {
-                $this->newTheme = $this->getThemeType($event->getRequest());
+            if (!$cookieValue && $this->autoDetect instanceof DeviceDetectionInterface) {
+                $cookieValue = $this->getThemeType($event->getRequest());
             }
 
-            if ($this->newTheme && $this->newTheme !== $this->activeTheme->getName()
-                && in_array($this->newTheme, $this->activeTheme->getThemes())
+            if ($cookieValue && $cookieValue !== $this->activeTheme->getName()
+                && in_array($cookieValue, $this->activeTheme->getThemes())
             ) {
-                $this->activeTheme->setName($this->newTheme);
+                $this->activeTheme->setName($cookieValue);
+                // store into cookie
+                if ($this->cookieOptions) {
+                    $this->newTheme = $cookieValue;
+                }
             }
         }
     }
@@ -104,7 +109,8 @@ class ThemeRequestListener
     public function onKernelResponse(FilterResponseEvent $event)
     {
         if (HttpKernelInterface::MASTER_REQUEST === $event->getRequestType()) {
-            if ($this->newTheme) {
+            // store into the cookie only if the controller did not already change the value
+            if ($this->newTheme == $this->activeTheme->getName()) {
                 $cookie = new Cookie(
                     $this->cookieOptions['name'],
                     $this->newTheme,
