@@ -26,7 +26,7 @@ class UseCaseTest extends \PHPUnit_Framework_TestCase
 {
     protected $testCookieName = 'LiipThemeRequestCookieTestName';
 
-    protected function geDeviceDetectionMock($getType)
+    protected function getDeviceDetectionMock($getType)
     {
         $device = $this->getMockBuilder('Liip\ThemeBundle\Helper\DeviceDetectionInterface')
             ->disableOriginalConstructor()
@@ -125,7 +125,7 @@ class UseCaseTest extends \PHPUnit_Framework_TestCase
 
         $device = null;
         if ($config['autodetect_theme']) {
-            $device = $this->geDeviceDetectionMock('autodetect');
+            $device = $this->getDeviceDetectionMock('autodetect');
         }
         $response = new \Symfony\Component\HttpFoundation\Response();
         $request = new \Symfony\Component\HttpFoundation\Request();
