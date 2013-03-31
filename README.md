@@ -264,7 +264,7 @@ $activeTheme->setName("phone");
 When dumping assets, with assetic:dump command, assetic check just in the Resources/views directory for asset to be generated. It does not check Resources/{theme}/views directory
 
 The simplest current workaround :
-The Problem is that assetic doesn't scan the theme folders. This can be solved by putting the assetic block into a template that is in Bundle/Ressources/views and include this from the theme template.
+The Problem is that assetic doesn't scan the theme folders. This can be solved by putting the assetic block into a template that is in Bundle/Resources/views and include this from the theme template.
 
 ## Contribution
 
