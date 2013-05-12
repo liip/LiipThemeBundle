@@ -262,10 +262,11 @@ $activeTheme->setName("phone");
 
 ### Assetic dump do not check Resources/{theme}/views :
 Make sure to place your themes into a views folder in Resources, like this: Resources/views/{theme}/views
-If you have any errors, make sure to set read_from: 
+If you have any errors, make sure to set read_from in your config.yml under assetic:
 ``` yaml 
-%kernel.root_dir%/Resources/views/
+read_from: %kernel.root_dir%/Resources/views/
 ```
+
 
 ## Contribution
 
