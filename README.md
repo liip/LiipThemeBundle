@@ -230,7 +230,7 @@ take a look at the coverage as well it should be pretty high :)
 First install dependencies:
 
 ```bash
-   composer.phar install -dev
+   composer.phar install --dev
 ```
 
 This will give you proper results:
