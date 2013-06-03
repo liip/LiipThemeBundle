@@ -236,5 +236,5 @@ First install dependencies:
 This will give you proper results:
 
 ``` bash
-phpunit --coverage-html reports
+phpunit --coverage-text
 ```
