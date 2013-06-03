@@ -227,9 +227,11 @@ have quite a bunch of unit tests. If you're submitting pull requests please
 make sure that they are still passing and if you add functionality please
 take a look at the coverage as well it should be pretty high :)
 
-First initial vendors:
+First install dependencies:
 
-    php vendor/vendors.php
+```bash
+   composer.phar install -dev
+```
 
 This will give you proper results:
 
