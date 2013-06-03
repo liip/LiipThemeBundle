@@ -12,67 +12,19 @@ to the normal Resources/views if no matching file was found.
 Installation is a quick (I promise!) 4 step process:
 
 1. Download LiipThemeBundle
-2. Configure the Autoloader
-3. Enable the Bundle
-4. Import LiipThemeBundle routing
+2. Enable the Bundle
+3. Import LiipThemeBundle routing
 
-### Step 1: Download LiipThemeBundle
+### Step 1: Install LiipThemeBundle with composer
 
-Ultimately, the LiipThemeBundle files should be downloaded to the
-`vendor/bundles/Liip/ThemeBundle` directory.
-
-This can be done in several ways, depending on your preference. The first
-method is the standard Symfony2 method.
-
-**Using the vendors script (symfony 2.0 method)**
-
-Add the following lines in your `deps` file:
-
-```
-[LiipThemeBundle]
-    git=git://github.com/liip/LiipThemeBundle.git
-    target=bundles/Liip/ThemeBundle
-```
-
-Now, run the vendors script to download the bundle:
-
-``` bash
-$ php bin/vendors install
-```
-
-**Using submodules**
-
-If you prefer instead to use git submodules, the run the following:
-
-``` bash
-$ git submodule add git://github.com/liip/LiipThemeBundle.git vendor/bundles/Liip/ThemeBundle
-$ git submodule update --init
-```
-
-**Using the composer (symfony 2.1 method)**
-
-Now, run the following composer require command:
+Run the following composer require command:
 
 ``` bash
 $ php composer.phar require liip/theme-bundle:dev-master
 
 ```
 
-### Step 2: Configure the Autoloader (only for symfony 2.0 version)
-
-Add the `Liip` namespace to your autoloader:
-
-``` php
-<?php
-// app/autoload.php
-
-$loader->registerNamespaces(array(
-    // ...
-    'Liip' => __DIR__.'/../vendor/bundles',
-));
-```
-
-### Step 3: Enable the bundle
+### Step 2: Enable the bundle
 
 Finally, enable the bundle in the kernel:
 
@@ -89,7 +41,7 @@ public function registerBundles()
 }
 ```
 
-### Step 4: Import LiipThemeBundle routing files
+### Step 3: Import LiipThemeBundle routing files
 
 Now that you have activated and configured the bundle, all that is left to do is
 import the LiipThemeBundle routing files.
