@@ -146,7 +146,7 @@ class FileLocator extends BaseFileLocator
      * @param bool $first
      * @return string
      */
-    public function locateBundleResource($name, $dir = null, $first = true)
+    protected function locateBundleResource($name, $dir = null, $first = true)
     {
         if (false !== strpos($name, '..')) {
             throw new \RuntimeException(sprintf('File name "%s" contains invalid characters (..).', $name));
@@ -224,7 +224,7 @@ class FileLocator extends BaseFileLocator
      * @param bool $first
      * @return string|array
      */
-    public function locateAppResource($name, $dir = null, $first = true)
+    protected function locateAppResource($name, $dir = null, $first = true)
     {
         if (false !== strpos($name, '..')) {
             throw new \RuntimeException(sprintf('File name "%s" contains invalid characters (..).', $name));
