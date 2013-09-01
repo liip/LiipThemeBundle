@@ -69,6 +69,73 @@ class FileLocatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Liip\ThemeBundle\Locator\FileLocator::__construct
+     */
+    public function testConstructorFallbackPathMerge()
+    {
+        $kernel =  $this->getKernelMock();
+        $activeTheme = new ActiveTheme('bar', array('foo', 'bar', 'foobar'));
+        $property = new \ReflectionProperty('Liip\ThemeBundle\Locator\FileLocator', 'pathPatterns');
+        $property->setAccessible(true);
+
+        $fileLocator = new FileLocator($kernel, $activeTheme, $this->getFixturePath() . '/rootdir/Resources');
+        $this->assertEquals(
+            array(
+                'app_resource' => array(
+                    '%app_path%/themes/%current_theme%/%template%',
+                    '%app_path%/views/%template%',
+                ),
+                'bundle_resource' => array(
+                    '%bundle_path%/Resources/themes/%current_theme%/%template%',
+                ),
+                'bundle_resource_dir' => array(
+                    '%dir%/themes/%current_theme%/%bundle_name%/%template%',
+                    '%dir%/%bundle_name%/%override_path%',
+                ),
+            ),
+            $property->getValue($fileLocator)
+        );
+
+        $fileLocator = new FileLocator(
+            $kernel,
+            $activeTheme,
+            $this->getFixturePath() . '/rootdir/Resources',
+            array(),
+            array(
+                'app_resource' => array(
+                    '%app_path%/themes/fallback/%template%'
+                ),
+                'bundle_resource' => array(
+                    '%bundle_path%/Resources/themes/fallback/%template%'
+                ),
+                'bundle_resource_dir' => array(
+                    '%dir%/themes/fallback/%bundle_name%/%template%'
+                )
+            )
+        );
+
+        $this->assertEquals(
+            array(
+                'app_resource' => array(
+                    '%app_path%/themes/%current_theme%/%template%',
+                    '%app_path%/views/%template%',
+                    '%app_path%/themes/fallback/%template%'
+                ),
+                'bundle_resource' => array(
+                    '%bundle_path%/Resources/themes/%current_theme%/%template%',
+                    '%bundle_path%/Resources/themes/fallback/%template%'
+                ),
+                'bundle_resource_dir' => array(
+                    '%dir%/themes/%current_theme%/%bundle_name%/%template%',
+                    '%dir%/%bundle_name%/%override_path%',
+                    '%dir%/themes/fallback/%bundle_name%/%template%'
+                ),
+            ),
+            $property->getValue($fileLocator)
+        );
+    }
+
+    /**
      * @covers Liip\ThemeBundle\Locator\FileLocator::locate
      * @covers Liip\ThemeBundle\Locator\FileLocator::locateBundleResource
      */
@@ -100,7 +167,7 @@ class FileLocatorTest extends \PHPUnit_Framework_TestCase
         $fileLocator = new FileLocator($kernel, $activeTheme, $this->getFixturePath() . '/rootdir/Resources', array(), $pathPatterns);
 
         $file = $fileLocator->locate('@ThemeBundle/Resources/views/template', $this->getFixturePath(), true);
-        $this->assertEquals($this->getFixturePath().'/Resources/themes2/foo/template', $file);
+        $this->assertEquals($this->getFixturePath().'/Resources/themes/foo/template', $file);
     }
 
     /**

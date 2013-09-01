@@ -45,13 +45,13 @@ class FileLocator extends BaseFileLocator
     /**
      * Constructor.
      *
-     * @param KernelInterface $kernel A KernelInterface instance
-     * @param string $path The path the global resource directory
-     *
-     * @throws \InvalidArgumentException if the active theme is not in the themes list
+     * @param KernelInterface $kernel       A KernelInterface instance
+     * @param ActiveTheme     $activeTheme  A ActiveTheme instance
+     * @param string|null     $path         Path
+     * @param array           $paths        Base paths
+     * @param array           $pathPatterns Fallback paths pattern
      */
-    public function __construct(KernelInterface $kernel, ActiveTheme $activeTheme, $path = null, array $paths = array(),
-        array $pathPatterns = array())
+    public function __construct(KernelInterface $kernel, ActiveTheme $activeTheme, $path = null, array $paths = array(), array $pathPatterns = array())
     {
         $this->kernel = $kernel;
         $this->activeTheme = $activeTheme;
@@ -72,7 +72,7 @@ class FileLocator extends BaseFileLocator
             ),
         );
 
-        $this->pathPatterns = array_replace($defaultPathPatterns, array_filter($pathPatterns));
+        $this->pathPatterns = array_merge_recursive($defaultPathPatterns, array_filter($pathPatterns));
 
         $this->setCurrentTheme($this->activeTheme->getName());
     }
