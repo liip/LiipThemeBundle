@@ -16,7 +16,7 @@ class DeviceDetection implements DeviceDetectionInterface
     protected $userAgent;
     protected $devices = array(
         "tablet" => array(
-            "androidtablet" => "android(?!.*mobile)",
+            "androidtablet" => "android(?!.*(?:mobile|opera mobi))",
             "blackberrytablet" => "rim tablet os",
             "ipad" => "(ipad)"
         ),
@@ -31,7 +31,7 @@ class DeviceDetection implements DeviceDetectionInterface
             "palm" => "(avantgo|blazer|elaine|hiptop|palm|plucker|xiino|webOS)",
             "windows" => "windows ce; (iemobile|ppc|smartphone)",
             "windowsphone" => "windows phone os",
-            "generic" => "(mobile|mmp|midp|o2|pda|pocket|psp|symbian|smartphone|treo|up.browser|up.link|vodafone|wap|opera mini)",
+            "generic" => "(mobile|mmp|midp|o2|pda|pocket|psp|symbian|smartphone|treo|up.browser|up.link|vodafone|wap|opera mini|opera mobi)",
         ),
         "desktop" => array(
             "osx" => "Mac OS X",
@@ -177,3 +177,4 @@ class DeviceDetection implements DeviceDetectionInterface
         return $this->device;
     }
 }
+ 
