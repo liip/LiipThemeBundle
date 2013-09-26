@@ -16,7 +16,7 @@ class DeviceDetection implements DeviceDetectionInterface
     protected $userAgent;
     protected $devices = array(
         "tablet" => array(
-            "androidtablet" => "android(?!.*(?:mobile|opera mobi))",
+            "androidtablet" => "android(?!.*(?:mobile|opera mobi|opera mini))",
             "blackberrytablet" => "rim tablet os",
             "ipad" => "(ipad)"
         ),
@@ -25,13 +25,13 @@ class DeviceDetection implements DeviceDetectionInterface
             "IE6" => "MSIE 6.0"
         ),
         "phone" => array(
-            "android" => "android.*mobile",
+            "android" => "android.*mobile|android.*opera mobi|android.*opera mini",
             "blackberry" => "blackberry",
             "iphone" => "(iphone|ipod)",
             "palm" => "(avantgo|blazer|elaine|hiptop|palm|plucker|xiino|webOS)",
             "windows" => "windows ce; (iemobile|ppc|smartphone)",
             "windowsphone" => "windows phone os",
-            "generic" => "(mobile|mmp|midp|o2|pda|pocket|psp|symbian|smartphone|treo|up.browser|up.link|vodafone|wap|opera mini|opera mobi)",
+            "generic" => "(mobile|mmp|midp|o2|pda|pocket|psp|symbian|smartphone|treo|up.browser|up.link|vodafone|wap|opera mini|opera mobi|opera mini)",
         ),
         "desktop" => array(
             "osx" => "Mac OS X",
