@@ -172,4 +172,47 @@ class DeviceDetectionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('desktop', $device->getType(), 'Firefox type is set to desktop');
         $this->assertTrue($device->isDesktop(), 'Firefox should get recognized as desktop');
     }
+
+    /**
+     * @covers Liip\ThemeBundle\Helper\DeviceDetection::determineDevice
+     * @covers Liip\ThemeBundle\Helper\DeviceDetection::isPhone
+     * @covers Liip\ThemeBundle\Helper\DeviceDetection::getDevice
+     */
+    public function testCheckOperaClassicMobile()
+    {
+        $device = new DeviceDetection('Opera/9.80 (Android 2.3.7; Linux; Opera Mobi/46154) Presto/2.11.355 Version/12.10');
+        $this->assertEquals('phone', $device->getType(), 'Opera Mobile android is set to phone');
+        $this->assertEquals('android', $device->getDevice(), 'Opera mobile android should get recognized as Android');
+        $this->assertTrue($device->isPhone(), 'Opera Mobile Android should get recognized as phone');
+        $this->assertTrue($device->isAndroid(), 'Opera Mobile Android should get recognized as Android');
+    }
+
+    /**
+     * @covers Liip\ThemeBundle\Helper\DeviceDetection::determineDevice
+     * @covers Liip\ThemeBundle\Helper\DeviceDetection::isPhone
+     * @covers Liip\ThemeBundle\Helper\DeviceDetection::getDevice
+     */
+    public function testCheckOperaClassicTablet()
+    {
+        $device = new DeviceDetection('Opera/9.80 (Android 2.3.7; Linux; Opera Tablet/46154) Presto/2.11.355 Version/12.10');
+        $this->assertEquals('tablet', $device->getType(), 'Opera Mobile android is set to tablet');
+        $this->assertEquals('androidtablet', $device->getDevice(), 'Opera mobile android should get recognized as Android');
+        $this->assertTrue($device->isTablet(), 'Opera Mobile Android should get recognized as tablet');
+        $this->assertTrue($device->isAndroidTablet(), 'Opera Mobile Android should get recognized as Android');
+    }
+
+
+    /**
+     * @covers Liip\ThemeBundle\Helper\DeviceDetection::determineDevice
+     * @covers Liip\ThemeBundle\Helper\DeviceDetection::isPhone
+     * @covers Liip\ThemeBundle\Helper\DeviceDetection::getDevice
+     */
+    public function testCheckOperaMobile()
+    {
+        $device = new DeviceDetection('Opera/9.80 (Android; Opera Mini/16.0.1212/31.1475; U; fr) Presto/2.8.119 Version/11.10)');
+        $this->assertEquals('phone', $device->getType(), 'Opera Mobile android is set to phone');
+        $this->assertEquals('android', $device->getDevice(), 'Opera mobile android should get recognized as Android');
+        $this->assertTrue($device->isPhone(), 'Opera Mobile Android should get recognized as phone');
+        $this->assertTrue($device->isAndroid(), 'Opera Mobile Android should get recognized as Android');
+    }
 }
