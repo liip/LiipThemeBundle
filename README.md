@@ -101,7 +101,7 @@ liip_theme:
 Optionally ``autodetect_theme`` can also be set to a DIC service id that implements
 the ``Liip\ThemeBundle\Helper\DeviceDetectionInterface`` interface.
 
-If your application doesnt't allow the user to switch theme, you can desactivate
+If your application doesn't allow the user to switch theme, you can desactivate
 the controller shipped with the bundle:
 
 ``` yaml
