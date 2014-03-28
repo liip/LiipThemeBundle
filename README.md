@@ -9,7 +9,7 @@ to the normal Resources/views if no matching file was found.
 
 ## Installation
 
-Installation is a quick (I promise!) 4 step process:
+Installation is a quick (I promise!) 3 step process:
 
 1. Download LiipThemeBundle
 2. Enable the Bundle
