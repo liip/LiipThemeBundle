@@ -19,5 +19,4 @@ before_script:
 script: phpunit --coverage-text
 
 notifications:
-  email:
-    - travis-ci@liip.ch
+  slack: liip:omECyFa2jBWp1yiRO6c6dash
