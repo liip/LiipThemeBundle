@@ -72,7 +72,7 @@ class FileLocator extends BaseFileLocator
             ),
         );
 
-        $this->pathPatterns = array_merge_recursive($defaultPathPatterns, array_filter($pathPatterns));
+        $this->pathPatterns = array_merge_recursive(array_filter($pathPatterns), $defaultPathPatterns);
 
         $this->setCurrentTheme($this->activeTheme->getName());
     }

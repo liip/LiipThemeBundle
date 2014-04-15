@@ -103,13 +103,17 @@ class FileLocatorTest extends \PHPUnit_Framework_TestCase
             array(),
             array(
                 'app_resource' => array(
-                    '%app_path%/themes/fallback/%template%'
+                    '%app_path%/views/themes/%current_theme%/%template',
+                    '%app_path%/views/themes/fallback/%template%',
                 ),
                 'bundle_resource' => array(
-                    '%bundle_path%/Resources/themes/fallback/%template%'
+                    '%bundle_path%/Resources/views/themes/%current_theme%/%template%',
+                    '%bundle_path%/Resources/views/themes/fallback/%template%',
+
                 ),
                 'bundle_resource_dir' => array(
-                    '%dir%/themes/fallback/%bundle_name%/%template%'
+                    '%dir%/views/themes/%current_theme%/%bundle_name%/%template%',
+                    '%dir%/views/themes/fallback/%bundle_name%/%template%',
                 )
             )
         );
@@ -117,18 +121,21 @@ class FileLocatorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(
             array(
                 'app_resource' => array(
+                    '%app_path%/views/themes/%current_theme%/%template',
+                    '%app_path%/views/themes/fallback/%template%',
                     '%app_path%/themes/%current_theme%/%template%',
                     '%app_path%/views/%template%',
-                    '%app_path%/themes/fallback/%template%'
                 ),
                 'bundle_resource' => array(
+                    '%bundle_path%/Resources/views/themes/%current_theme%/%template%',
+                    '%bundle_path%/Resources/views/themes/fallback/%template%',
                     '%bundle_path%/Resources/themes/%current_theme%/%template%',
-                    '%bundle_path%/Resources/themes/fallback/%template%'
                 ),
                 'bundle_resource_dir' => array(
+                    '%dir%/views/themes/%current_theme%/%bundle_name%/%template%',
+                    '%dir%/views/themes/fallback/%bundle_name%/%template%',
                     '%dir%/themes/%current_theme%/%bundle_name%/%template%',
                     '%dir%/%bundle_name%/%override_path%',
-                    '%dir%/themes/fallback/%bundle_name%/%template%'
                 ),
             ),
             $property->getValue($fileLocator)
@@ -153,21 +160,29 @@ class FileLocatorTest extends \PHPUnit_Framework_TestCase
      * @covers Liip\ThemeBundle\Locator\FileLocator::locate
      * @covers Liip\ThemeBundle\Locator\FileLocator::locateBundleResource
      */
-    public function testLocateWithOverridenPathPattern()
+    public function testLocateWithOverriddenPathPattern()
     {
         $kernel =  $this->getKernelMock();
         $activeTheme = new ActiveTheme('foo', array('foo', 'bar', 'foobar'));
 
         $pathPatterns = array(
             'bundle_resource' => array(
-                '%bundle_path%/Resources/themes2/%current_theme%/%template%',
+                '%bundle_path%/Resources/views/themes/%current_theme%/%template%',
+                '%bundle_path%/Resources/views/themes/fallback/%template%',
             )
         );
+        $fileLocator = new FileLocator($kernel, $activeTheme, $this->getFixturePath() . '/rootdir/Resources', array(), $pathPatterns);
+
+        $file = $fileLocator->locate('@ThemeBundle/Resources/views/template', $this->getFixturePath(), true);
+        $this->assertEquals($this->getFixturePath().'/Resources/views/themes/foo/template', $file);
+
+        // Fall through user-configured cascade order - /Resources/views/themes/bar will not be found.
+        $activeTheme = new ActiveTheme('bar', array('foo', 'bar', 'foobar'));
 
         $fileLocator = new FileLocator($kernel, $activeTheme, $this->getFixturePath() . '/rootdir/Resources', array(), $pathPatterns);
 
         $file = $fileLocator->locate('@ThemeBundle/Resources/views/template', $this->getFixturePath(), true);
-        $this->assertEquals($this->getFixturePath().'/Resources/themes/foo/template', $file);
+        $this->assertEquals($this->getFixturePath().'/Resources/views/themes/fallback/template', $file);
     }
 
     /**
