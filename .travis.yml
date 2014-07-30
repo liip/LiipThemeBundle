@@ -4,13 +4,11 @@ php:
   - 5.3
   - 5.4
   - 5.5
+  - 5.6
+  - hhvm
 
 env:
-  - SYMFONY_VERSION=2.0.*
-  - SYMFONY_VERSION=2.1.*
-  - SYMFONY_VERSION=2.2.*
   - SYMFONY_VERSION=2.3.*
-  - SYMFONY_VERSION=dev-master
 
 before_script:
   - composer require symfony/framework-bundle:${SYMFONY_VERSION} --no-update
@@ -20,3 +18,21 @@ script: phpunit --coverage-text
 
 notifications:
   slack: liip:omECyFa2jBWp1yiRO6c6dash
+
+matrix:
+  allow_failures:
+    - env: SYMFONY_VERSION=dev-master
+    - php: hhvm
+  include:
+    - php: 5.5
+      env: SYMFONY_VERSION=2.0.*
+    - php: 5.5
+      env: SYMFONY_VERSION=2.1.*
+    - php: 5.5
+      env: SYMFONY_VERSION=2.2.*
+    - php: 5.5
+      env: SYMFONY_VERSION=2.4.*
+    - php: 5.5
+      env: SYMFONY_VERSION=2.5.*
+    - php: 5.5
+      env: SYMFONY_VERSION=dev-master
