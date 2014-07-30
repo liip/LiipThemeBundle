@@ -17,7 +17,7 @@ before_script:
 script: phpunit --coverage-text
 
 notifications:
-  slack: liip:omECyFa2jBWp1yiRO6c6dash
+  slack: liip:3QOs1QKt3aCFxpJvRzpJCbVZ
 
 matrix:
   allow_failures:
