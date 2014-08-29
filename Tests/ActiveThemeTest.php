@@ -11,7 +11,7 @@
 
 namespace Liip\Tests;
 
-use Liip\ThemeBundle\Locator\FileLocator;
+use Liip\ThemeBundle\Helper\DeviceDetection;
 use Liip\ThemeBundle\ActiveTheme;
 
 class ActiveThemeTest extends \PHPUnit_Framework_TestCase
@@ -22,9 +22,29 @@ class ActiveThemeTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetName()
     {
-        $theme = new ActiveTheme("foo", array("foo"));
+        $theme = new ActiveTheme("foo", array("foo"), new DeviceDetection());
 
         $this->assertEquals("foo", $theme->getName());
+    }
+
+    /**
+     * @covers Liip\ThemeBundle\ActiveTheme::__construct
+     * @covers Liip\ThemeBundle\ActiveTheme::getName
+     */
+    public function testDeviceDesktop()
+    {
+        $theme = new ActiveTheme("foo", array("foo"), new DeviceDetection('Mac OS X'));
+        $this->assertEquals('desktop', $theme->getDeviceType());
+    }
+
+    /**
+     * @covers Liip\ThemeBundle\ActiveTheme::__construct
+     * @covers Liip\ThemeBundle\ActiveTheme::getName
+     */
+    public function testDevicePhone()
+    {
+        $theme = new ActiveTheme("foo", array("foo"), new DeviceDetection('iphone'));
+        $this->assertEquals('phone', $theme->getDeviceType());
     }
 
     /**
@@ -33,7 +53,7 @@ class ActiveThemeTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructInvalidName()
     {
-        $theme = new ActiveTheme("foo", array("bar"));
+        $theme = new ActiveTheme("foo", array("bar"), new DeviceDetection());
     }
 
     /**
@@ -42,7 +62,7 @@ class ActiveThemeTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetInvalidName()
     {
-        $theme = new ActiveTheme("foo", array("foo"));
+        $theme = new ActiveTheme("foo", array("foo"), new DeviceDetection());
         $theme->setName("bar");
     }
 }

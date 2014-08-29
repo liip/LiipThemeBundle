@@ -11,6 +11,7 @@
  */
 namespace Liip\Tests\EventListener;
 
+use Liip\ThemeBundle\Helper\DeviceDetection;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 use Liip\ThemeBundle\EventListener\ThemeRequestListener;
@@ -28,7 +29,7 @@ class ThemeRequestListenerTest extends \PHPUnit_Framework_TestCase
     protected function getActiveThemeStub()
     {
         $activeTheme = $this->getMockBuilder('Liip\ThemeBundle\ActiveTheme')
-            ->setConstructorArgs(array('desktop', array('desktop', 'tablet', 'mobile')))
+            ->setConstructorArgs(array('desktop', array('desktop', 'tablet', 'mobile'), new DeviceDetection()))
             ->getMock();
         $activeTheme->expects($this->any())
             ->method('getThemes')

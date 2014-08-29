@@ -11,6 +11,8 @@
 
 namespace Liip\ThemeBundle;
 
+use Liip\ThemeBundle\Helper\DeviceDetectionInterface;
+
 /**
  * Contains the currently active theme and allows to change it.
  *
@@ -31,16 +33,28 @@ class ActiveTheme
     private $themes;
 
     /**
-     * @param string $name
-     * @param array $themes
+     * @var DeviceDetectionInterface
      */
-    public function __construct($name, array $themes = array())
+    private $deviceDetection;
+
+    /**
+     * @param string                          $name
+     * @param array                           $themes
+     * @param Helper\DeviceDetectionInterface $deviceDetection
+     */
+    public function __construct($name, array $themes = array(), DeviceDetectionInterface $deviceDetection = null)
     {
         $this->setThemes($themes);
 
         if ($name) {
             $this->setName($name);
         }
+        $this->deviceDetection = $deviceDetection;
+    }
+
+    public function getDeviceDetection()
+    {
+        return $this->deviceDetection;
     }
 
     public function getThemes()
@@ -68,5 +82,14 @@ class ActiveTheme
         }
 
         $this->name = $name;
+    }
+
+    public function getDeviceType()
+    {
+        if (!$this->deviceDetection) {
+            return '';
+        }
+
+        return $this->deviceDetection->getType();
     }
 }

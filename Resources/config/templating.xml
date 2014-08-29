@@ -8,6 +8,7 @@
         <parameter key="liip_theme.file_locator.class">Liip\ThemeBundle\Locator\FileLocator</parameter>
         <parameter key="liip_theme.active_theme.class">Liip\ThemeBundle\ActiveTheme</parameter>
         <parameter key="liip_theme.cache_warmer.class">Liip\ThemeBundle\CacheWarmer\TemplatePathsCacheWarmer</parameter>
+        <parameter key="liip_theme.theme_auto_detect.class">Liip\ThemeBundle\Helper\DeviceDetection</parameter>
     </parameters>
 
     <services>
@@ -32,9 +33,12 @@
             <argument>%liip_theme.path_patterns%</argument>
         </service>
 
+        <service id="liip_theme.theme_auto_detect" class="%liip_theme.theme_auto_detect.class%" />
+
         <service id="liip_theme.active_theme" class="%liip_theme.active_theme.class%">
             <argument>%liip_theme.active_theme%</argument>
             <argument>%liip_theme.themes%</argument>
+            <argument type="service" id="liip_theme.theme_auto_detect" />
         </service>
 
     </services>
