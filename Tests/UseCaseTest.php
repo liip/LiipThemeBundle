@@ -11,7 +11,6 @@
  */
 namespace Liip\Tests\EventListener;
 
-use Liip\ThemeBundle\Helper\DeviceDetection;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 use Liip\ThemeBundle\EventListener\ThemeRequestListener;
@@ -122,7 +121,7 @@ class UseCaseTest extends \PHPUnit_Framework_TestCase
      */
     public function testThemeAction($config, $assertion, $hasAlreadyACookie = true)
     {
-        $activeTheme = new ActiveTheme($config['active_theme'], $config['themes'], new DeviceDetection());
+        $activeTheme = new ActiveTheme($config['active_theme'], $config['themes']);
 
         $device = null;
         if ($config['autodetect_theme']) {

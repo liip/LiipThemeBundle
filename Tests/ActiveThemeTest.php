@@ -22,7 +22,7 @@ class ActiveThemeTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetName()
     {
-        $theme = new ActiveTheme("foo", array("foo"), new DeviceDetection());
+        $theme = new ActiveTheme("foo", array("foo"));
 
         $this->assertEquals("foo", $theme->getName());
     }
@@ -53,7 +53,7 @@ class ActiveThemeTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructInvalidName()
     {
-        $theme = new ActiveTheme("foo", array("bar"), new DeviceDetection());
+        $theme = new ActiveTheme("foo", array("bar"));
     }
 
     /**
@@ -62,7 +62,7 @@ class ActiveThemeTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetInvalidName()
     {
-        $theme = new ActiveTheme("foo", array("foo"), new DeviceDetection());
+        $theme = new ActiveTheme("foo", array("foo"));
         $theme->setName("bar");
     }
 }
