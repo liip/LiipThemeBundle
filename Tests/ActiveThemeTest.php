@@ -11,7 +11,7 @@
 
 namespace Liip\Tests;
 
-use Liip\ThemeBundle\Locator\FileLocator;
+use Liip\ThemeBundle\Helper\DeviceDetection;
 use Liip\ThemeBundle\ActiveTheme;
 
 class ActiveThemeTest extends \PHPUnit_Framework_TestCase
@@ -25,6 +25,26 @@ class ActiveThemeTest extends \PHPUnit_Framework_TestCase
         $theme = new ActiveTheme("foo", array("foo"));
 
         $this->assertEquals("foo", $theme->getName());
+    }
+
+    /**
+     * @covers Liip\ThemeBundle\ActiveTheme::__construct
+     * @covers Liip\ThemeBundle\ActiveTheme::getName
+     */
+    public function testDeviceDesktop()
+    {
+        $theme = new ActiveTheme("foo", array("foo"), new DeviceDetection('Mac OS X'));
+        $this->assertEquals('desktop', $theme->getDeviceType());
+    }
+
+    /**
+     * @covers Liip\ThemeBundle\ActiveTheme::__construct
+     * @covers Liip\ThemeBundle\ActiveTheme::getName
+     */
+    public function testDevicePhone()
+    {
+        $theme = new ActiveTheme("foo", array("foo"), new DeviceDetection('iphone'));
+        $this->assertEquals('phone', $theme->getDeviceType());
     }
 
     /**

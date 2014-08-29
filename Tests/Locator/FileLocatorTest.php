@@ -229,6 +229,21 @@ class FileLocatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @contain Liip\ThemeBundle\Locator\FileLocator::locate
+     */
+    public function testLocateActiveDeviceTypeUpdate()
+    {
+        $kernel =  $this->getKernelMock();
+        $activeTheme = new ActiveTheme('foo', array('foo', 'bar', 'foobar'));
+        $fileLocator = new FileLocatorFake($kernel, $activeTheme, $this->getFixturePath() . '/rootdir/Resources');
+
+        $this->assertEquals('foo', $fileLocator->lastTheme);
+        $activeTheme->setName('bar');
+        $fileLocator->locate('Resources/themes/foo/template', $this->getFixturePath(), true);
+        $this->assertEquals('bar', $fileLocator->lastTheme);
+    }
+
+    /**
      * This verifies that the default view gets used if the currently active
      * one doesn't contain a matching file.
      *

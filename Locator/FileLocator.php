@@ -42,6 +42,9 @@ class FileLocator extends BaseFileLocator
      */
     protected $lastTheme;
 
+    /** @var string */
+    protected $lastDeviceType;
+
     /**
      * Constructor.
      *
@@ -51,8 +54,13 @@ class FileLocator extends BaseFileLocator
      * @param array           $paths        Base paths
      * @param array           $pathPatterns Fallback paths pattern
      */
-    public function __construct(KernelInterface $kernel, ActiveTheme $activeTheme, $path = null, array $paths = array(), array $pathPatterns = array())
-    {
+    public function __construct(
+        KernelInterface $kernel,
+        ActiveTheme $activeTheme,
+        $path = null,
+        array $paths = array(),
+        array $pathPatterns = array()
+    ) {
         $this->kernel = $kernel;
         $this->activeTheme = $activeTheme;
         $this->path = $path;
@@ -74,17 +82,19 @@ class FileLocator extends BaseFileLocator
 
         $this->pathPatterns = array_merge_recursive(array_filter($pathPatterns), $defaultPathPatterns);
 
-        $this->setCurrentTheme($this->activeTheme->getName());
+        $this->setCurrentTheme($this->activeTheme->getName(), $this->activeTheme->getDeviceType());
     }
 
     /**
      * Set the active theme.
      *
      * @param string $theme
+     * @param string $deviceType
      */
-    public function setCurrentTheme($theme)
+    public function setCurrentTheme($theme, $deviceType)
     {
         $this->lastTheme = $theme;
+        $this->lastDeviceType = $deviceType;
 
         $paths = $this->basePaths;
 
@@ -119,8 +129,9 @@ class FileLocator extends BaseFileLocator
     {
         // update the paths if the theme changed since the last lookup
         $theme = $this->activeTheme->getName();
+
         if ($this->lastTheme !== $theme) {
-            $this->setCurrentTheme($theme);
+            $this->setCurrentTheme($theme, $this->activeTheme->getDeviceType());
         }
 
         if ('@' === $name[0]) {
@@ -143,7 +154,10 @@ class FileLocator extends BaseFileLocator
      *
      * @param string $name
      * @param string $dir
-     * @param bool $first
+     * @param bool   $first
+     *
+     * @throws \RuntimeException
+     * @throws \InvalidArgumentException
      * @return string
      */
     protected function locateBundleResource($name, $dir = null, $first = true)
@@ -171,6 +185,7 @@ class FileLocator extends BaseFileLocator
             '%dir%'           => $dir,
             '%override_path%' => substr($path, strlen('Resources/')),
             '%current_theme%' => $this->lastTheme,
+            '%current_device%' => $this->lastDeviceType,
             '%template%'      => substr($path, strlen('Resources/views/')),
         );
 

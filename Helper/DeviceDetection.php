@@ -171,6 +171,18 @@ class DeviceDetection implements DeviceDetectionInterface
         return $this->type;
     }
 
+    /**
+     * Force device type
+     *
+     * @param string $type
+     */
+    public function setType($type)
+    {
+        if (in_array($type, array_keys($this->devices))) {
+            $this->type = $type;
+        }
+    }
+
     public function getDevice()
     {
         $this->init();

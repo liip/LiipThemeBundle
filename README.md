@@ -143,6 +143,7 @@ liip_theme:
             - %%app_path%%/themes/fallback_theme/%%template%%
             - %%app_path%%/views/%%template%%
         bundle_resource:
+            - %%bundle_path%%/Resources/themes/%%current_theme%%_%%current_device%%/%%template%%
             - %%bundle_path%%/Resources/themes/%%current_theme%%/%%template%%
             - %%bundle_path%%/Resources/themes/fallback_theme/%%template%%
         bundle_resource_dir:
@@ -184,6 +185,11 @@ liip_theme:
   <td>Name of the current active theme</td>
   <td></td>
   </tr>
+  <tr>
+      <td><code>%current_device%</code></td>
+    <td>Name of the current device type</td>
+    <td>desktop, phone, tablet, plain</td>
+    </tr>
   <tr>
     <td><code>%template%</code></td>
   <td>Template name</td>
