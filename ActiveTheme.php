@@ -52,6 +52,9 @@ class ActiveTheme
         $this->deviceDetection = $deviceDetection;
     }
 
+    /**
+     * @return DeviceDetectionInterface
+     */
     public function getDeviceDetection()
     {
         return $this->deviceDetection;
@@ -84,6 +87,9 @@ class ActiveTheme
         $this->name = $name;
     }
 
+    /**
+     * @return string
+     */
     public function getDeviceType()
     {
         if (!$this->deviceDetection) {

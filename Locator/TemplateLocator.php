@@ -30,8 +30,6 @@ class TemplateLocator extends BaseTemplateLocator
      * @param FileLocatorInterface $locator  A FileLocatorInterface instance
      * @param string               $cacheDir The cache path
      * @param ActiveTheme          $activeTheme
-     *
-     * @internal param ActiveTheme $theme The theme instance
      */
     public function __construct(FileLocatorInterface $locator, $cacheDir = null, ActiveTheme $activeTheme = null)
     {
