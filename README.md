@@ -162,8 +162,8 @@ liip_theme:
   </tr>
   <tr>
     <td><code>%app_path%</code></td>
-  <td>Path where application located</td>
-  <td><code>app</code></td>
+  <td>Path where application resources are located</td>
+  <td><code>app/Resources</code></td>
   </tr>
   <tr>
     <td><code>%bundle_path%</code></td>
