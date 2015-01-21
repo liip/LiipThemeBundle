@@ -30,7 +30,7 @@ class DeviceDetection implements DeviceDetectionInterface
             "iphone" => "(iphone|ipod)",
             "palm" => "(avantgo|blazer|elaine|hiptop|palm|plucker|xiino|webOS)",
             "windows" => "windows ce; (iemobile|ppc|smartphone)",
-            "windowsphone" => "windows phone os",
+            "windowsphone" => "windows phone",
             "generic" => "(mobile|mmp|midp|o2|pda|pocket|psp|symbian|smartphone|treo|up.browser|up.link|vodafone|wap|opera mini|opera mobi|opera mini)",
         ),
         "desktop" => array(

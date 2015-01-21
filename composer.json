@@ -20,7 +20,8 @@
         "symfony/framework-bundle": "~2.0"
     },
     "require-dev":{
-        "symfony/console": "~2.0"
+        "symfony/console": "~2.0",
+        "symfony/expression-language": "~2.6"
     },
     "extra": {
         "branch-alias": {
