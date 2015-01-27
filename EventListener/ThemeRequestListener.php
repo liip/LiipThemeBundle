@@ -66,13 +66,17 @@ class ThemeRequestListener
     public function onKernelRequest(GetResponseEvent $event)
     {
         if (HttpKernelInterface::MASTER_REQUEST === $event->getRequestType()) {
+            if ($this->autoDetect) {
+                $this->autoDetect->setUserAgent($event->getRequest()->server->get('HTTP_USER_AGENT'));
+            }
+
             $cookieValue = null;
             if (null !== $this->cookieOptions) {
                 $cookieValue = $event->getRequest()->cookies->get($this->cookieOptions['name']);
             }
 
             if (!$cookieValue && $this->autoDetect instanceof DeviceDetectionInterface) {
-                $cookieValue = $this->getThemeType($event->getRequest());
+                $cookieValue = $this->autoDetect->getType();
             }
 
             if ($cookieValue && $cookieValue !== $this->activeTheme->getName()
@@ -86,22 +90,6 @@ class ThemeRequestListener
             }
         }
     }
-
-    /**
-     * Given the Request return the device type.
-     *
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     *
-     * @return string the user agent type
-     */
-    private function getThemeType(Request $request)
-    {
-        $userAgent = $request->server->get('HTTP_USER_AGENT');
-        $this->autoDetect->setUserAgent($userAgent);
-
-        return $this->autoDetect->getType();
-    }
-
 
     /**
      * @param FilterResponseEvent $event
