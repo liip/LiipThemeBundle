@@ -33,7 +33,7 @@ before_script:
   - composer self-update
   - composer require symfony/framework-bundle:${SYMFONY_VERSION}
 
-script: phpunit --coverage-text
+script: ./vendor/bin/phpunit --coverage-text
 
 notifications:
   slack: liip:3QOs1QKt3aCFxpJvRzpJCbVZ

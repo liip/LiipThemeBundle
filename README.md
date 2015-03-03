@@ -216,15 +216,26 @@ $activeTheme = $container->get('liip_theme.active_theme');
 echo $activeTheme->getName();
 $activeTheme->setName("phone");
 ```
-## Common Pitfalls 
 
-### Assetic dump do not check Resources/{theme}/views :
-Make sure to place your themes into a views folder in Resources, like this: Resources/views/{theme}/views
-If you have any errors, make sure to set read_from in your config.yml under assetic:
-``` yaml 
-read_from: %kernel.root_dir%/Resources/views/
-```
+### Assetic integration
 
+Because of the way the LiipThemeBundle overrides the template locator service,
+assetic will only dump the assets of the active theme.
+
+In order to dump the assets of all themes enable the ``assetic_integration``
+option:
+
+````yaml
+# app/config/config.yml
+liip_theme:
+    # ...
+    assetic_integration: true
+````
+
+This will override the Twig formula loader and iterate over all of the themes,
+ensuring that all of the assets are dumped.
+
+Note that this only works with AsseticBundle 2.1 or higher.
 
 ## Contribution
 
