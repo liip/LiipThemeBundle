@@ -14,6 +14,7 @@ namespace Liip\ThemeBundle\DependencyInjection\Compiler;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Symfony\Component\DependencyInjection\Exception\LogicException;
 
 class ThemeCompilerPass implements CompilerPassInterface
 {

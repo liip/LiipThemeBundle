@@ -63,6 +63,10 @@ class LiipThemeExtension extends Extension
                 ->addArgument(new Reference($id));
         }
 
+        if (true === $config['assetic_integration']) {
+            $container->setParameter('liip_theme.assetic_integration', true);
+        }
+
         $loader->load('templating.xml');
     }
 }
