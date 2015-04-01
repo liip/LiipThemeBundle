@@ -60,7 +60,7 @@ class TwigFormulaLoader extends BaseTwigFormulaLoader
                 $this->twig->tokenize($resource->getContent());
 
                 // delegate the formula loading to the parent
-                $formulae = array_merge($formulae, parent::load($resource));
+                $formulae += parent::load($resource);
                 $successTemplates[(string) $resource] = true;
             } catch (\Exception $e) {
                 $failureTemplates[(string) $resource] = $e->getMessage();
