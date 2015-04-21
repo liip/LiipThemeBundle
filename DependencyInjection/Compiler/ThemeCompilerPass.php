@@ -28,5 +28,9 @@ class ThemeCompilerPass implements CompilerPassInterface
             $container->getDefinition('liip_theme.templating.cache_warmer.template_paths')
                 ->replaceArgument(2, null);
         }
+
+        $twigFilesystemLoaderDefinition = $container->getDefinition('twig.loader.filesystem');
+        $twigFilesystemLoaderDefinition->setClass($container->getParameter('liip_theme.filesystem_loader.class'));
+        $twigFilesystemLoaderDefinition->addArgument(new Reference('liip_theme.active_theme'));
     }
 }
