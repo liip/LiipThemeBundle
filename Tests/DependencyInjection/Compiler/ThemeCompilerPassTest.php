@@ -20,10 +20,21 @@ class ThemeCompilerPassTest extends \PHPUnit_Framework_TestCase
             ->method('setAlias')
         ;
 
-        $containerMock->expects($this->once())
+        $containerMock->expects($this->exactly(2))
             ->method('getParameter')
-            ->with('liip_theme.cache_warming')
-            ->will($this->returnValue(true))
+            ->will($this->returnValueMap(
+                    array(
+                      array('liip_theme.cache_warming', true),
+                      array('liip_theme.filesystem_loader.class', 'Liip\ThemeBundle\Twig\Loader\FilesystemLoader')
+                    )
+                )
+            )
+        ;
+
+        $containerMock->expects($this->once())
+            ->method('getDefinition')
+            ->with('twig.loader.filesystem')
+            ->willReturn($this->getMock('Symfony\Component\DependencyInjection\Definition'))
         ;
 
         $themeCompiler = new ThemeCompilerPass();
