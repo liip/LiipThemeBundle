@@ -21,7 +21,8 @@
         "psr/log": "~1.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "~4.5",
+        "phpunit/phpunit": "~4.5@stable",
+        "phpunit/php-code-coverage": "@stable",
         "symfony/console": "~2.0",
         "symfony/expression-language": "~2.6",
         "kriswallsmith/assetic": "~1.1",
