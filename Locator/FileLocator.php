@@ -247,7 +247,7 @@ class FileLocator extends BaseFileLocator
             '%app_path%'      => $this->path,
             '%current_theme%' => $this->lastTheme,
             '%current_device%' => $this->activeTheme->getDeviceType(),
-            '%template%'      => substr($name, strlen('views/'))
+            '%template%'      => substr($name, strlen('views/')),
         );
 
         foreach ($this->getPathsForAppResource($parameters) as $checkPaths) {
