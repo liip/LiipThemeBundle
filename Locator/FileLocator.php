@@ -42,9 +42,6 @@ class FileLocator extends BaseFileLocator
      */
     protected $lastTheme;
 
-    /** @var string */
-    protected $lastDeviceType;
-
     /**
      * Constructor.
      *
@@ -96,7 +93,6 @@ class FileLocator extends BaseFileLocator
     public function setCurrentTheme($theme, $deviceType)
     {
         $this->lastTheme = $theme;
-        $this->lastDeviceType = $deviceType;
 
         $paths = $this->basePaths;
 
@@ -139,7 +135,6 @@ class FileLocator extends BaseFileLocator
         if ('@' === $name[0]) {
             return $this->locateBundleResource($name, $this->path, $first);
         }
-
         if (0 === strpos($name, 'views/')) {
             if ($res = $this->locateAppResource($name, $this->path, $first)) {
                 return $res;
@@ -187,7 +182,7 @@ class FileLocator extends BaseFileLocator
             '%dir%'           => $dir,
             '%override_path%' => substr($path, strlen('Resources/')),
             '%current_theme%' => $this->lastTheme,
-            '%current_device%' => $this->lastDeviceType,
+            '%current_device%' => $this->activeTheme->getDeviceType(),
             '%template%'      => substr($path, strlen('Resources/views/')),
         );
 
@@ -251,6 +246,7 @@ class FileLocator extends BaseFileLocator
         $parameters = array(
             '%app_path%'      => $this->path,
             '%current_theme%' => $this->lastTheme,
+            '%current_device%' => $this->activeTheme->getDeviceType(),
             '%template%'      => substr($name, strlen('views/')),
         );
 
