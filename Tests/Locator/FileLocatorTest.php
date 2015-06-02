@@ -11,8 +11,9 @@
 
 namespace Liip\Tests\Locator;
 
-use Liip\ThemeBundle\Locator\FileLocator;
 use Liip\ThemeBundle\ActiveTheme;
+use Liip\ThemeBundle\Helper\DeviceDetection;
+use Liip\ThemeBundle\Locator\FileLocator;
 
 class FileLocatorFake extends FileLocator
 {
@@ -203,6 +204,47 @@ class FileLocatorTest extends \PHPUnit_Framework_TestCase
      * @covers Liip\ThemeBundle\Locator\FileLocator::locate
      * @covers Liip\ThemeBundle\Locator\FileLocator::locateAppResource
      */
+    public function testLocateAppWithTabletDevice()
+    {
+        $kernel =  $this->getKernelMock();
+        $device = new DeviceDetection('Mozilla/5.0 (iPad; U; CPU OS 4_3_3 like Mac OS X; en-us) AppleWebKit/533.17.9 (KHTML, like Gecko) Version/5.0.2 Mobile/8J2 Safari/6533.18.5');
+        $activeTheme = new ActiveTheme('foo', array('foo', 'bar', 'foobar'), $device);
+        $fileLocator = new FileLocator($kernel, $activeTheme, $this->getFixturePath() . '/rootdir/Resources', array(), array(
+            'app_resource' => array(
+                '%app_path%/themes/%current_theme%/%current_device%/%template%',
+            ))
+        );
+
+        $file = $fileLocator->locate('views/template2', $this->getFixturePath().'/rootdir', true);
+        $this->assertEquals($this->getFixturePath().'/rootdir/Resources/themes/foo/tablet/template2', $file);
+    }
+
+    /**
+     * This verifies that the default view gets used if the currently active
+     * one doesn't contain a matching file.
+     *
+     * @covers Liip\ThemeBundle\Locator\FileLocator::locate
+     * @covers Liip\ThemeBundle\Locator\FileLocator::locateBundleResource
+     */
+    public function testLocateViewWithMobileDevice()
+    {
+        $kernel =  $this->getKernelMock();
+        $device = new DeviceDetection('Mozilla/5.0 (iPhone; U; CPU iPhone OS 4_3_3 like Mac OS X; en-us) AppleWebKit/533.17.9 (KHTML, like Gecko) Version/5.0.2 Mobile/8J2 Safari/6533.18.5');
+        $activeTheme = new ActiveTheme('bar', array('foo', 'bar', 'foobar'), $device);
+        $fileLocator = new FileLocator($kernel, $activeTheme, $this->getFixturePath() . '/rootdir/Resources', array(), array(
+            'bundle_resource' => array(
+                '%bundle_path%/Resources/views/%current_device%/%template%',
+            )
+        ));
+
+        $file = $fileLocator->locate('@ThemeBundle/Resources/views/defaultTemplate', $this->getFixturePath(), true);
+        $this->assertEquals($this->getFixturePath().'/Resources/views/phone/defaultTemplate', $file);
+    }
+
+    /**
+     * @covers Liip\ThemeBundle\Locator\FileLocator::locate
+     * @covers Liip\ThemeBundle\Locator\FileLocator::locateAppResource
+     */
     public function testLocateApp()
     {
         $kernel =  $this->getKernelMock();
@@ -217,21 +259,6 @@ class FileLocatorTest extends \PHPUnit_Framework_TestCase
      * @contain Liip\ThemeBundle\Locator\FileLocator::locate
      */
     public function testLocateActiveThemeUpdate()
-    {
-        $kernel =  $this->getKernelMock();
-        $activeTheme = new ActiveTheme('foo', array('foo', 'bar', 'foobar'));
-        $fileLocator = new FileLocatorFake($kernel, $activeTheme, $this->getFixturePath() . '/rootdir/Resources');
-
-        $this->assertEquals('foo', $fileLocator->lastTheme);
-        $activeTheme->setName('bar');
-        $fileLocator->locate('Resources/themes/foo/template', $this->getFixturePath(), true);
-        $this->assertEquals('bar', $fileLocator->lastTheme);
-    }
-
-    /**
-     * @contain Liip\ThemeBundle\Locator\FileLocator::locate
-     */
-    public function testLocateActiveDeviceTypeUpdate()
     {
         $kernel =  $this->getKernelMock();
         $activeTheme = new ActiveTheme('foo', array('foo', 'bar', 'foobar'));
