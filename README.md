@@ -70,8 +70,8 @@ is required that the active theme is part of the themes list.
 ``` yaml
 # app/config/config.yml
 liip_theme:
-    themes: ['web', 'tablet', 'phone']
-    active_theme: 'web'
+    themes: ['standardTheme', 'winter_theme', 'weekend']
+    active_theme: 'standardTheme'
 ```
 
 ### Optional
