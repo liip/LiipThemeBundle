@@ -70,11 +70,36 @@ is required that the active theme is part of the themes list.
 ``` yaml
 # app/config/config.yml
 liip_theme:
-    themes: ['web', 'tablet', 'phone']
-    active_theme: 'web'
+    themes: ['standardTheme', 'winter_theme', 'weekend']
+    active_theme: 'standardTheme'
 ```
 
-### Optional
+### Device specific themes/templates
+
+You can provide specific themes or even templates for diffirent devices (like: desktop, tablet, phone, plain). Set option ```autodetect_theme``` to true for setting ```current_device``` parameter based on the user agent:
+
+``` yaml
+# app/config/config.yml
+liip_theme:
+    autodetect_theme: true
+```
+
+Then in ```path_patterns``` you can use ```%%current_theme%%``` parameter (with your device type as value)
+
+``` yaml
+# app/config/config.yml
+liip_theme:
+    path_patterns:
+        app_resource:
+            - %%app_path%%/themes/%%current_theme%%/%%current_device%%/%%template%%
+            - %%app_path%%/themes/fallback_theme/%%current_device%%/%%template%%
+            - %%app_path%%/views/%%current_device%%/%%template%%
+```
+
+Optionally ``autodetect_theme`` can also be set to a DIC service id that implements
+the ``Liip\ThemeBundle\Helper\DeviceDetectionInterface`` interface.
+
+### Get active theme information from cookie
 
 If you want to select the active theme based on a cookie you can add:
 
@@ -90,16 +115,7 @@ liip_theme:
         http_only: false
 ```
 
-It is also possible to automate setting the theme based on the user agent:
-
-``` yaml
-# app/config/config.yml
-liip_theme:
-    autodetect_theme: true
-```
-
-Optionally ``autodetect_theme`` can also be set to a DIC service id that implements
-the ``Liip\ThemeBundle\Helper\DeviceDetectionInterface`` interface.
+### Disable controller based theme switching
 
 If your application doesn't allow the user to switch theme, you can deactivate
 the controller shipped with the bundle:
