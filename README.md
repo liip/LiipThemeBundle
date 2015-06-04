@@ -84,7 +84,7 @@ liip_theme:
     autodetect_theme: true
 ```
 
-Then in ```path_patterns``` you can use ```%%current_theme%%``` parameter (with your device type as value)
+Then in ```path_patterns``` you can use ```%%current_device%%``` parameter (with your device type as value)
 
 ``` yaml
 # app/config/config.yml
