@@ -15,7 +15,6 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpFoundation\Cookie;
-use Symfony\Component\HttpFoundation\Request;
 
 use Liip\ThemeBundle\Helper\DeviceDetectionInterface;
 use Liip\ThemeBundle\ActiveTheme;
