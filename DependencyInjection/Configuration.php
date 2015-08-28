@@ -73,6 +73,7 @@ class Configuration implements ConfigurationInterface
                 ->booleanNode('cache_warming')->defaultTrue()->end()
                 ->booleanNode('load_controllers')->defaultTrue()->end()
                 ->booleanNode('assetic_integration')->defaultFalse()->end()
+                ->booleanNode('theme_specific_controllers')->defaultFalse()->end()
             ->end()
         ;
 

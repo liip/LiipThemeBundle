@@ -48,6 +48,10 @@ class LiipThemeExtension extends Extension
             $loader->load('theme_request_listener.xml');
         }
 
+        if ($config['theme_specific_controllers']) {
+            $loader->load('theme_controller_listener.xml');
+        }
+
         if  (true == $config['load_controllers']) {
             $loader->load('controller.xml');
         }

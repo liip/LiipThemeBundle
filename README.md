@@ -233,6 +233,41 @@ echo $activeTheme->getName();
 $activeTheme->setName("phone");
 ```
 
+### Theme Specific Controllers
+
+In some situations, a different template is not enough and you need a different 
+controller for a specific theme. We encountered this with A/B testing. Do not 
+abuse this feature and check whether your use case is still to be considered a 
+theme.
+
+This feature is not active by default as there is an additional request 
+listener involved. Enable it by setting `theme_specific_controllers` in your 
+configuration:
+
+
+```yaml
+# app/config/config.yml
+liip_theme:
+    # ...
+    theme_specific_controllers: true
+```
+
+Now you can configure controllers per theme in your routing file:
+
+```yaml
+my_route:
+    path: /x/y
+    defaults:
+        _controller: my_service:fooAction
+        theme_controllers:
+            a: my_other_service:fooAction
+            b: App:Other:foo
+```
+
+As usual, you can use both the service notation or the namespace notation for
+the controllers. Just specify the controller by theme under the key 
+`theme_controller`.
+
 ### Assetic integration
 
 Because of the way the LiipThemeBundle overrides the template locator service,

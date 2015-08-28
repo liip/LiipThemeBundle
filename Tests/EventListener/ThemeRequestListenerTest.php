@@ -16,8 +16,6 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Liip\ThemeBundle\EventListener\ThemeRequestListener;
 
 /**
- * Listens to the request and changes the active theme based on a cookie.
- *
  * @author Tobias Ebnöther <ebi@liip.ch>
  * @author Pascal Helfenstein <pascal@liip.ch>
  */
