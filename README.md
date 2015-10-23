@@ -266,7 +266,7 @@ my_route:
 
 As usual, you can use both the service notation or the namespace notation for
 the controllers. Just specify the controller by theme under the key 
-`theme_controller`.
+`theme_controllers`.
 
 ### Assetic integration
 
