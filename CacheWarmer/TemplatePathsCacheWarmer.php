@@ -11,11 +11,9 @@
 
 namespace Liip\ThemeBundle\CacheWarmer;
 
-use Symfony\Bundle\FrameworkBundle\CacheWarmer\TemplatePathsCacheWarmer as BaseTemplatePathsCacheWarmer,
-    Symfony\Component\HttpKernel\CacheWarmer\CacheWarmer,
-    Symfony\Bundle\FrameworkBundle\Templating\Loader\TemplateLocator,
-    Symfony\Bundle\FrameworkBundle\CacheWarmer\TemplateFinderInterface;
-
+use Symfony\Bundle\FrameworkBundle\CacheWarmer\TemplatePathsCacheWarmer as BaseTemplatePathsCacheWarmer;
+use Symfony\Bundle\FrameworkBundle\Templating\Loader\TemplateLocator;
+use Symfony\Bundle\FrameworkBundle\CacheWarmer\TemplateFinderInterface;
 use Liip\ThemeBundle\ActiveTheme;
 
 class TemplatePathsCacheWarmer extends BaseTemplatePathsCacheWarmer
@@ -25,8 +23,8 @@ class TemplatePathsCacheWarmer extends BaseTemplatePathsCacheWarmer
     /**
      * Constructor.
      *
-     * @param TemplateFinderInterface   $finder  A template finder
-     * @param TemplateLocator           $locator The template locator
+     * @param TemplateFinderInterface $finder  A template finder
+     * @param TemplateLocator         $locator The template locator
      */
     public function __construct(TemplateFinderInterface $finder, TemplateLocator $locator, ActiveTheme $activeTheme = null)
     {
@@ -64,7 +62,7 @@ class TemplatePathsCacheWarmer extends BaseTemplatePathsCacheWarmer
     /**
      * Checks whether this warmer is optional or not.
      *
-     * @return Boolean always true
+     * @return bool always true
      */
     public function isOptional()
     {

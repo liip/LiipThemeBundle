@@ -13,6 +13,7 @@ namespace Liip\ThemeBundle\Helper;
 
 interface DeviceDetectionInterface
 {
-    function setUserAgent($userAgent);
-    function getType();
+    public function setUserAgent($userAgent);
+
+    public function getType();
 }

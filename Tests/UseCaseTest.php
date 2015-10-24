@@ -9,10 +9,10 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
+
 namespace Liip\Tests\EventListener;
 
 use Symfony\Component\HttpKernel\HttpKernelInterface;
-
 use Liip\ThemeBundle\EventListener\ThemeRequestListener;
 use Liip\ThemeBundle\Controller\ThemeController;
 use Liip\ThemeBundle\ActiveTheme;
@@ -38,15 +38,14 @@ class UseCaseTest extends \PHPUnit_Framework_TestCase
             ->method('setUserAgent');
 
         return $device;
-
     }
 
     /**
      * Get the mock of the GetResponseEvent and FilterResponseEvent.
      *
-     * @param \Symfony\Component\HttpFoundation\Request        $request
-     * @param null|\Symfony\Component\HttpFoundation\Response  $response
-     * @param string                                           $type could be Symfony\Component\HttpKernel\Event\GetResponseEvent or 'Symfony\Component\HttpKernel\Event\FilterResponseEvent'
+     * @param \Symfony\Component\HttpFoundation\Request       $request
+     * @param null|\Symfony\Component\HttpFoundation\Response $response
+     * @param string                                          $type     could be Symfony\Component\HttpKernel\Event\GetResponseEvent or 'Symfony\Component\HttpKernel\Event\FilterResponseEvent'
      *
      * @return mixed
      */
@@ -158,7 +157,6 @@ class UseCaseTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->assertCookieValue($response, $assertion['themeAfterKernelResponse']);
-
     }
 
     private function getCookieOptions()
@@ -183,14 +181,14 @@ class UseCaseTest extends \PHPUnit_Framework_TestCase
                     'active_theme' => 'default',
                     'autodetect_theme' => true,
                     'load_controllers' => true,
-                    'cookie' => $this->getCookieOptions()
+                    'cookie' => $this->getCookieOptions(),
                 ),
                 array(
                     'themeAfterKernelRequest' => 'cookie',
                     'themeAfterController' => 'controller',
                     'themeAfterKernelResponse' => 'controller',
                 ),
-                true
+                true,
             ),
             // autodetect if no cookie exists, but at the end controller wins
             array(
@@ -199,14 +197,14 @@ class UseCaseTest extends \PHPUnit_Framework_TestCase
                     'active_theme' => 'default',
                     'autodetect_theme' => true,
                     'load_controllers' => true,
-                    'cookie' => $this->getCookieOptions()
+                    'cookie' => $this->getCookieOptions(),
                 ),
                 array(
                     'themeAfterKernelRequest' => 'autodetect',
                     'themeAfterController' => 'controller',
                     'themeAfterKernelResponse' => 'controller',
                 ),
-                false
+                false,
             ),
             // no cookie pre-esist, so set autodect value into cookie if the controller is not called
             array(
@@ -215,14 +213,14 @@ class UseCaseTest extends \PHPUnit_Framework_TestCase
                     'active_theme' => 'default',
                     'autodetect_theme' => true,
                     'load_controllers' => false,
-                    'cookie' => $this->getCookieOptions()
+                    'cookie' => $this->getCookieOptions(),
                 ),
                 array(
                     'themeAfterKernelRequest' => 'autodetect',
                     'themeAfterController' => 'autodetect',
                     'themeAfterKernelResponse' => 'autodetect',
                 ),
-                false
+                false,
             ),
             // a cookie don't pre-esist, autodetection is disabled, controller is not called, set the cookie
             array(
@@ -231,14 +229,14 @@ class UseCaseTest extends \PHPUnit_Framework_TestCase
                     'active_theme' => 'default',
                     'autodetect_theme' => false,
                     'load_controllers' => true,
-                    'cookie' => $this->getCookieOptions()
+                    'cookie' => $this->getCookieOptions(),
                 ),
                 array(
                     'themeAfterKernelRequest' => 'default',
                     'themeAfterController' => 'controller',
                     'themeAfterKernelResponse' => 'controller',
                 ),
-                false
+                false,
             ),
             // a cookie pre-esist, autodetection is disabled, controller is not called, set the cookie
             array(
@@ -247,17 +245,16 @@ class UseCaseTest extends \PHPUnit_Framework_TestCase
                     'active_theme' => 'default',
                     'autodetect_theme' => false,
                     'load_controllers' => true,
-                    'cookie' => $this->getCookieOptions()
+                    'cookie' => $this->getCookieOptions(),
                 ),
                 array(
                     'themeAfterKernelRequest' => 'cookie',
                     'themeAfterController' => 'controller',
                     'themeAfterKernelResponse' => 'controller',
                 ),
-                true
+                true,
             ),
 
         );
     }
-
 }

@@ -14,7 +14,6 @@ namespace Liip\ThemeBundle\Locator;
 use Symfony\Bundle\FrameworkBundle\Templating\Loader\TemplateLocator as BaseTemplateLocator;
 use Symfony\Component\Config\FileLocatorInterface;
 use Symfony\Component\Templating\TemplateReferenceInterface;
-
 use Liip\ThemeBundle\ActiveTheme;
 
 class TemplateLocator extends BaseTemplateLocator
@@ -27,8 +26,8 @@ class TemplateLocator extends BaseTemplateLocator
     /**
      * Constructor.
      *
-     * @param FileLocatorInterface $locator  A FileLocatorInterface instance
-     * @param string               $cacheDir The cache path
+     * @param FileLocatorInterface $locator     A FileLocatorInterface instance
+     * @param string               $cacheDir    The cache path
      * @param ActiveTheme          $activeTheme
      */
     public function __construct(FileLocatorInterface $locator, $cacheDir = null, ActiveTheme $activeTheme = null)
@@ -40,13 +39,13 @@ class TemplateLocator extends BaseTemplateLocator
 
     public function getLocator()
     {
-       return $this->locator;
+        return $this->locator;
     }
 
     /**
      * Returns a full path for a given file.
      *
-     * @param TemplateReferenceInterface $template     A template
+     * @param TemplateReferenceInterface $template A template
      *
      * @return string The full path for the file
      */
@@ -55,7 +54,7 @@ class TemplateLocator extends BaseTemplateLocator
         $name = $template->getLogicalName();
 
         if ($this->activeTheme) {
-            $name.= '|'.$this->activeTheme->getName();
+            $name .= '|'.$this->activeTheme->getName();
         }
 
         return $name;
@@ -64,9 +63,9 @@ class TemplateLocator extends BaseTemplateLocator
     /**
      * Returns a full path for a given file.
      *
-     * @param TemplateReferenceInterface $template     A template
-     * @param string                     $currentPath  Unused
-     * @param Boolean                    $first        Unused
+     * @param TemplateReferenceInterface $template    A template
+     * @param string                     $currentPath Unused
+     * @param bool                       $first       Unused
      *
      * @return string The full path for the file
      *
@@ -76,7 +75,7 @@ class TemplateLocator extends BaseTemplateLocator
     public function locate($template, $currentPath = null, $first = true)
     {
         if (!$template instanceof TemplateReferenceInterface) {
-            throw new \InvalidArgumentException("The template must be an instance of TemplateReferenceInterface.");
+            throw new \InvalidArgumentException('The template must be an instance of TemplateReferenceInterface.');
         }
 
         $key = $this->getCacheKey($template);

@@ -12,7 +12,6 @@
 namespace Liip\ThemeBundle\Tests\Assetic;
 
 use Liip\ThemeBundle\Assetic\TwigFormulaLoader;
-use Prophecy\Argument;
 
 class TwigFormulaLoaderTest extends \PHPUnit_Framework_TestCase
 {
@@ -40,7 +39,7 @@ class TwigFormulaLoaderTest extends \PHPUnit_Framework_TestCase
     public function testLoader()
     {
         $this->activeTheme->getThemes()->willReturn(array(
-            'theme1', 'theme2'
+            'theme1', 'theme2',
         ));
 
         $this->activeTheme->setName('theme1')->shouldBeCalled();
@@ -53,7 +52,7 @@ class TwigFormulaLoaderTest extends \PHPUnit_Framework_TestCase
     public function testExceptions()
     {
         $this->activeTheme->getThemes()->willReturn(array(
-            'theme1'
+            'theme1',
         ));
         $this->activeTheme->setName('theme1')->shouldBeCalled();
         $this->twig->tokenize($this->resourceContent)->willThrow(new \Exception('foobar'));

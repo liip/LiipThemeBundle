@@ -19,14 +19,14 @@ class LiipThemeExtensionTest extends \PHPUnit_Framework_TestCase
         $config = $this->getConfig();
         $pathPatterns = array(
             'app_resource' => array(
-                'app_resource_path'
+                'app_resource_path',
             ),
             'bundle_resource' => array(
                 'bundle_resource_path1',
-                'bundle_resource_path2'
+                'bundle_resource_path2',
             ),
             'bundle_resource_dir' => array(
-                'bundle_resource_dir_path'
+                'bundle_resource_dir_path',
             ),
         );
         $config['path_patterns'] = $pathPatterns;
@@ -60,10 +60,10 @@ class LiipThemeExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Liip\ThemeBundle\EventListener\ThemeRequestListener', $listener);
 
         $tagged = $container->findTaggedServiceIds('kernel.event_listener');
-        $this->assertArrayHasKey("liip_theme.theme_request_listener", $tagged);
+        $this->assertArrayHasKey('liip_theme.theme_request_listener', $tagged);
 
         $foundKernelResponse = false;
-        foreach ($tagged["liip_theme.theme_request_listener"] as $tag) {
+        foreach ($tagged['liip_theme.theme_request_listener'] as $tag) {
             if ($tag['event'] == 'kernel.response') {
                 $foundKernelResponse = $tag['method'];
                 break;
@@ -88,9 +88,8 @@ class LiipThemeExtensionTest extends \PHPUnit_Framework_TestCase
         $listener = $container->get('liip_theme.theme_request_listener');
         $this->assertInstanceOf('Liip\ThemeBundle\EventListener\ThemeRequestListener', $listener);
         $tagged = $container->findTaggedServiceIds('kernel.event_listener');
-        $this->assertArrayHasKey("liip_theme.theme_request_listener", $tagged);
+        $this->assertArrayHasKey('liip_theme.theme_request_listener', $tagged);
     }
-
 
     protected function getConfig()
     {
@@ -99,5 +98,4 @@ class LiipThemeExtensionTest extends \PHPUnit_Framework_TestCase
             'active_theme' => 'tablet',
         );
     }
-
 }
