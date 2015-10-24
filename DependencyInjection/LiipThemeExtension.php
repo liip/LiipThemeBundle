@@ -22,7 +22,7 @@ class LiipThemeExtension extends Extension
     /**
      * Loads the services based on your application configuration.
      *
-     * @param array $configs
+     * @param array            $configs
      * @param ContainerBuilder $container
      */
     public function load(array $configs, ContainerBuilder $container)
@@ -52,13 +52,13 @@ class LiipThemeExtension extends Extension
             $loader->load('theme_controller_listener.xml');
         }
 
-        if  (true == $config['load_controllers']) {
+        if (true == $config['load_controllers']) {
             $loader->load('controller.xml');
         }
 
         if (!empty($config['cookie']['name'])) {
             $container->getDefinition($this->getAlias().'.theme_request_listener')
-                ->addTag('kernel.event_listener', array('event'=>'kernel.response', 'method'=>'onKernelResponse'));
+                ->addTag('kernel.event_listener', array('event' => 'kernel.response', 'method' => 'onKernelResponse'));
         }
 
         if (!empty($config['autodetect_theme'])) {

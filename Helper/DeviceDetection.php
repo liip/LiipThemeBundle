@@ -15,30 +15,30 @@ class DeviceDetection implements DeviceDetectionInterface
 {
     protected $userAgent;
     protected $devices = array(
-        "tablet" => array(
-            "androidtablet" => "android(?!.*(?:mobile|opera mobi|opera mini))",
-            "blackberrytablet" => "rim tablet os",
-            "ipad" => "(ipad)"
+        'tablet' => array(
+            'androidtablet' => 'android(?!.*(?:mobile|opera mobi|opera mini))',
+            'blackberrytablet' => 'rim tablet os',
+            'ipad' => '(ipad)',
         ),
-        "plain" => array(
-            "kindle" => "(kindle)",
-            "IE6" => "MSIE 6.0"
+        'plain' => array(
+            'kindle' => '(kindle)',
+            'IE6' => 'MSIE 6.0',
         ),
-        "phone" => array(
-            "android" => "android.*mobile|android.*opera mobi|android.*opera mini",
-            "blackberry" => "blackberry",
-            "iphone" => "(iphone|ipod)",
-            "palm" => "(avantgo|blazer|elaine|hiptop|palm|plucker|xiino|webOS)",
-            "windows" => "windows ce; (iemobile|ppc|smartphone)",
-            "windowsphone" => "windows phone",
-            "generic" => "(mobile|mmp|midp|o2|pda|pocket|psp|symbian|smartphone|treo|up.browser|up.link|vodafone|wap|opera mini|opera mobi|opera mini)",
+        'phone' => array(
+            'android' => 'android.*mobile|android.*opera mobi|android.*opera mini',
+            'blackberry' => 'blackberry',
+            'iphone' => '(iphone|ipod)',
+            'palm' => '(avantgo|blazer|elaine|hiptop|palm|plucker|xiino|webOS)',
+            'windows' => 'windows ce; (iemobile|ppc|smartphone)',
+            'windowsphone' => 'windows phone',
+            'generic' => '(mobile|mmp|midp|o2|pda|pocket|psp|symbian|smartphone|treo|up.browser|up.link|vodafone|wap|opera mini|opera mobi|opera mini)',
         ),
-        "desktop" => array(
-            "osx" => "Mac OS X",
-            "linux" => "Linux",
-            "windows" => "Windows",
-            "generic" => "",
-        )
+        'desktop' => array(
+            'osx' => 'Mac OS X',
+            'linux' => 'Linux',
+            'windows' => 'Windows',
+            'generic' => '',
+        ),
     );
 
     protected $type = null;
@@ -69,16 +69,17 @@ class DeviceDetection implements DeviceDetectionInterface
     }
 
     /**
-     * Overloads isAndroid() | isAndroidtablet() | isIphone() | isIpad() | isBlackberry() | isBlackberrytablet() | isPalm() | isWindowsphone() | isWindows() | isGeneric() through isDevice()
+     * Overloads isAndroid() | isAndroidtablet() | isIphone() | isIpad() | isBlackberry() | isBlackberrytablet() | isPalm() | isWindowsphone() | isWindows() | isGeneric() through isDevice().
      *
      * @param string $name
-     * @param array $arguments
+     * @param array  $arguments
+     *
      * @return bool
      */
     public function __call($name, $arguments)
     {
         $isDevice = substr($name, 2);
-        if ($name !== "is" . ucfirst($isDevice)) {
+        if ($name !== 'is'.ucfirst($isDevice)) {
             trigger_error("Method $name not defined", E_USER_WARNING);
         }
 
@@ -96,7 +97,7 @@ class DeviceDetection implements DeviceDetectionInterface
     }
 
     /**
-     * Returns true if any type of mobile device detected, including special ones
+     * Returns true if any type of mobile device detected, including special ones.
      * 
      * @param string $userAgent optional to override the default user agent
      * 
@@ -115,7 +116,7 @@ class DeviceDetection implements DeviceDetectionInterface
     }
 
     /**
-     * Returns true if any type of tablet device detected, including special ones
+     * Returns true if any type of tablet device detected, including special ones.
      *
      * @param string $userAgent optional to override the default user agent
      *
@@ -134,7 +135,7 @@ class DeviceDetection implements DeviceDetectionInterface
     }
 
     /**
-     * Returns true if any type of desktop device detected, including special ones
+     * Returns true if any type of desktop device detected, including special ones.
      *
      * @param string $userAgent optional to override the default user agent
      *
@@ -156,7 +157,7 @@ class DeviceDetection implements DeviceDetectionInterface
     {
         foreach ($this->devices as $type => $devices) {
             foreach ($devices as $device => $regexp) {
-                if ((bool) preg_match("/" . $regexp . "/i", $userAgent)) {
+                if ((bool) preg_match('/'.$regexp.'/i', $userAgent)) {
                     return array($device, $type);
                 }
             }
@@ -168,11 +169,12 @@ class DeviceDetection implements DeviceDetectionInterface
     public function getType()
     {
         $this->init();
+
         return $this->type;
     }
 
     /**
-     * Force device type
+     * Force device type.
      *
      * @param string $type
      */
@@ -186,7 +188,7 @@ class DeviceDetection implements DeviceDetectionInterface
     public function getDevice()
     {
         $this->init();
+
         return $this->device;
     }
 }
- 

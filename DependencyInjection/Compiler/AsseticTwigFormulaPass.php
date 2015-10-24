@@ -12,13 +12,12 @@
 namespace Liip\ThemeBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Bundle\AsseticBundle\DependencyInjection\DirectoryResourceDefinition;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Exception\RuntimeException;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
- * This pass replaces the assetic twig formula loader
+ * This pass replaces the assetic twig formula loader.
  *
  * @author Daniel Leech <daniel@dantleech.com>
  */
@@ -51,4 +50,3 @@ class AsseticTwigFormulaPass implements CompilerPassInterface
         $loaderDef->addArgument(new Reference('liip_theme.active_theme'));
     }
 }
-

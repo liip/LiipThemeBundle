@@ -9,10 +9,10 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
+
 namespace Liip\Tests\EventListener;
 
 use Symfony\Component\HttpKernel\HttpKernelInterface;
-
 use Liip\ThemeBundle\EventListener\ThemeRequestListener;
 
 /**
@@ -31,6 +31,7 @@ class ThemeRequestListenerTest extends \PHPUnit_Framework_TestCase
         $activeTheme->expects($this->any())
             ->method('getThemes')
             ->will($this->returnValue(array('desktop', 'tablet', 'mobile')));
+
         return $activeTheme;
     }
 
