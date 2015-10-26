@@ -11,10 +11,7 @@
 
 namespace Liip\ThemeBundle\Tests\DependencyInjection;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\DependencyInjection\Reference;
-use Liip\ThemeBundle\DependencyInjection\Compiler\ThemeCompilerPass;
 use Liip\ThemeBundle\DependencyInjection\Compiler\AsseticTwigFormulaPass;
 
 class AsseticTwigFormulaPassTest extends \PHPUnit_Framework_TestCase
@@ -29,7 +26,7 @@ class AsseticTwigFormulaPassTest extends \PHPUnit_Framework_TestCase
         $this->definition = $this->getMock('Symfony\Component\DependencyInjection\Definition');
         $this->pass = new AsseticTwigFormulaPass();
     }
-    
+
     /**
      * @covers Liip\ThemeBundle\DependencyInjection\Compiler\ThemeCompilerPass::process
      */

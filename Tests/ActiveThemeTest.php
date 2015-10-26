@@ -22,9 +22,9 @@ class ActiveThemeTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetName()
     {
-        $theme = new ActiveTheme("foo", array("foo"));
+        $theme = new ActiveTheme('foo', array('foo'));
 
-        $this->assertEquals("foo", $theme->getName());
+        $this->assertEquals('foo', $theme->getName());
     }
 
     /**
@@ -33,7 +33,7 @@ class ActiveThemeTest extends \PHPUnit_Framework_TestCase
      */
     public function testDeviceDesktop()
     {
-        $theme = new ActiveTheme("foo", array("foo"), new DeviceDetection('Mac OS X'));
+        $theme = new ActiveTheme('foo', array('foo'), new DeviceDetection('Mac OS X'));
         $this->assertEquals('desktop', $theme->getDeviceType());
     }
 
@@ -43,7 +43,7 @@ class ActiveThemeTest extends \PHPUnit_Framework_TestCase
      */
     public function testDevicePhone()
     {
-        $theme = new ActiveTheme("foo", array("foo"), new DeviceDetection('iphone'));
+        $theme = new ActiveTheme('foo', array('foo'), new DeviceDetection('iphone'));
         $this->assertEquals('phone', $theme->getDeviceType());
     }
 
@@ -53,7 +53,7 @@ class ActiveThemeTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructInvalidName()
     {
-        $theme = new ActiveTheme("foo", array("bar"));
+        $theme = new ActiveTheme('foo', array('bar'));
     }
 
     /**
@@ -62,7 +62,7 @@ class ActiveThemeTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetInvalidName()
     {
-        $theme = new ActiveTheme("foo", array("foo"));
-        $theme->setName("bar");
+        $theme = new ActiveTheme('foo', array('foo'));
+        $theme->setName('bar');
     }
 }

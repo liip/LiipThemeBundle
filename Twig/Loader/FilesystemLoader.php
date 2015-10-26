@@ -19,9 +19,9 @@ class FilesystemLoader extends \Twig_Loader_Filesystem
     /**
      * Constructor.
      *
-     * @param FileLocatorInterface $locator A FileLocatorInterface instance
-     * @param TemplateNameParserInterface $parser A TemplateNameParserInterface instance
-     * @param ActiveTheme $activeTheme
+     * @param FileLocatorInterface        $locator     A FileLocatorInterface instance
+     * @param TemplateNameParserInterface $parser      A TemplateNameParserInterface instance
+     * @param ActiveTheme                 $activeTheme
      */
     public function __construct(FileLocatorInterface $locator, TemplateNameParserInterface $parser, ActiveTheme $activeTheme = null)
     {
@@ -49,7 +49,7 @@ class FilesystemLoader extends \Twig_Loader_Filesystem
         $logicalName = (string) $template;
 
         if ($this->activeTheme) {
-            $logicalName .= '|' . $this->activeTheme->getName();
+            $logicalName .= '|'.$this->activeTheme->getName();
         }
 
         if (isset($this->cache[$logicalName])) {

@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
- * Theme controller
+ * Theme controller.
  *
  * @author Gordon Franke <info@nevalon.de>
  */
@@ -27,21 +27,21 @@ class ThemeController
     protected $activeTheme;
 
     /**
-     * Available themes
+     * Available themes.
      * 
      * @var array
      */
     protected $themes;
 
     /**
-     * Options of the cookie to store active theme
+     * Options of the cookie to store active theme.
      * 
      * @var array
      */
     protected $cookieOptions;
 
     /**
-     * Theme controller construct
+     * Theme controller construct.
      * 
      * @param ActiveTheme $activeTheme   active theme instance
      * @param array       $themes        Available themes
@@ -49,13 +49,13 @@ class ThemeController
      */
     public function __construct(ActiveTheme $activeTheme, array $themes, array $cookieOptions)
     {
-        $this->activeTheme    = $activeTheme;
-        $this->themes         = $themes;
-        $this->cookieOptions  = $cookieOptions;
+        $this->activeTheme = $activeTheme;
+        $this->themes = $themes;
+        $this->cookieOptions = $cookieOptions;
     }
 
     /**
-     * Switch theme
+     * Switch theme.
      *
      * @param Request $request actual request
      *

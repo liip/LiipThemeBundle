@@ -13,7 +13,6 @@ namespace Liip\ThemeBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-
 use Liip\ThemeBundle\DependencyInjection\Compiler\ThemeCompilerPass;
 use Liip\ThemeBundle\DependencyInjection\Compiler\TemplateResourcesPass;
 use Liip\ThemeBundle\DependencyInjection\Compiler\AsseticTwigFormulaPass;

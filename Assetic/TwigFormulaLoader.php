@@ -11,7 +11,6 @@
 
 namespace Liip\ThemeBundle\Assetic;
 
-use Assetic\Factory\Loader\FormulaLoaderInterface;
 use Assetic\Factory\Resource\ResourceInterface;
 use Psr\Log\LoggerInterface;
 use Liip\ThemeBundle\ActiveTheme;
@@ -44,7 +43,7 @@ class TwigFormulaLoader extends BaseTwigFormulaLoader
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function load(ResourceInterface $resource)
     {

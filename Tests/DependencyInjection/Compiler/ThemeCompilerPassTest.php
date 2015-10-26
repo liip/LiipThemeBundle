@@ -2,9 +2,6 @@
 
 namespace Liip\ThemeBundle\Tests\DependencyInjection;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\DependencyInjection\Reference;
 use Liip\ThemeBundle\DependencyInjection\Compiler\ThemeCompilerPass;
 
 class ThemeCompilerPassTest extends \PHPUnit_Framework_TestCase
@@ -25,7 +22,7 @@ class ThemeCompilerPassTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValueMap(
                     array(
                       array('liip_theme.cache_warming', true),
-                      array('liip_theme.filesystem_loader.class', 'Liip\ThemeBundle\Twig\Loader\FilesystemLoader')
+                      array('liip_theme.filesystem_loader.class', 'Liip\ThemeBundle\Twig\Loader\FilesystemLoader'),
                     )
                 )
             )

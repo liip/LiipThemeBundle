@@ -15,7 +15,6 @@ use Liip\ThemeBundle\Helper\DeviceDetection;
 
 class DeviceDetectionTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @covers Liip\ThemeBundle\Helper\DeviceDetection::__construct
      */
@@ -150,7 +149,7 @@ class DeviceDetectionTest extends \PHPUnit_Framework_TestCase
      */
     public function testCheckDeviceGalaxyTab()
     {
-        /**
+        /*
         * Galaxy Tab gets recognized as Phone
         */
         $device = new DeviceDetection('Mozilla/5.0 (Linux; U; Android 2.2; de-de; GT-P1000 Build/FROYO) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1');
@@ -200,7 +199,6 @@ class DeviceDetectionTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($device->isTablet(), 'Opera Mobile Android should get recognized as tablet');
         $this->assertTrue($device->isAndroidTablet(), 'Opera Mobile Android should get recognized as Android');
     }
-
 
     /**
      * @covers Liip\ThemeBundle\Helper\DeviceDetection::determineDevice

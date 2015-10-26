@@ -13,7 +13,6 @@ namespace Liip\ThemeBundle\Locator;
 
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Config\FileLocator as BaseFileLocator;
-
 use Liip\ThemeBundle\ActiveTheme;
 
 /**
@@ -97,7 +96,7 @@ class FileLocator extends BaseFileLocator
         $paths = $this->basePaths;
 
         // add active theme as Resources/themes/views folder as well.
-        $paths[] = $this->path . '/themes/' . $theme;
+        $paths[] = $this->path.'/themes/'.$theme;
         $paths[] = $this->path;
 
         $this->paths = $paths;
@@ -114,9 +113,9 @@ class FileLocator extends BaseFileLocator
      * where BundleName is the name of the bundle
      * and the remaining part is the relative path in the bundle.
      *
-     * @param string  $name  A resource name to locate
-     * @param string  $dir   A directory where to look for the resource first
-     * @param Boolean $first Whether to return the first path or paths for all matching bundles
+     * @param string $name  A resource name to locate
+     * @param string $dir   A directory where to look for the resource first
+     * @param bool   $first Whether to return the first path or paths for all matching bundles
      *
      * @return string|array The absolute path of the resource or an array if $first is false
      *
@@ -155,6 +154,7 @@ class FileLocator extends BaseFileLocator
      *
      * @throws \RuntimeException
      * @throws \InvalidArgumentException
+     *
      * @return string
      */
     protected function locateBundleResource($name, $dir = null, $first = true)
@@ -178,12 +178,12 @@ class FileLocator extends BaseFileLocator
         $files = array();
 
         $parameters = array(
-            '%app_path%'      => $this->path,
-            '%dir%'           => $dir,
+            '%app_path%' => $this->path,
+            '%dir%' => $dir,
             '%override_path%' => substr($path, strlen('Resources/')),
             '%current_theme%' => $this->lastTheme,
             '%current_device%' => $this->activeTheme->getDeviceType(),
-            '%template%'      => substr($path, strlen('Resources/views/')),
+            '%template%' => substr($path, strlen('Resources/views/')),
         );
 
         foreach ($bundles as $bundle) {
@@ -229,11 +229,12 @@ class FileLocator extends BaseFileLocator
     }
 
     /**
-     * Locate Resource Theme aware. Only working for app/Resources
+     * Locate Resource Theme aware. Only working for app/Resources.
      *
      * @param string $name
      * @param string $dir
-     * @param bool $first
+     * @param bool   $first
+     *
      * @return string|array
      */
     protected function locateAppResource($name, $dir = null, $first = true)
@@ -244,10 +245,10 @@ class FileLocator extends BaseFileLocator
 
         $files = array();
         $parameters = array(
-            '%app_path%'      => $this->path,
+            '%app_path%' => $this->path,
             '%current_theme%' => $this->lastTheme,
             '%current_device%' => $this->activeTheme->getDeviceType(),
-            '%template%'      => substr($name, strlen('views/')),
+            '%template%' => substr($name, strlen('views/')),
         );
 
         foreach ($this->getPathsForAppResource($parameters) as $checkPaths) {

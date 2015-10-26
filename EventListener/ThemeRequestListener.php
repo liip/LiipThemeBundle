@@ -15,7 +15,6 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpFoundation\Cookie;
-
 use Liip\ThemeBundle\Helper\DeviceDetectionInterface;
 use Liip\ThemeBundle\ActiveTheme;
 
@@ -104,8 +103,8 @@ class ThemeRequestListener
                     time() + $this->cookieOptions['lifetime'],
                     $this->cookieOptions['path'],
                     $this->cookieOptions['domain'],
-                    (Boolean)$this->cookieOptions['secure'],
-                    (Boolean)$this->cookieOptions['http_only']
+                    (Boolean) $this->cookieOptions['secure'],
+                    (Boolean) $this->cookieOptions['http_only']
                 );
                 $event->getResponse()->headers->setCookie($cookie);
             }
