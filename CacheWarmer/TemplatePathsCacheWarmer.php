@@ -52,7 +52,10 @@ class TemplatePathsCacheWarmer extends BaseTemplatePathsCacheWarmer
         foreach ($this->activeTheme->getThemes() as $theme) {
             $this->activeTheme->setName($theme);
             foreach ($allTemplates as $template) {
-                $templates[$template->getLogicalName().'|'.$theme] = $locator->locate($template->getPath());
+                try {
+                    $templates[$template->getLogicalName().'|'.$theme] = $locator->locate($template->getPath());
+                } catch (\InvalidArgumentException $e) {
+                }
             }
         }
 
