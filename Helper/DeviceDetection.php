@@ -98,9 +98,9 @@ class DeviceDetection implements DeviceDetectionInterface
 
     /**
      * Returns true if any type of mobile device detected, including special ones.
-     * 
+     *
      * @param string $userAgent optional to override the default user agent
-     * 
+     *
      * @return bool
      */
     public function isPhone($userAgent = null)

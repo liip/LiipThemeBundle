@@ -71,7 +71,7 @@ class TemplateFinder extends BaseTemplateFinder
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function findAllTemplates()
     {
