@@ -18,7 +18,7 @@ use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\Finder\Finder;
 
 /**
- * Finds all templates, inclucing themes.
+ * Finds all templates, including themes.
  *
  * @author Oleg Andreyev <oleg.andreyev@intexsys.lv>
  */
@@ -81,8 +81,9 @@ class TemplateFinder extends BaseTemplateFinder
 
         $templates = parent::findAllTemplates();
 
+        $themes = $this->activeTheme->getThemes();
         foreach ($this->kernel->getBundles() as $bundle) {
-            foreach ($this->activeTheme->getThemes() as $theme) {
+            foreach ($themes as $theme) {
                 $templates = array_merge($templates, $this->findTemplatesInThemes($bundle, $theme));
             }
         }
