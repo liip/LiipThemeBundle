@@ -15,21 +15,30 @@ use Symfony\Bundle\FrameworkBundle\CacheWarmer\TemplatePathsCacheWarmer as BaseT
 use Symfony\Bundle\FrameworkBundle\Templating\Loader\TemplateLocator;
 use Symfony\Bundle\FrameworkBundle\CacheWarmer\TemplateFinderInterface;
 use Liip\ThemeBundle\ActiveTheme;
+use Symfony\Component\Templating\TemplateReferenceInterface;
 
 class TemplatePathsCacheWarmer extends BaseTemplatePathsCacheWarmer
 {
+    /**
+     * @var ActiveTheme
+     */
     protected $activeTheme;
+
+    /**
+     * @var \Liip\ThemeBundle\Locator\TemplateLocator
+     */
+    protected $locator;
 
     /**
      * Constructor.
      *
-     * @param TemplateFinderInterface $finder  A template finder
-     * @param TemplateLocator         $locator The template locator
+     * @param TemplateFinderInterface $finder      A template finder
+     * @param TemplateLocator         $locator     The template locator
+     * @param ActiveTheme             $activeTheme
      */
     public function __construct(TemplateFinderInterface $finder, TemplateLocator $locator, ActiveTheme $activeTheme = null)
     {
         $this->activeTheme = $activeTheme;
-
         parent::__construct($finder, $locator);
     }
 
@@ -46,13 +55,17 @@ class TemplatePathsCacheWarmer extends BaseTemplatePathsCacheWarmer
 
         $locator = $this->locator->getLocator();
 
+        /** @var TemplateReferenceInterface[] $allTemplates */
         $allTemplates = $this->finder->findAllTemplates();
 
         $templates = array();
         foreach ($this->activeTheme->getThemes() as $theme) {
             $this->activeTheme->setName($theme);
             foreach ($allTemplates as $template) {
-                $templates[$template->getLogicalName().'|'.$theme] = $locator->locate($template->getPath());
+                try {
+                    $templates[$template->getLogicalName().'|'.$theme] = $locator->locate($template->getPath());
+                } catch (\InvalidArgumentException $e) {
+                }
             }
         }
 

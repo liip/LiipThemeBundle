@@ -10,6 +10,7 @@
         <parameter key="liip_theme.active_theme.class">Liip\ThemeBundle\ActiveTheme</parameter>
         <parameter key="liip_theme.cache_warmer.class">Liip\ThemeBundle\CacheWarmer\TemplatePathsCacheWarmer</parameter>
         <parameter key="liip_theme.theme_auto_detect.class">Liip\ThemeBundle\Helper\DeviceDetection</parameter>
+        <parameter key="templating.finder.class">Liip\ThemeBundle\CacheWarmer\TemplateFinder</parameter>
     </parameters>
 
     <services>
@@ -18,6 +19,13 @@
             <argument type="service" id="templating.finder" />
             <argument type="service" id="liip_theme.templating_locator" />
             <argument type="service" id="liip_theme.active_theme" />
+        </service>
+
+        <service id="templating.finder" class="%templating.finder.class%" public="false">
+            <argument type="service" id="kernel" />
+            <argument type="service" id="templating.filename_parser" />
+            <argument>%kernel.root_dir%/Resources</argument>
+            <argument type="service" id="liip_theme.active_theme"/>
         </service>
 
         <service id="liip_theme.templating_locator" class="%liip_theme.templating_locator.class%" public="false">

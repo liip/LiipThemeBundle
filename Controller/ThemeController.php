@@ -28,21 +28,21 @@ class ThemeController
 
     /**
      * Available themes.
-     * 
+     *
      * @var array
      */
     protected $themes;
 
     /**
      * Options of the cookie to store active theme.
-     * 
+     *
      * @var array
      */
     protected $cookieOptions;
 
     /**
      * Theme controller construct.
-     * 
+     *
      * @param ActiveTheme $activeTheme   active theme instance
      * @param array       $themes        Available themes
      * @param array       $cookieOptions The options of the cookie we look for the theme to set
@@ -81,8 +81,8 @@ class ThemeController
             time() + $this->cookieOptions['lifetime'],
             $this->cookieOptions['path'],
             $this->cookieOptions['domain'],
-            (Boolean) $this->cookieOptions['secure'],
-            (Boolean) $this->cookieOptions['http_only']
+            (bool) $this->cookieOptions['secure'],
+            (bool) $this->cookieOptions['http_only']
         );
 
         $response = new RedirectResponse($url);

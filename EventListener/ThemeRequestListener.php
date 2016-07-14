@@ -103,8 +103,8 @@ class ThemeRequestListener
                     time() + $this->cookieOptions['lifetime'],
                     $this->cookieOptions['path'],
                     $this->cookieOptions['domain'],
-                    (Boolean) $this->cookieOptions['secure'],
-                    (Boolean) $this->cookieOptions['http_only']
+                    (bool) $this->cookieOptions['secure'],
+                    (bool) $this->cookieOptions['http_only']
                 );
                 $event->getResponse()->headers->setCookie($cookie);
             }
