@@ -173,7 +173,7 @@ class FileLocator extends BaseFileLocator
         if (!preg_match('/(Bundle)$/i', $bundleName)) {
             $bundleName .= 'Bundle';
             if (0 !== strpos($path, 'Resources')) {
-                $path = 'Resources/views/' . $path;
+                $path = 'Resources/views/'.$path;
             }
         }
 
