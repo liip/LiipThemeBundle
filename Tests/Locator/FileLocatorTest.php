@@ -155,6 +155,7 @@ class FileLocatorTest extends \PHPUnit_Framework_TestCase
 
         $file = $fileLocator->locate('@ThemeBundle/Resources/views/template', $this->getFixturePath(), true);
         $this->assertEquals($this->getFixturePath().'/Resources/themes/foo/template', $file);
+        $this->assertResourcesEquals($fileLocator, '@ThemeBundle/Resources/views/template', '@Theme/template');
     }
 
     /**
@@ -176,6 +177,7 @@ class FileLocatorTest extends \PHPUnit_Framework_TestCase
 
         $file = $fileLocator->locate('@ThemeBundle/Resources/views/template', $this->getFixturePath(), true);
         $this->assertEquals($this->getFixturePath().'/Resources/views/themes/foo/template', $file);
+        $this->assertResourcesEquals($fileLocator, '@ThemeBundle/Resources/views/template', '@Theme/template');
 
         // Fall through user-configured cascade order - /Resources/views/themes/bar will not be found.
         $activeTheme = new ActiveTheme('bar', array('foo', 'bar', 'foobar'));
@@ -184,6 +186,7 @@ class FileLocatorTest extends \PHPUnit_Framework_TestCase
 
         $file = $fileLocator->locate('@ThemeBundle/Resources/views/template', $this->getFixturePath(), true);
         $this->assertEquals($this->getFixturePath().'/Resources/views/themes/fallback/template', $file);
+        $this->assertResourcesEquals($fileLocator, '@ThemeBundle/Resources/views/template', '@Theme/template');
     }
 
     /**
@@ -198,6 +201,7 @@ class FileLocatorTest extends \PHPUnit_Framework_TestCase
 
         $file = $fileLocator->locate('@ThemeBundle/Resources/views/foo', $this->getFixturePath(), true);
         $this->assertEquals($this->getFixturePath().'/rootdir/Resources/themes/foo/LiipMockLocateAppThemeOverridesAll/foo', $file);
+        $this->assertResourcesEquals($fileLocator, '@ThemeBundle/Resources/views/foo', '@Theme/foo');
     }
 
     /**
@@ -239,6 +243,7 @@ class FileLocatorTest extends \PHPUnit_Framework_TestCase
 
         $file = $fileLocator->locate('@ThemeBundle/Resources/views/defaultTemplate', $this->getFixturePath(), true);
         $this->assertEquals($this->getFixturePath().'/Resources/views/phone/defaultTemplate', $file);
+        $this->assertResourcesEquals($fileLocator, '@ThemeBundle/Resources/views/defaultTemplate', '@Theme/defaultTemplate');
     }
 
     /**
@@ -285,6 +290,7 @@ class FileLocatorTest extends \PHPUnit_Framework_TestCase
 
         $file = $fileLocator->locate('@ThemeBundle/Resources/views/defaultTemplate', $this->getFixturePath(), true);
         $this->assertEquals($this->getFixturePath().'/Resources/views/defaultTemplate', $file);
+        $this->assertResourcesEquals($fileLocator, '@ThemeBundle/Resources/views/defaultTemplate', '@Theme/defaultTemplate');
     }
 
     /**
@@ -304,6 +310,7 @@ class FileLocatorTest extends \PHPUnit_Framework_TestCase
 
         $files = $fileLocator->locate('@ThemeBundle/Resources/views/template', $this->getFixturePath(), false);
         $this->assertEquals($expectedFiles, $files);
+        $this->assertResourcesEquals($fileLocator, '@ThemeBundle/Resources/views/template', '@Theme/template');
     }
 
     /**
@@ -350,6 +357,7 @@ class FileLocatorTest extends \PHPUnit_Framework_TestCase
 
         $file = $fileLocator->locate('@ThemeBundle/Resources/views/rootTemplate', $this->getFixturePath(), true);
         $this->assertEquals($this->getFixturePath().'/rootdir/Resources/themes/foo/LiipMockLocateRootDirectory/rootTemplate', $file);
+        $this->assertResourcesEquals($fileLocator, '@ThemeBundle/Resources/views/rootTemplate', '@Theme/rootTemplate');
     }
 
     /**
@@ -364,6 +372,7 @@ class FileLocatorTest extends \PHPUnit_Framework_TestCase
 
         $file = $fileLocator->locate('@ThemeBundle/Resources/views/override', $this->getFixturePath(), true);
         $this->assertEquals($this->getFixturePath().'/rootdir/Resources/LiipMockLocateOverrideDirectory/views/override', $file);
+        $this->assertResourcesEquals($fileLocator, '@ThemeBundle/Resources/views/override', '@Theme/override');
     }
 
     /**
@@ -439,5 +448,19 @@ class FileLocatorTest extends \PHPUnit_Framework_TestCase
         ->will($this->returnValue(array()));
 
         $file = $fileLocator->locate('@ThemeBundle/Resources/nonExistant', $this->getFixturePath(), true);
+    }
+
+    /**
+     * Asserts that two resources are equal paths.
+     *
+     * @param FileLocator $fileLocator
+     * @param string      $expected
+     * @param string      $actual
+     * @param string      $message
+     */
+    private function assertResourcesEquals(FileLocator $fileLocator, $expected, $actual, $message = '')
+    {
+        $this->assertEquals($fileLocator->locate($expected, $this->getFixturePath(), true),
+            $fileLocator->locate($actual, $this->getFixturePath(), true), $message);
     }
 }
