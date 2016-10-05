@@ -134,6 +134,7 @@ class FileLocator extends BaseFileLocator
         if ('@' === $name[0]) {
             return $this->locateBundleResource($name, $this->path, $first);
         }
+
         if (0 === strpos($name, 'views/')) {
             if ($res = $this->locateAppResource($name, $this->path, $first)) {
                 return $res;
@@ -167,6 +168,13 @@ class FileLocator extends BaseFileLocator
         $path = '';
         if (false !== strpos($bundleName, '/')) {
             list($bundleName, $path) = explode('/', $bundleName, 2);
+        }
+
+        if (!preg_match('/(Bundle)$/i', $bundleName)) {
+            $bundleName .= 'Bundle';
+            if (0 !== strpos($path, 'Resources')) {
+                $path = 'Resources/views/'.$path;
+            }
         }
 
         if (0 !== strpos($path, 'Resources')) {
