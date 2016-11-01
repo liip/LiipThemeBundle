@@ -76,7 +76,7 @@ liip_theme:
 
 ### Device specific themes/templates
 
-You can provide specific themes or even templates for diffirent devices (like: desktop, tablet, phone, plain). Set option ```autodetect_theme``` to true for setting ```current_device``` parameter based on the user agent:
+You can provide specific themes or even templates for different devices (like: desktop, tablet, phone, plain). Set option ```autodetect_theme``` to true for setting ```current_device``` parameter based on the user agent:
 
 ``` yaml
 # app/config/config.yml
