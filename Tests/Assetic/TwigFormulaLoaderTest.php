@@ -36,7 +36,15 @@ class TwigFormulaLoaderTest extends \PHPUnit_Framework_TestCase
      */
     private $resource;
 
+    /**
+     * @var string
+     */
     private $resourceContent;
+
+    /**
+     * @var TwigFormulaLoaderTest
+     */
+    private $loader;
 
     public function setUp()
     {
@@ -61,7 +69,9 @@ class TwigFormulaLoaderTest extends \PHPUnit_Framework_TestCase
             'theme1', 'theme2',
         ));
 
-        $this->activeTheme->setName('theme1')->shouldBeCalled();
+        $this->activeTheme->getName()->willReturn('theme1');
+
+        $this->activeTheme->setName('theme1')->shouldBeCalledTimes(2);
         $this->activeTheme->setName('theme2')->shouldBeCalled();
 
         $this->twig->tokenize(Argument::any(), Argument::any())->shouldBeCalled()->willReturn(new \Twig_TokenStream(array()));
@@ -75,6 +85,7 @@ class TwigFormulaLoaderTest extends \PHPUnit_Framework_TestCase
         $this->activeTheme->getThemes()->willReturn(array(
             'theme1',
         ));
+        $this->activeTheme->getName()->willReturn('theme1');
         $this->activeTheme->setName('theme1')->shouldBeCalled();
         $this->twig->tokenize(Argument::any())->willThrow(new \Exception('foobar'));
         $this->logger->error('The template "foo" contains an error: "foobar"')->shouldBeCalled();
