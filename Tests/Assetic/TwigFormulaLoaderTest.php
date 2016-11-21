@@ -12,12 +12,31 @@
 namespace Liip\ThemeBundle\Tests\Assetic;
 
 use Liip\ThemeBundle\Assetic\TwigFormulaLoader;
+use Prophecy\Argument;
 
 class TwigFormulaLoaderTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var \Prophecy\Prophecy\ObjectProphecy
+     */
     private $twig;
+
+    /**
+     * @var \Prophecy\Prophecy\ObjectProphecy
+     */
     private $activeTheme;
+
+    /**
+     * @var \Prophecy\Prophecy\ObjectProphecy
+     */
     private $logger;
+
+    /**
+     * @var \Prophecy\Prophecy\ObjectProphecy
+     */
+    private $resource;
+
+    private $resourceContent;
 
     public function setUp()
     {
@@ -45,7 +64,9 @@ class TwigFormulaLoaderTest extends \PHPUnit_Framework_TestCase
         $this->activeTheme->setName('theme1')->shouldBeCalled();
         $this->activeTheme->setName('theme2')->shouldBeCalled();
 
-        $this->twig->tokenize($this->resourceContent)->shouldBeCalled();
+        $this->twig->tokenize(Argument::any(), Argument::any())->shouldBeCalled()->willReturn(new \Twig_TokenStream(array()));
+        $this->twig->parse(Argument::any())->shouldBeCalled()->willReturn(new \Twig_Node);
+
         $this->loader->load($this->resource->reveal());
     }
 
@@ -55,7 +76,7 @@ class TwigFormulaLoaderTest extends \PHPUnit_Framework_TestCase
             'theme1',
         ));
         $this->activeTheme->setName('theme1')->shouldBeCalled();
-        $this->twig->tokenize($this->resourceContent)->willThrow(new \Exception('foobar'));
+        $this->twig->tokenize(Argument::any())->willThrow(new \Exception('foobar'));
         $this->logger->error('The template "foo" contains an error: "foobar"')->shouldBeCalled();
 
         $this->loader->load($this->resource->reveal());
