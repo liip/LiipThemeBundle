@@ -56,7 +56,12 @@ class TwigFormulaLoader extends BaseTwigFormulaLoader
 
             try {
                 // determine if the template has any errors
-                $this->twig->tokenize($resource->getContent());
+                if (class_exists('Twig_Source')) {
+                    $content = new \Twig_Source($resource->getContent(), (string) $resource->getContent());
+                } else {
+                    $content = $resource->getContent();
+                }
+                $this->twig->tokenize($content);
 
                 // delegate the formula loading to the parent
                 $formulae += parent::load($resource);
