@@ -51,6 +51,8 @@ class TwigFormulaLoader extends BaseTwigFormulaLoader
         $failureTemplates = array();
         $successTemplates = array();
 
+        $previousTheme = $this->activeTheme->getName();
+
         foreach ($this->activeTheme->getThemes() as $theme) {
             $this->activeTheme->setName($theme);
 
@@ -70,6 +72,8 @@ class TwigFormulaLoader extends BaseTwigFormulaLoader
                 $failureTemplates[(string) $resource] = $e->getMessage();
             }
         }
+
+        $this->activeTheme->setName($previousTheme);
 
         if ($this->logger) {
             foreach ($failureTemplates as $failureTemplate => $exceptionMessage) {
