@@ -19,15 +19,27 @@ class FilesystemLoader extends \Twig_Loader_Filesystem
     /**
      * Constructor.
      *
-     * @param FileLocatorInterface        $locator     A FileLocatorInterface instance
-     * @param TemplateNameParserInterface $parser      A TemplateNameParserInterface instance
-     * @param ActiveTheme                 $activeTheme
+     * @see TwigBundle own FilesystemLoader
+     *
+     * @param FileLocatorInterface        $locator  A FileLocatorInterface instance
+     * @param TemplateNameParserInterface $parser   A TemplateNameParserInterface instance
+     * @param string|null                 $rootPath The root path common to all relative paths (null for getcwd())
      */
-    public function __construct(FileLocatorInterface $locator, TemplateNameParserInterface $parser, ActiveTheme $activeTheme = null)
+    public function __construct(FileLocatorInterface $locator, TemplateNameParserInterface $parser, $rootPath = null)
     {
-        parent::__construct(array());
+        parent::__construct(array(), $rootPath);
+
         $this->locator = $locator;
         $this->parser = $parser;
+    }
+
+    /**
+     * Define the active theme
+     *
+     * @param ActiveTheme $activeTheme
+     */
+    public function setActiveTheme(ActiveTheme $activeTheme = null)
+    {
         $this->activeTheme = $activeTheme;
     }
 
