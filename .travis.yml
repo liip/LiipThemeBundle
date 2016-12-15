@@ -18,6 +18,7 @@ env:
   - SYMFONY_VERSION=2.7.*
 
 matrix:
+  fast_finish: true
   include:
     - php: 5.6
       env: SYMFONY_VERSION=2.3.*
@@ -30,9 +31,14 @@ matrix:
     - php: 5.6
       env: SYMFONY_VERSION=3.2.*
     - php: 5.6
+      env: SYMFONY_VERSION=@dev
+    - php: 5.6
       env: TWIG_VERSION=2.x
     - php: 5.3
       env: COMPOSER_FLAGS="--prefer-lowest"
+  allow_failures:
+    - php: 5.6
+      env: SYMFONY_VERSION=@dev
 
 before_install:
   - if [[ ${TRAVIS_PHP_VERSION} != "hhvm" ]]; then phpenv config-add travis.php.ini; fi;
