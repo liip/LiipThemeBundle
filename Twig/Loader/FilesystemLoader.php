@@ -51,12 +51,13 @@ class FilesystemLoader extends \Twig_Loader_Filesystem
      * Otherwise the template is located using the locator from the twig library.
      *
      * @param string|TemplateReferenceInterface $template The template
+     * @param bool                              $throw    When true, a \Twig_Error_Loader exception will be thrown if a template could not be found
      *
      * @return string The path to the template file
      *
      * @throws \Twig_Error_Loader if the template could not be found
      */
-    protected function findTemplate($template)
+    protected function findTemplate($template, $throw = true)
     {
         $logicalName = (string) $template;
 
@@ -85,7 +86,11 @@ class FilesystemLoader extends \Twig_Loader_Filesystem
         }
 
         if (false === $file || null === $file) {
-            throw new \Twig_Error_Loader(sprintf('Unable to find template "%s".', $logicalName), -1, null, $previous);
+            if ($throw) {
+                throw new \Twig_Error_Loader(sprintf('Unable to find template "%s".', $logicalName), -1, null, $previous);
+            }
+            
+            return false;
         }
 
         return $this->cache[$logicalName] = $file;
