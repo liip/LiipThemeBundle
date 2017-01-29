@@ -11,6 +11,7 @@ class FilesystemLoader extends \Twig_Loader_Filesystem
 {
     protected $locator;
     protected $parser;
+
     /**
      * @var ActiveTheme|null
      */
