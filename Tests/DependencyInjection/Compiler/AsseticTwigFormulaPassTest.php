@@ -22,8 +22,8 @@ class AsseticTwigFormulaPassTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->container = $this->getMock('Symfony\Component\DependencyInjection\ContainerBuilder');
-        $this->definition = $this->getMock('Symfony\Component\DependencyInjection\Definition');
+        $this->container = $this->createMock('Symfony\Component\DependencyInjection\ContainerBuilder');
+        $this->definition = $this->createMock('Symfony\Component\DependencyInjection\Definition');
         $this->pass = new AsseticTwigFormulaPass();
     }
 

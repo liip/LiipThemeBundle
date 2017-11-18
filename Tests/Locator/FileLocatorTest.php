@@ -427,11 +427,11 @@ class FileLocatorTest extends \PHPUnit_Framework_TestCase
         $kernel = $this->getKernelMock(true);
         $activeTheme = new ActiveTheme('bar', array('foo', 'bar', 'foobar'));
 
-        $fileLocator = $this->getMock(
-            'Liip\ThemeBundle\Locator\FileLocator',
-            array('getPathsForBundleResource'),
-            array($kernel, $activeTheme, $this->getFixturePath().'/rootdir/Resources')
-        );
+        $fileLocator = $this->getMockBuilder('Liip\ThemeBundle\Locator\FileLocator')
+            ->setConstructorArgs([$kernel, $activeTheme, $this->getFixturePath().'/rootdir/Resources'])
+            ->setMethods(['getPathsForBundleResource'])
+            ->getMock()
+        ;
 
         $fileLocator->expects($this->at(0))
         ->method('getPathsForBundleResource')
