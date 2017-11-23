@@ -4,7 +4,7 @@ namespace Liip\ThemeBundle\Tests\DependencyInjection;
 
 use Liip\ThemeBundle\DependencyInjection\Compiler\ThemeCompilerPass;
 
-class ThemeCompilerPassTest extends \PHPUnit_Framework_TestCase
+class ThemeCompilerPassTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @covers Liip\ThemeBundle\DependencyInjection\Compiler\ThemeCompilerPass::process

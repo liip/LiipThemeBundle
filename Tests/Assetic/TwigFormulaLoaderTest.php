@@ -14,7 +14,7 @@ namespace Liip\ThemeBundle\Tests\Assetic;
 use Liip\ThemeBundle\Assetic\TwigFormulaLoader;
 use Prophecy\Argument;
 
-class TwigFormulaLoaderTest extends \PHPUnit_Framework_TestCase
+class TwigFormulaLoaderTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var \Prophecy\Prophecy\ObjectProphecy

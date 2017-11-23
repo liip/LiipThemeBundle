@@ -20,7 +20,7 @@ class FileLocatorFake extends FileLocator
     public $lastTheme;
 }
 
-class FileLocatorTest extends \PHPUnit_Framework_TestCase
+class FileLocatorTest extends \PHPUnit\Framework\TestCase
 {
     protected function getKernelMock($includeDerivedBundle = false)
     {

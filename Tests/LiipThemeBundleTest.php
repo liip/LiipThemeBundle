@@ -13,7 +13,7 @@ namespace Liip\Tests;
 
 use Liip\ThemeBundle\LiipThemeBundle;
 
-class LiipThemeBundleTest extends \PHPUnit_Framework_TestCase
+class LiipThemeBundleTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @covers Liip\ThemeBundle\LiipThemeBundle::build

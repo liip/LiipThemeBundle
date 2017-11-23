@@ -5,7 +5,7 @@ namespace Liip\ThemeBundle\Tests\DependencyInjection;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Liip\ThemeBundle\DependencyInjection\LiipThemeExtension;
 
-class LiipThemeExtensionTest extends \PHPUnit_Framework_TestCase
+class LiipThemeExtensionTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @covers Liip\ThemeBundle\LiipThemeBundle

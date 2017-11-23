@@ -18,7 +18,7 @@ use Symfony\Bundle\FrameworkBundle\Templating\TemplateFilenameParser;
  *
  * @author Oleg Andreyev <oleg.andreyev@intexsys.lv>
  */
-class TemplateFinderTest extends \PHPUnit_Framework_TestCase
+class TemplateFinderTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject|\Symfony\Component\HttpKernel\KernelInterface

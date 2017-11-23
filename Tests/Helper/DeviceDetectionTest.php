@@ -13,7 +13,7 @@ namespace Liip\ThemeBundle\Tests\Helper;
 
 use Liip\ThemeBundle\Helper\DeviceDetection;
 
-class DeviceDetectionTest extends \PHPUnit_Framework_TestCase
+class DeviceDetectionTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @covers Liip\ThemeBundle\Helper\DeviceDetection::__construct
@@ -36,7 +36,7 @@ class DeviceDetectionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException PHPUnit_Framework_Error_Warning
+     * @expectedException \PHPUnit\Framework\Error\Warning
      */
     public function testCallError()
     {

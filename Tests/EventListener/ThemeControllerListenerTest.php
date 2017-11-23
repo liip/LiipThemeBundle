@@ -20,7 +20,7 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 /**
  * @author David Buchmann <david@liip.ch>
  */
-class ThemeControllerListenerTest extends \PHPUnit_Framework_TestCase
+class ThemeControllerListenerTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var Request
