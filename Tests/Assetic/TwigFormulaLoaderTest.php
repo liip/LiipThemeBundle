@@ -48,6 +48,10 @@ class TwigFormulaLoaderTest extends \PHPUnit\Framework\TestCase
 
     public function setUp()
     {
+        if (!class_exists(\Assetic\AssetManager::class)) {
+            $this->markTestSkipped('Assetic not supported');
+        }
+
         $this->twig = $this->prophesize('Twig_Environment');
         $this->activeTheme = $this->prophesize('Liip\ThemeBundle\ActiveTheme');
         $this->logger = $this->prophesize('Psr\Log\LoggerInterface');

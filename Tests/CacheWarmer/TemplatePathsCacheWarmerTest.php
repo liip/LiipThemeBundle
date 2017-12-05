@@ -73,7 +73,7 @@ class TemplatePathsCacheWarmerTest extends \PHPUnit\Framework\TestCase
     public function testWarmUpWithoutActiveTheme()
     {
         $warmer = new TemplatePathsCacheWarmer($this->templateFinder, $this->templateLocator);
-        $warmer->warmUp('.');
+        $this->assertNull($warmer->warmUp('.'));
     }
 
     public function testWarmUp()

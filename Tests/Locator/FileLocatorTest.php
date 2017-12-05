@@ -66,7 +66,8 @@ class FileLocatorTest extends \PHPUnit\Framework\TestCase
     {
         $kernel = $this->getKernelMock();
         $activeTheme = new ActiveTheme('bar', array('foo', 'bar', 'foobar'));
-        new FileLocator($kernel, $activeTheme, $this->getFixturePath().'/rootdir/Resources');
+        $locator = new FileLocator($kernel, $activeTheme, $this->getFixturePath().'/rootdir/Resources');
+        $this->assertInstanceOf(FileLocator::class, $locator);
     }
 
     /**
