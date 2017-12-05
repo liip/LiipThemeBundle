@@ -17,7 +17,7 @@ use Liip\ThemeBundle\CacheWarmer\TemplatePathsCacheWarmer;
  *
  * @author Oleg Andreyev <oleg.andreyev@intexsys.lv>
  */
-class TemplatePathsCacheWarmerTest extends \PHPUnit_Framework_TestCase
+class TemplatePathsCacheWarmerTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject|\Symfony\Bundle\FrameworkBundle\CacheWarmer\TemplateFinderInterface
@@ -73,7 +73,7 @@ class TemplatePathsCacheWarmerTest extends \PHPUnit_Framework_TestCase
     public function testWarmUpWithoutActiveTheme()
     {
         $warmer = new TemplatePathsCacheWarmer($this->templateFinder, $this->templateLocator);
-        $warmer->warmUp('.');
+        $this->assertNull($warmer->warmUp('.'));
     }
 
     public function testWarmUp()

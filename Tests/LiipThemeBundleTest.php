@@ -13,14 +13,17 @@ namespace Liip\Tests;
 
 use Liip\ThemeBundle\LiipThemeBundle;
 
-class LiipThemeBundleTest extends \PHPUnit_Framework_TestCase
+class LiipThemeBundleTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @covers Liip\ThemeBundle\LiipThemeBundle::build
      */
     public function testBuild()
     {
-        $containerMock = $this->getMock('Symfony\Component\DependencyInjection\ContainerBuilder');
+        $containerMock = $this->getMockBuilder('Symfony\Component\DependencyInjection\ContainerBuilder')
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
         $containerMock->expects($this->exactly(3))
             ->method('addCompilerPass')
         ;

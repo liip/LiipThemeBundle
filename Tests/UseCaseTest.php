@@ -22,7 +22,7 @@ use Liip\ThemeBundle\ActiveTheme;
  *
  * @author Giulio De Donato <liuggio@gmail.com>
  */
-class UseCaseTest extends \PHPUnit_Framework_TestCase
+class UseCaseTest extends \PHPUnit\Framework\TestCase
 {
     protected $testCookieName = 'LiipThemeRequestCookieTestName';
 

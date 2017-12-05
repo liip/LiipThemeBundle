@@ -19,7 +19,7 @@ use Liip\ThemeBundle\EventListener\ThemeRequestListener;
  * @author Tobias Ebnöther <ebi@liip.ch>
  * @author Pascal Helfenstein <pascal@liip.ch>
  */
-class ThemeRequestListenerTest extends \PHPUnit_Framework_TestCase
+class ThemeRequestListenerTest extends \PHPUnit\Framework\TestCase
 {
     protected $testCookieName = 'LiipThemeRequestCookieTestName';
 

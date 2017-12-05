@@ -13,7 +13,7 @@ namespace Liip\ThemeBundle\Tests\Helper;
 
 use Liip\ThemeBundle\Helper\DeviceDetection;
 
-class DeviceDetectionTest extends \PHPUnit_Framework_TestCase
+class DeviceDetectionTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @covers Liip\ThemeBundle\Helper\DeviceDetection::__construct
@@ -35,11 +35,13 @@ class DeviceDetectionTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($device->isIphone(), 'Call function returns false, is not an iPhone');
     }
 
-    /**
-     * @expectedException PHPUnit_Framework_Error_Warning
-     */
     public function testCallError()
     {
+        if (class_exists('\PHPUnit\Framework\Error\Warning')) {
+            $this->expectException('\PHPUnit\Framework\Error\Warning');
+        } else {
+            $this->setExpectedException('PHPUnit_Framework_Error_Warning');
+        }
         $device = new DeviceDetection('Mozilla/5.0 (iPad; U; CPU OS 4_3_3 like Mac OS X; en-us) AppleWebKit/533.17.9 (KHTML, like Gecko) Version/5.0.2 Mobile/8J2 Safari/6533.18.5');
         $device->nonExistentMethod();
     }

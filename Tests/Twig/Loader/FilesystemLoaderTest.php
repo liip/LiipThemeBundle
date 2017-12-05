@@ -6,7 +6,7 @@ use Liip\ThemeBundle\ActiveTheme;
 use Liip\ThemeBundle\Twig\Loader\FilesystemLoader;
 use Symfony\Bundle\FrameworkBundle\Templating\TemplateReference;
 
-class FilesystemLoaderTest extends \PHPUnit_Framework_TestCase
+class FilesystemLoaderTest extends \PHPUnit\Framework\TestCase
 {
     public function testGetSourceContextWithLocator()
     {

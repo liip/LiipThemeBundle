@@ -4,14 +4,16 @@ namespace Liip\ThemeBundle\Tests\DependencyInjection;
 
 use Liip\ThemeBundle\DependencyInjection\Compiler\ThemeCompilerPass;
 
-class ThemeCompilerPassTest extends \PHPUnit_Framework_TestCase
+class ThemeCompilerPassTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @covers Liip\ThemeBundle\DependencyInjection\Compiler\ThemeCompilerPass::process
      */
     public function testProcess()
     {
-        $containerMock = $this->getMock('Symfony\Component\DependencyInjection\ContainerBuilder');
+        $containerMock = $this->getMockBuilder('Symfony\Component\DependencyInjection\ContainerBuilder')
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $containerMock->expects($this->exactly(2))
             ->method('setAlias')
@@ -31,7 +33,11 @@ class ThemeCompilerPassTest extends \PHPUnit_Framework_TestCase
         $containerMock->expects($this->once())
             ->method('getDefinition')
             ->with('twig.loader.filesystem')
-            ->willReturn($this->getMock('Symfony\Component\DependencyInjection\Definition'))
+            ->willReturn(
+                $this->getMockBuilder('Symfony\Component\DependencyInjection\Definition')
+                    ->disableOriginalConstructor()
+                    ->getMock()
+            )
         ;
 
         $themeCompiler = new ThemeCompilerPass();

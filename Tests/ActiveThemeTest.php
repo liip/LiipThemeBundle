@@ -14,7 +14,7 @@ namespace Liip\Tests;
 use Liip\ThemeBundle\Helper\DeviceDetection;
 use Liip\ThemeBundle\ActiveTheme;
 
-class ActiveThemeTest extends \PHPUnit_Framework_TestCase
+class ActiveThemeTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @covers Liip\ThemeBundle\ActiveTheme::__construct

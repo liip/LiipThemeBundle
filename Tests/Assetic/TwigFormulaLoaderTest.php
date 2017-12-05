@@ -14,7 +14,7 @@ namespace Liip\ThemeBundle\Tests\Assetic;
 use Liip\ThemeBundle\Assetic\TwigFormulaLoader;
 use Prophecy\Argument;
 
-class TwigFormulaLoaderTest extends \PHPUnit_Framework_TestCase
+class TwigFormulaLoaderTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var \Prophecy\Prophecy\ObjectProphecy
@@ -48,6 +48,10 @@ class TwigFormulaLoaderTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
+        if (!class_exists(\Assetic\AssetManager::class)) {
+            $this->markTestSkipped('Assetic not supported');
+        }
+
         $this->twig = $this->prophesize('Twig_Environment');
         $this->activeTheme = $this->prophesize('Liip\ThemeBundle\ActiveTheme');
         $this->logger = $this->prophesize('Psr\Log\LoggerInterface');

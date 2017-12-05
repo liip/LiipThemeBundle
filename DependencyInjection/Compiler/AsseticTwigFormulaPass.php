@@ -39,11 +39,12 @@ class AsseticTwigFormulaPass implements CompilerPassInterface
 
         $loaderDef = $container->getDefinition('assetic.twig_formula_loader.real');
         $loaderDef->setClass('Liip\ThemeBundle\Assetic\TwigFormulaLoader');
-        $nbArguments = count($loaderDef->getArguments());
+        $args = $loaderDef->getArguments();
+        $nbArguments = is_array($args) ? count($loaderDef->getArguments()) : 0;
 
         // AsseticBundle 1.1.x does not have a logger definition, add it anyway
         // as it will be ignored by the older TwigFormulaLoader
-        if ($nbArguments == 1) {
+        if ($nbArguments === 1) {
             $loaderDef->addArgument(new Reference('logger'));
         }
 
