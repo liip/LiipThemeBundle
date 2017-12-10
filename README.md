@@ -288,6 +288,22 @@ ensuring that all of the assets are dumped.
 
 Note that this only works with AsseticBundle 2.1 or higher.
 
+### Override the Device Detection
+
+It is possible to override the service used for the device detection. Make sure to either
+extend `DeviceDetection` or implement `DeviceDetectionInterface`:
+
+````yaml
+# app/config/config.yml
+services:
+    my_devcice_detection:
+        class: SomeClass
+
+liip_theme:
+    # ...
+    device_detection: my_devcice_detection
+````
+
 ## Contribution
 
 Active contribution and patches are very welcome. To keep things in shape we

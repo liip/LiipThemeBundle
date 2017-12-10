@@ -70,6 +70,7 @@ class Configuration implements ConfigurationInterface
                     ->end()
                 ->end()
                 ->scalarNode('autodetect_theme')->defaultFalse()->end()
+                ->scalarNode('device_detection')->defaultFalse()->end()
                 ->booleanNode('cache_warming')->defaultTrue()->end()
                 ->booleanNode('load_controllers')->defaultTrue()->end()
                 ->booleanNode('assetic_integration')->defaultFalse()->end()

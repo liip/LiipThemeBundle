@@ -61,8 +61,14 @@ class LiipThemeExtension extends Extension
                 ->addTag('kernel.event_listener', array('event' => 'kernel.response', 'method' => 'onKernelResponse'));
         }
 
+        if (!empty($config['device_detection'])) {
+            $container->setAlias('liip_theme.theme_auto_detect', $config['device_detection']);
+        }
+
         if (!empty($config['autodetect_theme'])) {
+            // @FIXME for 2.0 we should make 'autodetect_theme' a boolean only
             $id = is_string($config['autodetect_theme']) ? $config['autodetect_theme'] : 'liip_theme.theme_auto_detect';
+
             $container->getDefinition($this->getAlias().'.theme_request_listener')
                 ->addArgument(new Reference($id));
         }
