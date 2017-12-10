@@ -10,7 +10,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Liip\Tests\EventListener;
+namespace Liip\ThemeBundle\Tests\EventListener;
 
 use Liip\ThemeBundle\ActiveTheme;
 use Liip\ThemeBundle\EventListener\ThemeControllerListener;

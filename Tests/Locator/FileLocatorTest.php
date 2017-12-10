@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Liip\Tests\Locator;
+namespace Liip\ThemeBundle\Tests\Locator;
 
 use Liip\ThemeBundle\ActiveTheme;
 use Liip\ThemeBundle\Helper\DeviceDetection;

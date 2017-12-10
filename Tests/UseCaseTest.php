@@ -10,7 +10,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Liip\Tests\EventListener;
+namespace Liip\ThemeBundle\Tests\EventListener;
 
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Liip\ThemeBundle\EventListener\ThemeRequestListener;
