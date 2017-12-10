@@ -22,6 +22,12 @@ class FileLocatorFake extends FileLocator
 
 class FileLocatorTest extends \PHPUnit\Framework\TestCase
 {
+    /**
+     * In Symfony 4+ the $includeDerivedBundle parameter should be removed
+     * 
+     * @param bool $includeDerivedBundle
+     * @return \PHPUnit\Framework\MockObject\MockObject
+     */
     protected function getKernelMock($includeDerivedBundle = false)
     {
         $data = debug_backtrace();
