@@ -8,7 +8,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Liip\Tests\CacheWarmer;
+namespace Liip\ThemeBundle\Tests\CacheWarmer;
 
 use Liip\ThemeBundle\CacheWarmer\TemplatePathsCacheWarmer;
 
