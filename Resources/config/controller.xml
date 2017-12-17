@@ -4,12 +4,8 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-    <parameters>
-        <parameter key="liip_theme.theme_controller.class">Liip\ThemeBundle\Controller\ThemeController</parameter>
-    </parameters>
-
     <services>
-        <service id="liip_theme.theme_controller" class="%liip_theme.theme_controller.class%">
+        <service id="liip_theme.theme_controller" class="Liip\ThemeBundle\Controller\ThemeController" public="true">
             <argument type="service" id="liip_theme.active_theme" />
             <argument>%liip_theme.themes%</argument>
             <argument>%liip_theme.cookie%</argument>

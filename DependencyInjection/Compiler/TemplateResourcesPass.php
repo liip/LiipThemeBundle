@@ -48,10 +48,6 @@ class TemplateResourcesPass implements CompilerPassInterface
 
     protected function setBundleDirectoryResources(ContainerBuilder $container, $engine, $bundleDirName, $bundleName)
     {
-        if (!$container->hasDefinition('assetic.'.$engine.'_directory_resource.'.$bundleName)) {
-            throw new LogicException('The LiipThemeBundle must be registered after the AsseticBundle in the application Kernel.');
-        }
-
         $resources = $container->getDefinition('assetic.'.$engine.'_directory_resource.'.$bundleName)->getArgument(0);
         $themes = $container->getParameter('liip_theme.themes');
         foreach ($themes as $theme) {
@@ -70,10 +66,6 @@ class TemplateResourcesPass implements CompilerPassInterface
 
     protected function setAppDirectoryResources(ContainerBuilder $container, $engine)
     {
-        if (!$container->hasDefinition('assetic.'.$engine.'_directory_resource.kernel')) {
-            throw new LogicException('The LiipThemeBundle must be registered after the AsseticBundle in the application Kernel.');
-        }
-
         $themes = $container->getParameter('liip_theme.themes');
         foreach ($themes as $key => $theme) {
             $themes[$key] = $container->getParameter('kernel.root_dir').'/Resources/themes/'.$theme;

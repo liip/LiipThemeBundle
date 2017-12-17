@@ -11,6 +11,7 @@
 
 namespace Liip\ThemeBundle;
 
+use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Liip\ThemeBundle\DependencyInjection\Compiler\ThemeCompilerPass;
@@ -22,8 +23,9 @@ class LiipThemeBundle extends Bundle
     public function build(ContainerBuilder $container)
     {
         parent::build($container);
-        $container->addCompilerPass(new ThemeCompilerPass());
-        $container->addCompilerPass(new TemplateResourcesPass());
-        $container->addCompilerPass(new AsseticTwigFormulaPass());
+
+        $container->addCompilerPass(new ThemeCompilerPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, 100);
+        $container->addCompilerPass(new TemplateResourcesPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, 10);
+        $container->addCompilerPass(new AsseticTwigFormulaPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, 10);
     }
 }
