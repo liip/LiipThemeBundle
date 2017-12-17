@@ -23,8 +23,8 @@ class ThemeCompilerPassTest extends \PHPUnit\Framework\TestCase
             ->method('getParameter')
             ->will($this->returnValueMap(
                     array(
-                      array('liip_theme.cache_warming', true),
-                      array('liip_theme.filesystem_loader.class', 'Liip\ThemeBundle\Twig\Loader\FilesystemLoader'),
+                        array('liip_theme.cache_warming', true),
+                        array('liip_theme.filesystem_loader.class', 'Liip\ThemeBundle\Twig\Loader\FilesystemLoader'),
                     )
                 )
             )
