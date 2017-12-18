@@ -25,7 +25,7 @@ class LiipThemeBundle extends Bundle
         parent::build($container);
 
         $container->addCompilerPass(new ThemeCompilerPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, 100);
-        $container->addCompilerPass(new TemplateResourcesPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, 10);
-        $container->addCompilerPass(new AsseticTwigFormulaPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, 10);
+        $container->addCompilerPass(new TemplateResourcesPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, -10);
+        $container->addCompilerPass(new AsseticTwigFormulaPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, -10);
     }
 }
