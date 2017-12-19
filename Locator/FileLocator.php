@@ -182,7 +182,7 @@ class FileLocator extends BaseFileLocator
         }
 
         $resourceBundle = null;
-        $bundles = $this->kernel->getBundle($bundleName, false);
+        $bundles = $this->kernel->getBundle($bundleName, false, true);
         // Symfony 4+ no longer supports inheritance and so we only get a single bundle
         if (!is_array($bundles)) {
             $bundles = array($bundles);
