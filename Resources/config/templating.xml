@@ -37,6 +37,7 @@
         </service>
 
         <service id="liip_theme.theme_auto_detect" class="Liip\ThemeBundle\Helper\DeviceDetection" />
+        <service id="Liip\ThemeBundle\Helper\DeviceDetectionInterface" alias="liip_theme.theme_auto_detect" />
 
         <service id="liip_theme.active_theme" class="Liip\ThemeBundle\ActiveTheme">
             <argument>%liip_theme.active_theme%</argument>
