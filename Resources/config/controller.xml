@@ -9,6 +9,7 @@
             <argument type="service" id="liip_theme.active_theme" />
             <argument>%liip_theme.themes%</argument>
             <argument>%liip_theme.cookie%</argument>
+            <argument type="service" id="service_container"/>
         </service>
     </services>
 </container>

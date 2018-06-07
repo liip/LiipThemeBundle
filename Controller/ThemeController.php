@@ -12,6 +12,7 @@
 namespace Liip\ThemeBundle\Controller;
 
 use Liip\ThemeBundle\ActiveTheme;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -41,17 +42,24 @@ class ThemeController
     protected $cookieOptions;
 
     /**
+     * @var ContainerInterface 
+     */
+    protected $container;
+
+    /**
      * Theme controller construct.
      *
-     * @param ActiveTheme $activeTheme   active theme instance
-     * @param array       $themes        Available themes
-     * @param array|null  $cookieOptions The options of the cookie we look for the theme to set
+     * @param ActiveTheme $activeTheme active theme instance
+     * @param array $themes Available themes
+     * @param array|null $cookieOptions The options of the cookie we look for the theme to set
+     * @param ContainerInterface $container
      */
-    public function __construct(ActiveTheme $activeTheme, array $themes, array $cookieOptions = null)
+    public function __construct(ActiveTheme $activeTheme, array $themes, array $cookieOptions = null, ContainerInterface $container)
     {
         $this->activeTheme = $activeTheme;
         $this->themes = $themes;
         $this->cookieOptions = $cookieOptions;
+        $this->container = $container;
     }
 
     /**
@@ -73,7 +81,7 @@ class ThemeController
 
         $this->activeTheme->setName($theme);
 
-        $url = $request->headers->get('Referer', '/');
+        $url = $request->headers->get('Referer', $this->container->get('router')->generate($this->container->getParameter('liip_theme.redirect_fallback')));
         $response = new RedirectResponse($url);
 
         if (!empty($this->cookieOptions)) {

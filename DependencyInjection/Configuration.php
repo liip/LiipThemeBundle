@@ -41,6 +41,7 @@ class Configuration implements ConfigurationInterface
                     ->prototype('scalar')->end()
                 ->end()
                 ->scalarNode('active_theme')->defaultNull()->end()
+                ->scalarNode('redirect_fallback')->defaultValue('homepage')->end()
                 ->arrayNode('path_patterns')
                     ->addDefaultsIfNotSet()
                     ->children()

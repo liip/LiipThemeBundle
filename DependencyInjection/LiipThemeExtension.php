@@ -29,7 +29,7 @@ class LiipThemeExtension extends Extension
     {
         $config = $this->processConfiguration(new Configuration(), $configs);
 
-        foreach (array('themes', 'active_theme', 'path_patterns', 'cache_warming') as $key) {
+        foreach (array('themes', 'active_theme', 'path_patterns', 'cache_warming', 'redirect_fallback') as $key) {
             $container->setParameter($this->getAlias().'.'.$key, $config[$key]);
         }
 
