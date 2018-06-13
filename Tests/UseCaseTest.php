@@ -16,6 +16,8 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Liip\ThemeBundle\EventListener\ThemeRequestListener;
 use Liip\ThemeBundle\Controller\ThemeController;
 use Liip\ThemeBundle\ActiveTheme;
+use Symfony\Component\Routing\Route;
+use Symfony\Component\Routing\Router;
 
 /**
  * Bundle Functional tests.
@@ -133,9 +135,13 @@ class UseCaseTest extends \PHPUnit\Framework\TestCase
             $request = $this->getMockRequest('cookie');
         }
 
+        $router = $this->getMockBuilder(Router::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $controller = false;
         if ($config['load_controllers']) {
-            $controller = new ThemeController($activeTheme, $config['themes'], $config['cookie']);
+            $controller = new ThemeController($activeTheme, $config['themes'], $config['cookie'], $router, $config['redirect_fallback']);
         }
 
         $listener = new ThemeRequestListener($activeTheme, $config['cookie'], $device);
@@ -178,6 +184,7 @@ class UseCaseTest extends \PHPUnit\Framework\TestCase
                 // all-in Controller wins over Cookie and Autodetection
                 array(
                     'themes' => array('default', 'controller', 'cookie', 'autodetect'),
+                    'redirect_fallback' => 'homepage',
                     'active_theme' => 'default',
                     'autodetect_theme' => true,
                     'load_controllers' => true,
@@ -194,6 +201,7 @@ class UseCaseTest extends \PHPUnit\Framework\TestCase
             array(
                 array(
                     'themes' => array('default', 'controller', 'cookie', 'autodetect'),
+                    'redirect_fallback' => 'homepage',
                     'active_theme' => 'default',
                     'autodetect_theme' => true,
                     'load_controllers' => true,
@@ -210,6 +218,7 @@ class UseCaseTest extends \PHPUnit\Framework\TestCase
             array(
                 array(
                     'themes' => array('default', 'controller', 'cookie', 'autodetect'),
+                    'redirect_fallback' => 'homepage',
                     'active_theme' => 'default',
                     'autodetect_theme' => true,
                     'load_controllers' => false,
@@ -226,6 +235,7 @@ class UseCaseTest extends \PHPUnit\Framework\TestCase
             array(
                 array(
                     'themes' => array('default', 'controller', 'cookie', 'autodetect'),
+                    'redirect_fallback' => 'homepage',
                     'active_theme' => 'default',
                     'autodetect_theme' => false,
                     'load_controllers' => true,
@@ -242,6 +252,7 @@ class UseCaseTest extends \PHPUnit\Framework\TestCase
             array(
                 array(
                     'themes' => array('default', 'controller', 'cookie', 'autodetect'),
+                    'redirect_fallback' => 'homepage',
                     'active_theme' => 'default',
                     'autodetect_theme' => false,
                     'load_controllers' => true,

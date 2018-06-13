@@ -12,11 +12,11 @@
 namespace Liip\ThemeBundle\Controller;
 
 use Liip\ThemeBundle\ActiveTheme;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\RouterInterface;
 
 /**
  * Theme controller.
@@ -42,24 +42,31 @@ class ThemeController
     protected $cookieOptions;
 
     /**
-     * @var ContainerInterface 
+     * @var RouterInterface
      */
-    protected $container;
+    protected $router;
+
+    /**
+     * @var string
+     */
+    protected $defaultRoute;
 
     /**
      * Theme controller construct.
      *
-     * @param ActiveTheme $activeTheme active theme instance
-     * @param array $themes Available themes
-     * @param array|null $cookieOptions The options of the cookie we look for the theme to set
-     * @param ContainerInterface $container
+     * @param ActiveTheme $activeTheme   active theme instance
+     * @param array       $themes        Available themes
+     * @param array|null  $cookieOptions The options of the cookie we look for the theme to set
+     * @param RouterInterface $router
+     * @param string $defaultRoute
      */
-    public function __construct(ActiveTheme $activeTheme, array $themes, array $cookieOptions = null, ContainerInterface $container)
+    public function __construct(ActiveTheme $activeTheme, array $themes, array $cookieOptions = null, RouterInterface $router, $defaultRoute = '/')
     {
         $this->activeTheme = $activeTheme;
         $this->themes = $themes;
         $this->cookieOptions = $cookieOptions;
-        $this->container = $container;
+        $this->router = $router;
+        $this->defaultRoute = $defaultRoute;
     }
 
     /**
@@ -81,7 +88,7 @@ class ThemeController
 
         $this->activeTheme->setName($theme);
 
-        $url = $request->headers->get('Referer', $this->container->get('router')->generate($this->container->getParameter('liip_theme.redirect_fallback')));
+        $url = $request->headers->get('Referer', $this->router->generate($this->defaultRoute));
         $response = new RedirectResponse($url);
 
         if (!empty($this->cookieOptions)) {
