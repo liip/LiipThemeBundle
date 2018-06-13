@@ -88,11 +88,14 @@ class ThemeController
 
         $this->activeTheme->setName($theme);
 
+
         if ($this->defaultRoute) {
-          $url = $request->headers->get('Referer', $this->router->generate($this->defaultRoute));
+          $redirect = $this->router->generate($this->defaultRoute);
         } else {
-          $url = $request->headers->get('Referer', '/');
+          $redirect = '/';
         }
+
+        $url = $request->headers->get('Referer', $redirect);
 
         $response = new RedirectResponse($url);
 
