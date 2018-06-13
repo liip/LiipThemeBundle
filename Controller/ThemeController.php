@@ -47,7 +47,7 @@ class ThemeController
     protected $router;
 
     /**
-     * @var string
+     * @var string|null
      */
     protected $defaultRoute;
 
@@ -58,9 +58,9 @@ class ThemeController
      * @param array       $themes        Available themes
      * @param array|null  $cookieOptions The options of the cookie we look for the theme to set
      * @param RouterInterface $router
-     * @param string $defaultRoute
+     * @param string|null $defaultRoute
      */
-    public function __construct(ActiveTheme $activeTheme, array $themes, array $cookieOptions = null, RouterInterface $router, $defaultRoute = '/')
+    public function __construct(ActiveTheme $activeTheme, array $themes, array $cookieOptions = null, RouterInterface $router, $defaultRoute = null)
     {
         $this->activeTheme = $activeTheme;
         $this->themes = $themes;
@@ -88,7 +88,13 @@ class ThemeController
 
         $this->activeTheme->setName($theme);
 
-        $url = $request->headers->get('Referer', $this->router->generate($this->defaultRoute));
+        if ($defaultRoute) {
+          $url = $request->headers->get('Referer', $this->router->generate($this->defaultRoute));
+        }
+        else {
+          $url = $request->headers->get('Referer', '/');
+        }
+
         $response = new RedirectResponse($url);
 
         if (!empty($this->cookieOptions)) {
