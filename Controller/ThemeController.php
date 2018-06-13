@@ -88,7 +88,7 @@ class ThemeController
 
         $this->activeTheme->setName($theme);
 
-        if ($defaultRoute) {
+        if ($this->defaultRoute) {
           $url = $request->headers->get('Referer', $this->router->generate($this->defaultRoute));
         }
         else {
