@@ -16,8 +16,6 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Liip\ThemeBundle\EventListener\ThemeRequestListener;
 use Liip\ThemeBundle\Controller\ThemeController;
 use Liip\ThemeBundle\ActiveTheme;
-use Symfony\Component\Routing\Route;
-use Symfony\Component\Routing\Router;
 
 /**
  * Bundle Functional tests.
@@ -68,6 +66,24 @@ class UseCaseTest extends \PHPUnit\Framework\TestCase
             ->will($this->returnValue($response));
 
         return $event;
+    }
+
+    /**
+     * @return \Symfony\Bundle\FrameworkBundle\Routing\Router
+     */
+    protected function getRouterMock()
+    {
+        $router = $this->getMockBuilder('Symfony\Component\Routing\Router')
+                     ->disableOriginalConstructor()
+                     ->setMethods(['generate', 'supports', 'exists'])
+                     ->getMock();
+
+        $router->expects($this->any())
+             ->method('generate')
+             ->with('test_route')
+             ->will($this->returnValue('/test_route'));
+
+        return $router;
     }
 
     protected function getMockRequest($theme, $cookieReturnValue = 'cookie', $userAgent = 'autodetect')
@@ -135,9 +151,7 @@ class UseCaseTest extends \PHPUnit\Framework\TestCase
             $request = $this->getMockRequest('cookie');
         }
 
-        $router = $this->getMockBuilder(Router::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $router = $this->getRouterMock();
 
         $controller = false;
         if ($config['load_controllers']) {
@@ -155,6 +169,7 @@ class UseCaseTest extends \PHPUnit\Framework\TestCase
                 $this->getMockRequest($assertion['themeAfterController'])
             );
             $this->assertCookieValue($response, $assertion['themeAfterController']);
+            //$this->assertEquals($response->getTargetUrl(), $assertion['redirect']);
         }
 
         // onResponse will not set the cookie if the controller modified it
@@ -184,7 +199,7 @@ class UseCaseTest extends \PHPUnit\Framework\TestCase
                 // all-in Controller wins over Cookie and Autodetection
                 array(
                     'themes' => array('default', 'controller', 'cookie', 'autodetect'),
-                    'redirect_fallback' => 'homepage',
+                    'redirect_fallback' => 'test_route',
                     'active_theme' => 'default',
                     'autodetect_theme' => true,
                     'load_controllers' => true,
@@ -194,6 +209,7 @@ class UseCaseTest extends \PHPUnit\Framework\TestCase
                     'themeAfterKernelRequest' => 'cookie',
                     'themeAfterController' => 'controller',
                     'themeAfterKernelResponse' => 'controller',
+                    'redirect' => '/test_route',
                 ),
                 true,
             ),
@@ -201,7 +217,7 @@ class UseCaseTest extends \PHPUnit\Framework\TestCase
             array(
                 array(
                     'themes' => array('default', 'controller', 'cookie', 'autodetect'),
-                    'redirect_fallback' => 'homepage',
+                    'redirect_fallback' => 'test_route',
                     'active_theme' => 'default',
                     'autodetect_theme' => true,
                     'load_controllers' => true,
@@ -211,6 +227,7 @@ class UseCaseTest extends \PHPUnit\Framework\TestCase
                     'themeAfterKernelRequest' => 'autodetect',
                     'themeAfterController' => 'controller',
                     'themeAfterKernelResponse' => 'controller',
+                    'redirect' => '/test_route',
                 ),
                 false,
             ),
@@ -218,7 +235,7 @@ class UseCaseTest extends \PHPUnit\Framework\TestCase
             array(
                 array(
                     'themes' => array('default', 'controller', 'cookie', 'autodetect'),
-                    'redirect_fallback' => 'homepage',
+                    'redirect_fallback' => 'test_route',
                     'active_theme' => 'default',
                     'autodetect_theme' => true,
                     'load_controllers' => false,
@@ -228,6 +245,7 @@ class UseCaseTest extends \PHPUnit\Framework\TestCase
                     'themeAfterKernelRequest' => 'autodetect',
                     'themeAfterController' => 'autodetect',
                     'themeAfterKernelResponse' => 'autodetect',
+                    'redirect' => '/test_route',
                 ),
                 false,
             ),
@@ -235,7 +253,7 @@ class UseCaseTest extends \PHPUnit\Framework\TestCase
             array(
                 array(
                     'themes' => array('default', 'controller', 'cookie', 'autodetect'),
-                    'redirect_fallback' => 'homepage',
+                    'redirect_fallback' => 'test_route',
                     'active_theme' => 'default',
                     'autodetect_theme' => false,
                     'load_controllers' => true,
@@ -245,6 +263,7 @@ class UseCaseTest extends \PHPUnit\Framework\TestCase
                     'themeAfterKernelRequest' => 'default',
                     'themeAfterController' => 'controller',
                     'themeAfterKernelResponse' => 'controller',
+                    'redirect' => '/test_route',
                 ),
                 false,
             ),
@@ -252,7 +271,7 @@ class UseCaseTest extends \PHPUnit\Framework\TestCase
             array(
                 array(
                     'themes' => array('default', 'controller', 'cookie', 'autodetect'),
-                    'redirect_fallback' => 'homepage',
+                    'redirect_fallback' => 'test_route',
                     'active_theme' => 'default',
                     'autodetect_theme' => false,
                     'load_controllers' => true,
@@ -262,6 +281,7 @@ class UseCaseTest extends \PHPUnit\Framework\TestCase
                     'themeAfterKernelRequest' => 'cookie',
                     'themeAfterController' => 'controller',
                     'themeAfterKernelResponse' => 'controller',
+                    'redirect' => '/test_route',
                 ),
                 true,
             ),
