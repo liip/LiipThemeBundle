@@ -90,9 +90,9 @@ class ThemeController
 
 
         if ($this->defaultRoute) {
-          $redirect = $this->router->generate($this->defaultRoute);
+            $redirect = $this->router->generate($this->defaultRoute);
         } else {
-          $redirect = '/';
+            $redirect = '/';
         }
 
         $url = $request->headers->get('Referer', $redirect);

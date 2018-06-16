@@ -86,41 +86,6 @@ class UseCaseTest extends \PHPUnit\Framework\TestCase
         return $router;
     }
 
-    protected function getMockRequest($theme, $cookieReturnValue = 'cookie', $userAgent = 'autodetect')
-    {
-        $request = $this->getMockBuilder('Symfony\Component\HttpFoundation\Request')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $request->expects($this->any())
-            ->method('get')
-            ->will($this->returnValue($theme));
-        $request->cookies = $this->getMockBuilder('Symfony\Component\HttpFoundation\ParameterBag')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $request->cookies->expects($this->any())
-            ->method('get')
-            ->will($this->returnValue($cookieReturnValue));
-        $request->headers = $this->getMockBuilder('Symfony\Component\HttpFoundation\ParameterBag')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $request->headers->expects($this->any())
-            ->method('get')
-            ->will($this->returnValue('/'));
-        $request->headers->expects($this->any())
-            ->method('get')
-            ->will($this->returnValue($cookieReturnValue));
-
-        $request->server = $this->getMockBuilder('Symfony\Component\HttpFoundation\ParameterBag')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $request->server->expects($this->any())
-            ->method('get')
-            ->will($this->returnValue($userAgent));
-
-        return $request;
-    }
-
     private function getCookieValueFromResponse($response)
     {
         $cookies = $response->headers->getCookies();
@@ -146,9 +111,10 @@ class UseCaseTest extends \PHPUnit\Framework\TestCase
         }
         $response = new \Symfony\Component\HttpFoundation\Response();
         $request = new \Symfony\Component\HttpFoundation\Request();
-
         if ($hasAlreadyACookie) {
-            $request = $this->getMockRequest('cookie');
+            $request->query->set('theme', 'cookie');
+            $request->cookies->set('cookieName', 'cookie');
+            $request->server->set('HTTP_USER_AGENT', 'autodetect');
         }
 
         $router = $this->getRouterMock();
@@ -165,11 +131,13 @@ class UseCaseTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($activeTheme->getName(), $assertion['themeAfterKernelRequest']);
 
         if ($controller) {
+            $request->query->set('theme', $assertion['themeAfterController']);
+
             $response = $controller->switchAction(
-                $this->getMockRequest($assertion['themeAfterController'])
+                $request
             );
             $this->assertCookieValue($response, $assertion['themeAfterController']);
-            //$this->assertEquals($response->getTargetUrl(), $assertion['redirect']);
+            $this->assertEquals($response->getTargetUrl(), $assertion['redirect']);
         }
 
         // onResponse will not set the cookie if the controller modified it
@@ -285,7 +253,6 @@ class UseCaseTest extends \PHPUnit\Framework\TestCase
                 ),
                 true,
             ),
-
         );
     }
 }
