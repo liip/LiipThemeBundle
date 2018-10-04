@@ -31,7 +31,7 @@ class ThemeCompilerPassTest extends \PHPUnit\Framework\TestCase
         ;
 
         $containerMock->expects($this->once())
-            ->method('getDefinition')
+            ->method('findDefinition')
             ->with('twig.loader.filesystem')
             ->willReturn(
                 $this->getMockBuilder('Symfony\Component\DependencyInjection\Definition')
