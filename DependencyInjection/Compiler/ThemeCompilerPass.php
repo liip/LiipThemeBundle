@@ -30,6 +30,14 @@ class ThemeCompilerPass implements CompilerPassInterface
 
         $twigFilesystemLoaderDefinition = $container->findDefinition('twig.loader.filesystem');
         $twigFilesystemLoaderDefinition->setClass($container->getParameter('liip_theme.filesystem_loader.class'));
+
+        if (false === $container->has('templating')) {
+            $twigFilesystemLoaderDefinition->setArguments(array(
+                $container->getDefinition('liip_theme.templating_locator'),
+                $container->getDefinition('templating.filename_parser')
+            ));
+        }
+
         $twigFilesystemLoaderDefinition->addMethodCall('setActiveTheme', array(new Reference('liip_theme.active_theme')));
     }
 }
