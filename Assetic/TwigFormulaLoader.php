@@ -15,6 +15,8 @@ use Assetic\Factory\Resource\ResourceInterface;
 use Psr\Log\LoggerInterface;
 use Liip\ThemeBundle\ActiveTheme;
 use Assetic\Extension\Twig\TwigFormulaLoader as BaseTwigFormulaLoader;
+use Twig\Environment as TwigEnvironment;
+use Twig\Source as TwigSource;
 
 /**
  * Extends the base twig formula loader but iterates over all the
@@ -32,7 +34,7 @@ class TwigFormulaLoader extends BaseTwigFormulaLoader
     private $logger;
 
     public function __construct(
-        \Twig_Environment $twig,
+        TwigEnvironment $twig,
         LoggerInterface $logger = null,
         ActiveTheme $activeTheme = null
     ) {
@@ -58,8 +60,8 @@ class TwigFormulaLoader extends BaseTwigFormulaLoader
 
             try {
                 // determine if the template has any errors
-                if (class_exists('Twig_Source')) {
-                    $content = new \Twig_Source($resource->getContent(), (string) $resource->getContent());
+                if (class_exists(TwigSource::class)) {
+                    $content = new TwigSource($resource->getContent(), (string) $resource->getContent());
                 } else {
                     $content = $resource->getContent();
                 }

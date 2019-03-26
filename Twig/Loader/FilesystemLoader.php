@@ -6,8 +6,10 @@ use Symfony\Component\Config\FileLocatorInterface;
 use Symfony\Component\Templating\TemplateNameParserInterface;
 use Symfony\Component\Templating\TemplateReferenceInterface;
 use Liip\ThemeBundle\ActiveTheme;
+use Twig\Error\LoaderError as TwigLoaderError;
+use Twig\Loader\FilesystemLoader as TwigFilesystemLoader;
 
-class FilesystemLoader extends \Twig_Loader_Filesystem
+class FilesystemLoader extends TwigFilesystemLoader
 {
     protected $locator;
     protected $parser;
@@ -52,11 +54,11 @@ class FilesystemLoader extends \Twig_Loader_Filesystem
      * Otherwise the template is located using the locator from the twig library.
      *
      * @param string|TemplateReferenceInterface $template The template
-     * @param bool                              $throw    When true, a \Twig_Error_Loader exception will be thrown if a template could not be found
+     * @param bool                              $throw    When true, a \Twig\Error\LoaderError exception will be thrown if a template could not be found
      *
      * @return string The path to the template file
      *
-     * @throws \Twig_Error_Loader if the template could not be found
+     * @throws \Twig\Error\LoaderError if the template could not be found
      */
     protected function findTemplate($template, $throw = true)
     {
@@ -82,14 +84,14 @@ class FilesystemLoader extends \Twig_Loader_Filesystem
             // for BC
             try {
                 $file = parent::findTemplate((string) $template);
-            } catch (\Twig_Error_Loader $e) {
+            } catch (TwigLoaderError $e) {
                 $previous = $e;
             }
         }
 
         if (false === $file || null === $file) {
             if ($throw) {
-                throw new \Twig_Error_Loader(sprintf('Unable to find template "%s".', $logicalName), -1, null, $previous);
+                throw new TwigLoaderError(sprintf('Unable to find template "%s".', $logicalName), -1, null, $previous);
             }
             
             return false;

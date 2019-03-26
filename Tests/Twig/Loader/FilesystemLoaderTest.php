@@ -47,7 +47,7 @@ class FilesystemLoaderTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @expectedException \Twig_Error_Loader
+     * @expectedException \Twig\Error\LoaderError
      */
     public function testTwigErrorIfLocatorThrowsInvalid()
     {
