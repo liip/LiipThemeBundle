@@ -73,8 +73,7 @@ class ThemeController
 
         $this->activeTheme->setName($theme);
 
-        $url = $request->headers->get('Referer', '/');
-        $response = new RedirectResponse($url);
+        $response = new RedirectResponse($this->extractUrl($request));
 
         if (!empty($this->cookieOptions)) {
             $cookie = new Cookie(
@@ -91,5 +90,17 @@ class ThemeController
         }
 
         return $response;
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return string
+     */
+    private function extractUrl(Request $request)
+    {
+        $url = $request->headers->get('Referer');
+
+        return !empty($url) ? $url : '/';
     }
 }
