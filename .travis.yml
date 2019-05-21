@@ -1,10 +1,10 @@
 language: php
 
 php:
-  - 5.6
   - 7.0
   - 7.1
   - 7.2
+  - 7.3
 
 sudo: false
 
@@ -13,13 +13,11 @@ cache:
     - $HOME/.composer/cache/files
 
 env:
-  - SYMFONY_VERSION=2.7.*
+  - SYMFONY_VERSION=3.0.*
 
 matrix:
   fast_finish: true
   include:
-    - php: 7.2
-      env: SYMFONY_VERSION=2.8.*
     - php: 7.2
       env: SYMFONY_VERSION=3.3.*
     - php: 7.2
@@ -30,10 +28,18 @@ matrix:
       env: SYMFONY_VERSION=4.1.*;ASSETIC=skip
     - php: 7.2
       env: SYMFONY_VERSION=@dev;ASSETIC=skip
+    - php: 7.3
+    env: SYMFONY_VERSION=3.3.*
+    - php: 7.3
+      env: SYMFONY_VERSION=3.4.*
+    - php: 7.3
+      env: SYMFONY_VERSION=4.0.*;ASSETIC=skip
+    - php: 7.3
+      env: SYMFONY_VERSION=4.1.*;ASSETIC=skip
+    - php: 7.3
+      env: SYMFONY_VERSION=@dev;ASSETIC=skip
     - php: 7.0
-      env: TWIG_VERSION=2.x
-    - php: 5.6
-      env: COMPOSER_FLAGS="--prefer-lowest"
+      env: TWIG_VERSION=2.7.*
     - php: 7.1
       env: DEPENDENCIES=beta
   allow_failures:
@@ -41,8 +47,6 @@ matrix:
       env: SYMFONY_VERSION=@dev;ASSETIC=skip
 
 before_install:
-  - if [[ $TRAVIS_PHP_VERSION = '5.6' ]]; then phpenv config-add travis.php.ini; fi
-  - if [[ $TRAVIS_PHP_VERSION != '7.0' && $TRAVIS_PHP_VERSION != '7.1' && $TRAVIS_PHP_VERSION != '7.2' ]]; then phpenv config-rm xdebug.ini; fi
   - composer self-update
   - if [ "$SYMFONY_VERSION" != "" ]; then composer require "symfony/symfony:${SYMFONY_VERSION}" --no-update; fi;
   - if [ "$ASSETIC" != "skip" ]; then composer require "kriswallsmith/assetic:^1.1" --no-update; fi;

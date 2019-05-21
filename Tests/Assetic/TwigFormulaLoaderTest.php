@@ -52,7 +52,7 @@ class TwigFormulaLoaderTest extends \PHPUnit\Framework\TestCase
             $this->markTestSkipped('Assetic not supported');
         }
 
-        $this->twig = $this->prophesize('Twig_Environment');
+        $this->twig = $this->prophesize(\Twig\Environment::class);
         $this->activeTheme = $this->prophesize('Liip\ThemeBundle\ActiveTheme');
         $this->logger = $this->prophesize('Psr\Log\LoggerInterface');
         $this->resource = $this->prophesize('Assetic\Factory\Resource\ResourceInterface');
@@ -78,8 +78,8 @@ class TwigFormulaLoaderTest extends \PHPUnit\Framework\TestCase
         $this->activeTheme->setName('theme1')->shouldBeCalledTimes(2);
         $this->activeTheme->setName('theme2')->shouldBeCalled();
 
-        $this->twig->tokenize(Argument::any(), Argument::any())->shouldBeCalled()->willReturn(new \Twig_TokenStream(array()));
-        $this->twig->parse(Argument::any())->shouldBeCalled()->willReturn(new \Twig_Node);
+        $this->twig->tokenize(Argument::any(), Argument::any())->shouldBeCalled()->willReturn(new \Twig\TokenStream(array()));
+        $this->twig->parse(Argument::any())->shouldBeCalled()->willReturn(new \Twig\Node\Node);
 
         $this->loader->load($this->resource->reveal());
     }
