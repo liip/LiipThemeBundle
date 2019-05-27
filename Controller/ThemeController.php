@@ -13,8 +13,8 @@ namespace Liip\ThemeBundle\Controller;
 
 use Liip\ThemeBundle\ActiveTheme;
 use Symfony\Component\HttpFoundation\Cookie;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -101,6 +101,6 @@ class ThemeController
     {
         $url = $request->headers->get('Referer');
 
-        return !empty($url) ? $url : '/';
+        return empty($url) ? '/' : $url;
     }
 }
