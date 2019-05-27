@@ -9,10 +9,13 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Liip\ThemeBundle\Controller;
+namespace Liip\ThemeBundle\Tests\Controller;
 
 use Liip\ThemeBundle\ActiveTheme;
+use Liip\ThemeBundle\Controller\ThemeController;
+use Liip\ThemeBundle\Tests\Common\Comparator\SymfonyResponse as SymfonyResponseComparator;
 use PHPUnit\Framework\MockObject\Matcher\Invocation;
+use SebastianBergmann\Comparator\Factory as ComparatorFactory;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -22,6 +25,11 @@ class ThemeControllerTest extends \PHPUnit\Framework\TestCase
     const RIGHT_THEME = 'right_theme';
     const REFERER = 'some_referer';
     const DEFAULT_REDIRECT_URL = '/';
+
+    /**
+     * @var SymfonyResponseComparator
+     */
+    private $symfonyResponseComparator;
 
     /**
      * @dataProvider switchActionDataProvider
@@ -79,6 +87,22 @@ class ThemeControllerTest extends \PHPUnit\Framework\TestCase
         $controller = $this->createThemeController(self::never());
 
         $controller->switchAction($this->createRequestWithWrongTheme());
+    }
+
+    protected function setUp()
+    {
+        parent::setUp();
+
+        $this->symfonyResponseComparator = new SymfonyResponseComparator();
+        ComparatorFactory::getInstance()->register($this->symfonyResponseComparator);
+    }
+
+    protected function tearDown()
+    {
+        ComparatorFactory::getInstance()->unregister($this->symfonyResponseComparator);
+        $this->symfonyResponseComparator = null;
+
+        parent::tearDown();
     }
 
     /**
