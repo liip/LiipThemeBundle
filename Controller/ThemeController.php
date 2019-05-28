@@ -13,8 +13,8 @@ namespace Liip\ThemeBundle\Controller;
 
 use Liip\ThemeBundle\ActiveTheme;
 use Symfony\Component\HttpFoundation\Cookie;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -73,14 +73,13 @@ class ThemeController
 
         $this->activeTheme->setName($theme);
 
-        $url = $request->headers->get('Referer', '/');
-        $response = new RedirectResponse($url);
+        $response = new RedirectResponse($this->extractUrl($request));
 
         if (!empty($this->cookieOptions)) {
             $cookie = new Cookie(
                 $this->cookieOptions['name'],
                 $theme,
-                time() + $this->cookieOptions['lifetime'],
+                $request->server->get('REQUEST_TIME') + $this->cookieOptions['lifetime'],
                 $this->cookieOptions['path'],
                 $this->cookieOptions['domain'],
                 (bool) $this->cookieOptions['secure'],
@@ -91,5 +90,17 @@ class ThemeController
         }
 
         return $response;
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return string
+     */
+    private function extractUrl(Request $request)
+    {
+        $url = $request->headers->get('Referer');
+
+        return empty($url) ? '/' : $url;
     }
 }

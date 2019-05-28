@@ -12,10 +12,10 @@
 
 namespace Liip\ThemeBundle\Tests\EventListener;
 
-use Symfony\Component\HttpKernel\HttpKernelInterface;
-use Liip\ThemeBundle\EventListener\ThemeRequestListener;
-use Liip\ThemeBundle\Controller\ThemeController;
 use Liip\ThemeBundle\ActiveTheme;
+use Liip\ThemeBundle\Controller\ThemeController;
+use Liip\ThemeBundle\EventListener\ThemeRequestListener;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 /**
  * Bundle Functional tests.
@@ -98,7 +98,14 @@ class UseCaseTest extends \PHPUnit\Framework\TestCase
             ->getMock();
         $request->server->expects($this->any())
             ->method('get')
-            ->will($this->returnValue($userAgent));
+            ->will(
+                $this->returnValueMap(
+                    array(
+                        array('HTTP_USER_AGENT', null, $userAgent),
+                        array('REQUEST_TIME', null, 123),
+                    )
+                )
+            );
 
         return $request;
     }
