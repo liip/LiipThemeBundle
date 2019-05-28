@@ -79,7 +79,7 @@ class ThemeController
             $cookie = new Cookie(
                 $this->cookieOptions['name'],
                 $theme,
-                time() + $this->cookieOptions['lifetime'],
+                $request->server->get('REQUEST_TIME') + $this->cookieOptions['lifetime'],
                 $this->cookieOptions['path'],
                 $this->cookieOptions['domain'],
                 (bool) $this->cookieOptions['secure'],
