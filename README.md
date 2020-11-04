@@ -5,7 +5,7 @@ This bundle provides you the possibility to add themes to each bundle. In your
 bundle directory it will look under `Resources/themes/<themename>` or fall back
 to the normal Resources/views if no matching file was found.
 
-[![Build Status](https://secure.travis-ci.org/liip/LiipThemeBundle.png)](http://travis-ci.org/liip/LiipThemeBundle)
+[![Build Status](https://travis-ci.com/liip/LiipThemeBundle.svg?branch=master)](https://travis-ci.com/liip/LiipThemeBundle)
 
 ## Installation
 
