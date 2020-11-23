@@ -34,6 +34,7 @@
     "conflict": {
         "sebastian/comparator": "1.2.3"
     },
+    "abandoned": "sylius/theme-bundle",
     "extra": {
         "branch-alias": {
             "dev-master": "1.4-dev"
